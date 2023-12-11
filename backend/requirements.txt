@@ -9,6 +9,7 @@ docker==7.0.0
 idna==3.6
 packaging==23.2
 psycopg==3.1.14
+psycopg2-binary==2.9.9
 PyJWT==2.8.0
 pytz==2023.3.post1
 requests==2.31.0
