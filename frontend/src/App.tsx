@@ -1,10 +1,14 @@
 import React from "react";
 import logo from "./logo.svg";
 import "./App.css";
+import Map from "./components/Map";
+import Login from "./components/Login";
+import Conversation from "./components/Conversation";
 
 function App() {
   return (
     <div className="App">
+      <Login />
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
         <p>
@@ -19,6 +23,8 @@ function App() {
         >
           Learn React
         </a>
+        <Conversation />
+        <Map />
       </header>
     </div>
   );
