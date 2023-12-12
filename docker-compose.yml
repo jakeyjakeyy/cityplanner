@@ -38,6 +38,9 @@ services:
     ports:
       - "8000:8000"
 
+    volumes:
+      - ./backend:/app/backend
+
     environment:
       - POSTGRES_PASSWORD=postgres
       - POSTGRES_USER=postgres
