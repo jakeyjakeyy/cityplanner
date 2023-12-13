@@ -17,50 +17,11 @@ openai.api_key = os.getenv("OPENAI_API_KEY")
 
 logger = logging.getLogger(__name__)
 
-# assistant = openai.beta.assistants.create(
-#     name="City Trip Planner",
-#     instructions="Users will give you information about their ideal night and city. Recommend locations to visit based on information given.",
-#     # model="gpt-4-1106-preview",
-#     model="gpt-3.5-turbo",
-#     tools=[
-#         {
-#             "type": "function",
-#             "function": {
-#                 "name": "get_info",
-#                 "description": "Determine city and location requests from the string. Add any additional keywords relating to searching locations on google maps.",
-#                 "parameters": {
-#                     "type": "object",
-#                     "properties": {
-#                         "location": {
-#                             "type": "string",
-#                             "description": "The city and state e.g. San Francisco, CA",
-#                         },
-#                         "request": {
-#                             "type": "string",
-#                             "description": "The core of the request. Could be attractions, food, events, and more.",
-#                         },
-#                         "extra": {
-#                             "type": "string",
-#                             "description": "Any additional keywords to specify location interests.",
-#                         },
-#                         "pricePoint": {
-#                             "type": "string",
-#                             "description": "Convert any price point keywords to a range including ['PRICE_LEVEN_FREE', 'PRICE_LEVEL_INEXPENSIVE', 'PRICE_LEVEL_MODERATE', 'PRICE_LEVEL_EXPENSIVE', 'PRICE_LEVEL_VERY_EXPENSIVE']",
-#                         },
-#                     },
-#                     "required": ["location", "request"],
-#                 },
-#             },
-#         }
-#     ],
-# )
-
-
 assistant = openai.beta.assistants.create(
     name="City Trip Planner",
-    instructions="Users will give you information about their ideal night and city. Recommend locations to visit based on information given.",
-    # model="gpt-4-1106-preview",
-    model="gpt-3.5-turbo",
+    instructions="Users will give you information such as a city and general idea of their ideal night. Interpret their input and create a itinerary to visit different locations across their chosen city based on their interests.",
+    model="gpt-4-1106-preview",
+    # model="gpt-3.5-turbo",
     tools=[
         {
             "type": "function",
@@ -75,7 +36,7 @@ assistant = openai.beta.assistants.create(
                         },
                         "locationTypes": {
                             "type": "string",
-                            "description": "condense user requests into an ordered itinerary of each type, take liberties to add or adjust the list to create the perfect time out e.g. ['restaurant', 'amusement park', 'bar']",
+                            "description": "condense user requests into an ordered itinerary of each type, take liberties to add or adjust the list to create the perfect time out. Separate each stop with a , e.g. 'restaurant', 'amusement park', 'bar'",
                         },
                     },
                     "required": ["location", "locationTypes"],
@@ -132,18 +93,25 @@ class Conversation(APIView):
 
     def post(self, request):
         user = request.user
-        thread = openai.beta.threads.create(
-            messages=[
-                {
-                    "role": "user",
-                    "content": request.data["input"],
-                }
-            ]
-        )
-        run = openai.beta.threads.runs.create(
-            thread_id=thread.id,
-            assistant_id=assistant.id,
-        )
+        if request.data["thread"] == "new":
+            thread = openai.beta.threads.create(
+                messages=[
+                    {
+                        "role": "user",
+                        "content": request.data["input"],
+                    }
+                ]
+            )
+            run = openai.beta.threads.runs.create(
+                thread_id=thread.id,
+                assistant_id=assistant.id,
+            )
+        else:
+            run = openai.beta.threads.runs.create(
+                thread_id=request.data["thread"],
+                assistant_id=assistant.id,
+                input=request.data["input"],
+            )
 
         while run.status == "in_progress" or run.status == "queued":
             time.sleep(1)
@@ -151,37 +119,30 @@ class Conversation(APIView):
                 thread_id=thread.id,
                 run_id=run.id,
             )
-        logger.info(run)
         if run.status == "requires_action":
             function_arguments = json.loads(
                 run.required_action.submit_tool_outputs.tool_calls[0].function.arguments
             )
-            logger.info(function_arguments["request"])
+            logger.info(function_arguments)
             url = "https://places.googleapis.com/v1/places:searchText"
-            params = {
-                "textQuery": function_arguments["request"]
-                + " "
-                + function_arguments["location"],
-            }
-            try:
-                if function_arguments["extra"]:
-                    params["textQuery"] += " " + function_arguments["extra"]
-            except KeyError:
-                pass
-            try:
-                if function_arguments["pricePoint"]:
-                    params["priceLevels"] = function_arguments["pricePoint"]
-            except KeyError:
-                pass
+
             headers = {
                 "Content-Type": "application/json",
                 "X-Goog-Api-Key": google_api_key,
                 "X-Goog-FieldMask": "places.displayName,places.formattedAddress,places.websiteUri,places.types",
-                "maxResultCount": "5",
             }
-            res = requests.post(url, json=params, headers=headers)
 
-            logger.info(res.json())
+            searchResults = []
+
+            for location_type in function_arguments["locationTypes"].split(","):
+                logger.info(location_type)
+                params = {
+                    "textQuery": function_arguments["location"] + " " + location_type,
+                    "maxResultCount": "3",
+                }
+                res = requests.post(url, json=params, headers=headers)
+                searchResults.append(res.json())
+            logger.info(searchResults)
 
             run = openai.beta.threads.runs.submit_tool_outputs(
                 thread_id=thread.id,
@@ -191,7 +152,7 @@ class Conversation(APIView):
                         "tool_call_id": run.required_action.submit_tool_outputs.tool_calls[
                             0
                         ].id,
-                        "output": json.dumps(res.json()),
+                        "output": json.dumps(searchResults),
                     }
                 ],
             )

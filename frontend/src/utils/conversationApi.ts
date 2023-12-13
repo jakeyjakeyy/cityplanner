@@ -7,7 +7,7 @@ async function ConversationAPI(input: String): Promise<any> {
       "Content-Type": "application/json",
       Authorization: `JWT ${localStorage.getItem("token")}`,
     },
-    body: JSON.stringify({ input }),
+    body: JSON.stringify({ input, thread: "new" }),
   })
     .then((res) => res.json())
     .then((data) => {
