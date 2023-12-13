@@ -6,15 +6,20 @@ from rest_framework.renderers import JSONRenderer
 import openai
 import os
 from dotenv import load_dotenv
+import logging
+import json
 
 load_dotenv()
 google_api_key = os.getenv("GOOGLE_API_KEY")
 openai.api_key = os.getenv("OPENAI_API_KEY")
 
+logger = logging.getLogger(__name__)
+
 assistant = openai.beta.assistants.create(
     name="City Trip Planner",
     instructions="Users will give you information about their ideal night and city. Recommend locations to visit based on information given.",
-    model="gpt-4-1106-preview",
+    # model="gpt-4-1106-preview",
+    model="gpt-3.5-turbo",
     tools=[
         {
             "type": "function",
@@ -44,6 +49,27 @@ assistant = openai.beta.assistants.create(
     ],
 )
 
+output_data = {
+    "places": [
+        {
+            "formattedAddress": "367 Pitt St, Sydney NSW 2000, Australia",
+            "websiteUri": "http://www.motherchusvegetarian.com.au/",
+            "displayName": {
+                "text": "Mother Chu's Vegetarian Kitchen",
+                "languageCode": "en",
+            },
+        },
+        {
+            "formattedAddress": "175 First Ave, Five Dock NSW 2046, Australia",
+            "websiteUri": "http://www.veggosizzle.com.au/",
+            "displayName": {
+                "text": "Veggo Sizzle - Vegan & Vegetarian Restaurant, Five Dock, Sydney",
+                "languageCode": "en",
+            },
+        },
+    ]
+}
+
 
 class Register(APIView):
     def post(self, request):
@@ -68,4 +94,48 @@ class Conversation(APIView):
 
     def post(self, request):
         user = request.user
-        return Response({"message": "Conversation", "user": user.username}, status=200)
+        thread = openai.beta.threads.create(
+            messages=[
+                {
+                    "role": "user",
+                    "content": request.data["input"],
+                }
+            ]
+        )
+        run = openai.beta.threads.runs.create(
+            thread_id=thread.id,
+            assistant_id=assistant.id,
+        )
+
+        while run.status == "in_progress" or run.status == "queued":
+            run = openai.beta.threads.runs.retrieve(
+                thread_id=thread.id,
+                run_id=run.id,
+            )
+        logger.info(run)
+        if run.status == "requires_action":
+            logger.info(run.required_action.submit_tool_outputs.tool_calls[0].id)
+            run = openai.beta.threads.runs.submit_tool_outputs(
+                thread_id=thread.id,
+                run_id=run.id,
+                tool_outputs=[
+                    {
+                        "tool_call_id": run.required_action.submit_tool_outputs.tool_calls[
+                            0
+                        ].id,
+                        "output": json.dumps(output_data),
+                    }
+                ],
+            )
+
+        while run.status == "in_progress" or run.status == "queued":
+            run = openai.beta.threads.runs.retrieve(
+                thread_id=thread.id,
+                run_id=run.id,
+            )
+
+        messages = openai.beta.threads.messages.list(
+            thread_id=thread.id,
+        )
+
+        return Response({"message": messages}, status=200)
