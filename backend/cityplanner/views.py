@@ -9,12 +9,52 @@ from dotenv import load_dotenv
 import logging
 import json
 import time
+import requests
 
 load_dotenv()
 google_api_key = os.getenv("GOOGLE_API_KEY")
 openai.api_key = os.getenv("OPENAI_API_KEY")
 
 logger = logging.getLogger(__name__)
+
+# assistant = openai.beta.assistants.create(
+#     name="City Trip Planner",
+#     instructions="Users will give you information about their ideal night and city. Recommend locations to visit based on information given.",
+#     # model="gpt-4-1106-preview",
+#     model="gpt-3.5-turbo",
+#     tools=[
+#         {
+#             "type": "function",
+#             "function": {
+#                 "name": "get_info",
+#                 "description": "Determine city and location requests from the string. Add any additional keywords relating to searching locations on google maps.",
+#                 "parameters": {
+#                     "type": "object",
+#                     "properties": {
+#                         "location": {
+#                             "type": "string",
+#                             "description": "The city and state e.g. San Francisco, CA",
+#                         },
+#                         "request": {
+#                             "type": "string",
+#                             "description": "The core of the request. Could be attractions, food, events, and more.",
+#                         },
+#                         "extra": {
+#                             "type": "string",
+#                             "description": "Any additional keywords to specify location interests.",
+#                         },
+#                         "pricePoint": {
+#                             "type": "string",
+#                             "description": "Convert any price point keywords to a range including ['PRICE_LEVEN_FREE', 'PRICE_LEVEL_INEXPENSIVE', 'PRICE_LEVEL_MODERATE', 'PRICE_LEVEL_EXPENSIVE', 'PRICE_LEVEL_VERY_EXPENSIVE']",
+#                         },
+#                     },
+#                     "required": ["location", "request"],
+#                 },
+#             },
+#         }
+#     ],
+# )
+
 
 assistant = openai.beta.assistants.create(
     name="City Trip Planner",
@@ -25,8 +65,7 @@ assistant = openai.beta.assistants.create(
         {
             "type": "function",
             "function": {
-                "name": "get_info",
-                "description": "Determine city and location requests from the string. Add any additional keywords relating to searching locations on google maps.",
+                "name": "create_itinerary",
                 "parameters": {
                     "type": "object",
                     "properties": {
@@ -34,23 +73,21 @@ assistant = openai.beta.assistants.create(
                             "type": "string",
                             "description": "The city and state e.g. San Francisco, CA",
                         },
-                        "request": {
+                        "locationTypes": {
                             "type": "string",
-                            "description": "The core of the request. Could be attractions, food, events, and more.",
-                        },
-                        "extra": {
-                            "type": "string",
-                            "description": "Any additional keywords to specify location interests.",
+                            "description": "condense user requests into an ordered itinerary of each type, take liberties to add or adjust the list to create the perfect time out e.g. ['restaurant', 'amusement park', 'bar']",
                         },
                     },
-                    "required": ["location", "request"],
+                    "required": ["location", "locationTypes"],
                 },
+                "description": "Take user input and return one or more types of locations for the user to visit on their trip.",
             },
         }
     ],
 )
 
-output_data = {
+
+output_data_static = {
     "places": [
         {
             "formattedAddress": "367 Pitt St, Sydney NSW 2000, Australia",
@@ -116,7 +153,36 @@ class Conversation(APIView):
             )
         logger.info(run)
         if run.status == "requires_action":
-            logger.info(run.required_action.submit_tool_outputs.tool_calls[0].id)
+            function_arguments = json.loads(
+                run.required_action.submit_tool_outputs.tool_calls[0].function.arguments
+            )
+            logger.info(function_arguments["request"])
+            url = "https://places.googleapis.com/v1/places:searchText"
+            params = {
+                "textQuery": function_arguments["request"]
+                + " "
+                + function_arguments["location"],
+            }
+            try:
+                if function_arguments["extra"]:
+                    params["textQuery"] += " " + function_arguments["extra"]
+            except KeyError:
+                pass
+            try:
+                if function_arguments["pricePoint"]:
+                    params["priceLevels"] = function_arguments["pricePoint"]
+            except KeyError:
+                pass
+            headers = {
+                "Content-Type": "application/json",
+                "X-Goog-Api-Key": google_api_key,
+                "X-Goog-FieldMask": "places.displayName,places.formattedAddress,places.websiteUri,places.types",
+                "maxResultCount": "5",
+            }
+            res = requests.post(url, json=params, headers=headers)
+
+            logger.info(res.json())
+
             run = openai.beta.threads.runs.submit_tool_outputs(
                 thread_id=thread.id,
                 run_id=run.id,
@@ -125,7 +191,7 @@ class Conversation(APIView):
                         "tool_call_id": run.required_action.submit_tool_outputs.tool_calls[
                             0
                         ].id,
-                        "output": json.dumps(output_data),
+                        "output": json.dumps(res.json()),
                     }
                 ],
             )
