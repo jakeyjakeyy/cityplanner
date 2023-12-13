@@ -1,4 +1,6 @@
-async function ConversationAPI(input: String) {
+import RefreshToken from "./refreshtoken";
+
+async function ConversationAPI(input: String): Promise<any> {
   return fetch("http://localhost:8000/api/conversation", {
     method: "POST",
     headers: {
@@ -9,6 +11,13 @@ async function ConversationAPI(input: String) {
   })
     .then((res) => res.json())
     .then((data) => {
+      if (data.code === "token_not_valid") {
+        RefreshToken().then(() => {
+          if (localStorage.getItem("token")) {
+            return ConversationAPI(input);
+          }
+        });
+      }
       return data;
     })
     .catch((err) => {

@@ -68,4 +68,4 @@ class Conversation(APIView):
 
     def post(self, request):
         user = request.user
-        return Response({"message": "Conversation", "user": user}, status=200)
+        return Response({"message": "Conversation", "user": user.username}, status=200)

@@ -12,5 +12,5 @@ urlpatterns = [
     path("token/refresh", TokenRefreshView.as_view(), name="refresh"),
     path("register", Register.as_view(), name="register"),
     path("search", Search.as_view(), name="search"),
-    path("Conversation", Conversation.as_view(), name="conversation"),
+    path("conversation", Conversation.as_view(), name="conversation"),
 ]
