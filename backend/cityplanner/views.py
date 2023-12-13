@@ -8,6 +8,7 @@ import os
 from dotenv import load_dotenv
 import logging
 import json
+import time
 
 load_dotenv()
 google_api_key = os.getenv("GOOGLE_API_KEY")
@@ -108,6 +109,7 @@ class Conversation(APIView):
         )
 
         while run.status == "in_progress" or run.status == "queued":
+            time.sleep(1)
             run = openai.beta.threads.runs.retrieve(
                 thread_id=thread.id,
                 run_id=run.id,
@@ -129,6 +131,7 @@ class Conversation(APIView):
             )
 
         while run.status == "in_progress" or run.status == "queued":
+            time.sleep(1)
             run = openai.beta.threads.runs.retrieve(
                 thread_id=thread.id,
                 run_id=run.id,
@@ -137,5 +140,12 @@ class Conversation(APIView):
         messages = openai.beta.threads.messages.list(
             thread_id=thread.id,
         )
+
+        thread = models.Thread.objects.create(
+            user=user,
+            message=messages,
+            thread_id=thread.id,
+        )
+        thread.save()
 
         return Response({"message": messages}, status=200)
