@@ -148,7 +148,11 @@ class Conversation(APIView):
                 itinerary.append(location_type)
                 i += 1
             return Response(
-                {"location": function_arguments["location"], "itinerary": itinerary},
+                {
+                    "location": function_arguments["location"],
+                    "itinerary": itinerary,
+                    "thread": thread.id,
+                },
                 status=200,
             )
 

@@ -23,12 +23,12 @@ interface SearchResult {
 }
 
 const Conversation = () => {
-  const [input, setInput] = React.useState("");
-  const [thread, setThread] = React.useState("new");
-  const [itinerary, setItinerary] = React.useState([]);
-  const [location, setLocation] = React.useState("");
+  const [input, setInput] = useState("");
+  const [thread, setThread] = useState("new");
+  const [itinerary, setItinerary] = useState([]);
+  const [location, setLocation] = useState("");
   const [currentResultIndex, setCurrentResultIndex] = React.useState(-1);
-  const [selections, setSelections] = React.useState([]);
+  const [selections, setSelections] = useState<Place[]>([]);
   const [searchResults, setSearchResults] = useState<SearchResult | null>(null);
   const handlePick = () => {
     setCurrentResultIndex(currentResultIndex + 1);
@@ -42,10 +42,23 @@ const Conversation = () => {
         console.log(response);
         setItinerary(response.itinerary);
         setLocation(response.location);
-        // setThread(response.thread);
+        setThread(response.thread);
         handlePick();
       }
     });
+  };
+
+  const handleSelection = (event: any) => {
+    event.preventDefault();
+    console.log(searchResults);
+    console.log(searchResults?.searchResults?.places[event.target.id]);
+    const place = searchResults?.searchResults?.places[event.target.id];
+
+    if (place) {
+      console.log(place);
+      setSelections([...selections, place]);
+      handlePick();
+    }
   };
 
   useEffect(() => {
@@ -53,22 +66,30 @@ const Conversation = () => {
     if (currentResultIndex < itinerary.length && currentResultIndex >= 0) {
       let query = location + " " + itinerary[currentResultIndex];
       searchItinerary(query).then((response) => {
-        console.log(response);
-        console.log("setting search results");
         setSearchResults(response);
       });
+    } else if (searchResults !== null) {
+      console.log("finished");
+      setSearchResults(null);
     }
   }, [currentResultIndex]);
 
   useEffect(() => {
-    console.log(searchResults);
-  }, [searchResults]);
+    console.log(selections);
+  }, [selections]);
 
   return (
     <div className="conversationContainer">
       <div className="searchResults">
         {searchResults?.searchResults?.places?.map((place: any) => (
-          <div className="searchResultCard">
+          <div
+            className="searchResultCard"
+            key={place.displayName.text}
+            onClick={handleSelection}
+            id={searchResults?.searchResults?.places
+              ?.indexOf(place)
+              ?.toString()}
+          >
             <h2 className="placeName">{place.displayName.text}</h2>
             <p className="placeAddress">{place.formattedAddress}</p>
             <a href={place.websiteUri} className="placeWebsite">
