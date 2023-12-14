@@ -87,6 +87,23 @@ class Search(APIView):
     def get(self, request):
         return Response({"message": "Search"}, status=200)
 
+    def post(self, request):
+        query = request.data["query"]
+        logger.info(query)
+        url = "https://places.googleapis.com/v1/places:searchText"
+
+        headers = {
+            "Content-Type": "application/json",
+            "X-Goog-Api-Key": google_api_key,
+            "X-Goog-FieldMask": "places.displayName,places.formattedAddress,places.websiteUri,places.types",
+        }
+        params = {
+            "textQuery": query,
+            "maxResultCount": "5",
+        }
+        res = requests.post(url, json=params, headers=headers)
+        return Response({"searchResults": res.json()}, status=200)
+
 
 class Conversation(APIView):
     authentication_classes = [JWTAuthentication]
@@ -124,31 +141,15 @@ class Conversation(APIView):
                 run.required_action.submit_tool_outputs.tool_calls[0].function.arguments
             )
             logger.info(function_arguments)
-            url = "https://places.googleapis.com/v1/places:searchText"
 
-            headers = {
-                "Content-Type": "application/json",
-                "X-Goog-Api-Key": google_api_key,
-                "X-Goog-FieldMask": "places.displayName,places.formattedAddress,places.websiteUri,places.types",
-            }
-
-            searchResults = {}
             itinerary = []
-
             i = 0
             for location_type in function_arguments["locationTypes"].split(","):
                 itinerary.append(location_type)
-                logger.info(location_type)
-                params = {
-                    "textQuery": function_arguments["location"] + " " + location_type,
-                    "maxResultCount": "5",
-                }
-                res = requests.post(url, json=params, headers=headers)
-                searchResults[i] = res.json()
                 i += 1
-            logger.info(searchResults)
             return Response(
-                {"searchResults": searchResults, "itinerary": itinerary}, status=200
+                {"location": function_arguments["location"], "itinerary": itinerary},
+                status=200,
             )
 
             run = openai.beta.threads.runs.submit_tool_outputs(
