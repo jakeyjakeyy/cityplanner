@@ -20,8 +20,8 @@ logger = logging.getLogger(__name__)
 assistant = openai.beta.assistants.create(
     name="City Trip Planner",
     instructions="Users will give you information such as a city and general idea of their ideal night. Interpret their input and create a itinerary to visit different locations across their chosen city based on their interests.",
-    model="gpt-4-1106-preview",
-    # model="gpt-3.5-turbo",
+    # model="gpt-4-1106-preview",
+    model="gpt-3.5-turbo",
     tools=[
         {
             "type": "function",
@@ -36,7 +36,7 @@ assistant = openai.beta.assistants.create(
                         },
                         "locationTypes": {
                             "type": "string",
-                            "description": "condense user requests into an ordered itinerary of each type, take liberties to add or adjust the list to create the perfect time out. Separate each stop with a , e.g. 'restaurant', 'amusement park', 'bar'",
+                            "description": "condense user requests into an ordered itinerary of each type, take liberties to add or adjust the list to make sure the list has at least 2 stops and create the perfect time out. Separate each stop with a , e.g. 'restaurant', 'amusement park', 'bar'",
                         },
                     },
                     "required": ["location", "locationTypes"],
@@ -132,17 +132,24 @@ class Conversation(APIView):
                 "X-Goog-FieldMask": "places.displayName,places.formattedAddress,places.websiteUri,places.types",
             }
 
-            searchResults = []
+            searchResults = {}
+            itinerary = []
 
+            i = 0
             for location_type in function_arguments["locationTypes"].split(","):
+                itinerary.append(location_type)
                 logger.info(location_type)
                 params = {
                     "textQuery": function_arguments["location"] + " " + location_type,
-                    "maxResultCount": "3",
+                    "maxResultCount": "5",
                 }
                 res = requests.post(url, json=params, headers=headers)
-                searchResults.append(res.json())
+                searchResults[i] = res.json()
+                i += 1
             logger.info(searchResults)
+            return Response(
+                {"searchResults": searchResults, "itinerary": itinerary}, status=200
+            )
 
             run = openai.beta.threads.runs.submit_tool_outputs(
                 thread_id=thread.id,

@@ -1,20 +1,20 @@
 import RefreshToken from "./refreshtoken";
 
-async function ConversationAPI(input: String): Promise<any> {
+async function ConversationAPI(input: String, thread: String): Promise<any> {
   return fetch("http://localhost:8000/api/conversation", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
       Authorization: `JWT ${localStorage.getItem("token")}`,
     },
-    body: JSON.stringify({ input, thread: "new" }),
+    body: JSON.stringify({ input, thread }),
   })
     .then((res) => res.json())
     .then((data) => {
       if (data.code === "token_not_valid") {
         RefreshToken().then(() => {
           if (localStorage.getItem("token")) {
-            return ConversationAPI(input);
+            return ConversationAPI(input, thread);
           }
         });
       }
