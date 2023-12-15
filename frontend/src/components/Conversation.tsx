@@ -37,6 +37,8 @@ const Conversation = () => {
   const [selections, setSelections] = useState<Place[]>([]);
   const [searchResults, setSearchResults] = useState<SearchResult | null>(null);
   const [locationBias, setLocationBias] = useState({});
+
+  // current result index is the index of the itinerary array that we are currently on
   const handlePick = () => {
     setCurrentResultIndex(currentResultIndex + 1);
     console.log(currentResultIndex);
