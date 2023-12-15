@@ -7,11 +7,17 @@ interface DisplayName {
   languageCode: string;
 }
 
+interface Location {
+  latitude: number;
+  longitude: number;
+}
+
 interface Place {
   types: string[];
   formattedAddress: string;
   websiteUri: string;
   displayName: DisplayName;
+  location: Location;
 }
 
 interface SearchResults {
@@ -30,6 +36,7 @@ const Conversation = () => {
   const [currentResultIndex, setCurrentResultIndex] = React.useState(-1);
   const [selections, setSelections] = useState<Place[]>([]);
   const [searchResults, setSearchResults] = useState<SearchResult | null>(null);
+  const [locationBias, setLocationBias] = useState({});
   const handlePick = () => {
     setCurrentResultIndex(currentResultIndex + 1);
     console.log(currentResultIndex);
@@ -55,8 +62,11 @@ const Conversation = () => {
     const place = searchResults?.searchResults?.places[event.target.id];
 
     if (place) {
-      console.log(place);
       setSelections([...selections, place]);
+      setLocationBias({
+        latitude: place.location.latitude,
+        longitude: place.location.longitude,
+      });
       handlePick();
     }
   };
@@ -65,7 +75,7 @@ const Conversation = () => {
     console.log(currentResultIndex);
     if (currentResultIndex < itinerary.length && currentResultIndex >= 0) {
       let query = location + " " + itinerary[currentResultIndex];
-      searchItinerary(query).then((response) => {
+      searchItinerary(query, locationBias).then((response) => {
         setSearchResults(response);
       });
     } else if (searchResults !== null) {
@@ -77,8 +87,8 @@ const Conversation = () => {
   }, [currentResultIndex]);
 
   useEffect(() => {
-    console.log(selections);
-  }, [selections]);
+    console.log(locationBias);
+  }, [locationBias]);
 
   return (
     <div className="conversationContainer">

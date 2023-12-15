@@ -39,18 +39,31 @@ class Search(APIView):
 
     def post(self, request):
         query = request.data["query"]
+        locationBias = request.data["locationBias"]
         logger.info(query)
+        logger.info(locationBias)
         url = "https://places.googleapis.com/v1/places:searchText"
 
         headers = {
             "Content-Type": "application/json",
             "X-Goog-Api-Key": google_api_key,
-            "X-Goog-FieldMask": "places.displayName,places.formattedAddress,places.websiteUri,places.types",
+            "X-Goog-FieldMask": "places.displayName,places.formattedAddress,places.websiteUri,places.types,places.location",
         }
         params = {
             "textQuery": query,
             "maxResultCount": "5",
         }
+        if locationBias != {}:
+            params = {
+                "textQuery": query,
+                "maxResultCount": "5",
+                "locationBias": {
+                    "circle": {
+                        "center": locationBias,
+                        "radius": 750,
+                    }
+                },
+            }
         res = requests.post(url, json=params, headers=headers)
         return Response({"searchResults": res.json()}, status=200)
 
