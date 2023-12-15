@@ -69,7 +69,9 @@ const Conversation = () => {
         setSearchResults(response);
       });
     } else if (searchResults !== null) {
-      console.log("finished");
+      ConversationAPI("", thread, selections).then((response) => {
+        console.log(response);
+      });
       setSearchResults(null);
     }
   }, [currentResultIndex]);
