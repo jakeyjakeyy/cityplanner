@@ -60,7 +60,7 @@ class Search(APIView):
                 "locationBias": {
                     "circle": {
                         "center": locationBias,
-                        "radius": 750,
+                        "radius": 1000,
                     }
                 },
             }

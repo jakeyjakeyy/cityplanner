@@ -37,11 +37,15 @@ const Conversation = () => {
   const [selections, setSelections] = useState<Place[]>([]);
   const [searchResults, setSearchResults] = useState<SearchResult | null>(null);
   const [locationBias, setLocationBias] = useState({});
+
+  // current result index is the index of the itinerary array that we are currently on
+  // Allows us to search for each item in the itinerary
   const handlePick = () => {
     setCurrentResultIndex(currentResultIndex + 1);
     console.log(currentResultIndex);
   };
 
+  // Communication with assistant API
   const handleSubmit = (event: any) => {
     event.preventDefault();
     ConversationAPI(input, thread).then((response) => {
@@ -55,6 +59,7 @@ const Conversation = () => {
     });
   };
 
+  // User selects preferred place from search results
   const handleSelection = (event: any) => {
     event.preventDefault();
     console.log(searchResults);
@@ -71,6 +76,7 @@ const Conversation = () => {
     }
   };
 
+  // Search for next item in itinerary in a radius of last selected place
   useEffect(() => {
     console.log(currentResultIndex);
     if (currentResultIndex < itinerary.length && currentResultIndex >= 0) {
@@ -86,6 +92,7 @@ const Conversation = () => {
     }
   }, [currentResultIndex]);
 
+  // debugging
   useEffect(() => {
     console.log(locationBias);
   }, [locationBias]);
@@ -93,6 +100,9 @@ const Conversation = () => {
   return (
     <div className="conversationContainer">
       <div className="searchResults">
+        <div className="itineraryItem">
+          <h2 className="placeName">{itinerary[currentResultIndex]}</h2>
+        </div>
         {searchResults?.searchResults?.places?.map((place: any) => (
           <div
             className="searchResultCard"
