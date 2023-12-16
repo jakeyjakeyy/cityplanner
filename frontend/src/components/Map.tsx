@@ -14,10 +14,7 @@ function Map({ tempMapItem, selections }: any) {
     }`;
     console.log(mapSrc);
   }
-  if (
-    Object.keys(selections).length === 1 &&
-    Object.keys(tempMapItem).length === 1
-  ) {
+  if (Object.keys(selections).length === 1) {
     mapSrc = `https://www.google.com/maps/embed/v1/directions?key=${
       process.env.REACT_APP_GOOGLE_MAPS_API_KEY
     }&origin=${encodeURIComponent(
