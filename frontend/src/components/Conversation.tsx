@@ -28,13 +28,12 @@ interface SearchResult {
   searchResults: SearchResults;
 }
 
-const Conversation = ({ setTempMapItem }: any) => {
+const Conversation = ({ setTempMapItem, selections, setSelections }: any) => {
   const [input, setInput] = useState("");
   const [thread, setThread] = useState("new");
   const [itinerary, setItinerary] = useState([]);
   const [location, setLocation] = useState("");
   const [currentResultIndex, setCurrentResultIndex] = React.useState(-1);
-  const [selections, setSelections] = useState<Place[]>([]);
   const [searchResults, setSearchResults] = useState<SearchResult | null>(null);
   const [locationBias, setLocationBias] = useState({});
 

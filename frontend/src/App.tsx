@@ -6,17 +6,22 @@ import Conversation from "./components/Conversation";
 
 function App() {
   const [tempMapItem, setTempMapItem] = useState({});
+  const [selections, setSelections] = useState([]);
 
   useEffect(() => {
-    console.log(tempMapItem);
-  }, [tempMapItem]);
+    console.log(selections);
+  }, [selections]);
 
   return (
     <div className="App">
       <Login />
       <header className="App-header">
-        <Conversation setTempMapItem={setTempMapItem} />
-        <Map tempMapItem={tempMapItem} />
+        <Conversation
+          setTempMapItem={setTempMapItem}
+          selections={selections}
+          setSelections={setSelections}
+        />
+        <Map tempMapItem={tempMapItem} selections={selections} />
       </header>
     </div>
   );
