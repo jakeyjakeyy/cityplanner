@@ -28,7 +28,7 @@ interface SearchResult {
   searchResults: SearchResults;
 }
 
-const Conversation = () => {
+const Conversation = ({ setTempMapItem }: any) => {
   const [input, setInput] = useState("");
   const [thread, setThread] = useState("new");
   const [itinerary, setItinerary] = useState([]);
@@ -92,6 +92,13 @@ const Conversation = () => {
     }
   }, [currentResultIndex]);
 
+  const handleMouseEnter = (event: any) => {
+    const place = searchResults?.searchResults?.places[event.target.id];
+    if (place) {
+      setTempMapItem(place);
+    }
+  };
+
   // debugging
   useEffect(() => {
     console.log(locationBias);
@@ -103,7 +110,7 @@ const Conversation = () => {
         <div className="itineraryItem">
           <h2 className="placeName">{itinerary[currentResultIndex]}</h2>
         </div>
-        {searchResults?.searchResults?.places?.map((place: any) => (
+        {searchResults?.searchResults.places.map((place: any) => (
           <div
             className="searchResultCard"
             key={place.displayName.text}
@@ -111,6 +118,8 @@ const Conversation = () => {
             id={searchResults?.searchResults?.places
               ?.indexOf(place)
               ?.toString()}
+            onMouseEnter={handleMouseEnter}
+            // onMouseLeave={() => setTempMapItem({})}
           >
             <h2 className="placeName">{place.displayName.text}</h2>
             <p className="placeAddress">{place.formattedAddress}</p>
