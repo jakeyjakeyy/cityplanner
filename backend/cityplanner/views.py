@@ -65,7 +65,20 @@ class Search(APIView):
                 },
             }
         res = requests.post(url, json=params, headers=headers)
-        return Response({"searchResults": res.json()}, status=200)
+
+        if not locationBias:
+            return Response({"searchResults": res.json()}, status=200)
+        data = res.json()
+        for place in data["places"]:
+            distance = requests.post(
+                f"https://maps.googleapis.com/maps/api/directions/json?origin={locationBias['latitude']},{locationBias['longitude']}&destination={place['location']['latitude']},{place['location']['longitude']}&key={google_api_key}"
+            )
+            logger.info(distance.json())
+            place["distance"] = distance.json()["routes"][0]["legs"][0]["duration"][
+                "text"
+            ]
+
+        return Response({"searchResults": data}, status=200)
 
 
 class Conversation(APIView):

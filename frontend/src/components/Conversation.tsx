@@ -120,6 +120,7 @@ const Conversation = ({ setTempMapItem, selections, setSelections }: any) => {
               // onMouseLeave={() => setTempMapItem({})}
             >
               <h2 className="placeName">{place.displayName.text}</h2>
+              <p className="placeDistance">{place.distance} drive</p>
               <p className="placeAddress">{place.formattedAddress}</p>
               <a href={place.websiteUri} className="placeWebsite">
                 Visit Website
