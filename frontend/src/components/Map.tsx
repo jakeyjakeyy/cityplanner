@@ -25,8 +25,7 @@ function Map({ tempMapItem, selections }: any) {
       tempMapItem.location.longitude
     }`;
   }
-
-  if (Object.keys(selections).length > 1) {
+  if (Object.keys(selections).length === 2) {
     mapSrc = `https://www.google.com/maps/embed/v1/directions?key=${
       process.env.REACT_APP_GOOGLE_MAPS_API_KEY
     }&origin=${encodeURIComponent(
@@ -36,6 +35,21 @@ function Map({ tempMapItem, selections }: any) {
     )}&destination=${selections[0].location.latitude},${
       selections[0].location.longitude
     }`;
+  }
+  if (Object.keys(selections).length > 2) {
+    mapSrc = `https://www.google.com/maps/embed/v1/directions?key=${
+      process.env.REACT_APP_GOOGLE_MAPS_API_KEY
+    }&origin=${encodeURIComponent(
+      selections[selections.length - 1].displayName.text
+    )}%20${encodeURIComponent(
+      selections[selections.length - 1].formattedAddress
+    )}&destination=${selections[0].location.latitude},${
+      selections[0].location.longitude
+    }&waypoints=`;
+    for (let i = 1; i < selections.length - 1; i++) {
+      mapSrc += `${selections[i].location.latitude},${selections[i].location.longitude}|`;
+    }
+    mapSrc = mapSrc.slice(0, -1);
   }
 
   return (
