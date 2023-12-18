@@ -26,15 +26,23 @@ function Map({ tempMapItem, selections }: any) {
     }`;
   }
   if (Object.keys(selections).length === 2) {
-    mapSrc = `https://www.google.com/maps/embed/v1/directions?key=${
-      process.env.REACT_APP_GOOGLE_MAPS_API_KEY
-    }&origin=${encodeURIComponent(
-      selections[selections.length - 1].displayName.text
-    )}%20${encodeURIComponent(
-      selections[selections.length - 1].formattedAddress
-    )}&destination=${selections[0].location.latitude},${
-      selections[0].location.longitude
-    }`;
+    if (Object.keys(tempMapItem).length > 0) {
+      mapSrc = `https://www.google.com/maps/embed/v1/directions?key=${
+        process.env.REACT_APP_GOOGLE_MAPS_API_KEY
+      }&origin=${encodeURIComponent(
+        selections[0].formattedAddress
+      )}&destination=${encodeURIComponent(
+        tempMapItem.displayName.text
+      )}&waypoints=${selections[1].location.latitude},${
+        selections[1].location.longitude
+      }`;
+    } else {
+      mapSrc = `https://www.google.com/maps/embed/v1/directions?key=${
+        process.env.REACT_APP_GOOGLE_MAPS_API_KEY
+      }&origin=${encodeURIComponent(
+        selections[0].formattedAddress
+      )}&destination=${selections[selections.length - 1].formattedAddress}`;
+    }
   }
   if (Object.keys(selections).length > 2) {
     mapSrc = `https://www.google.com/maps/embed/v1/directions?key=${

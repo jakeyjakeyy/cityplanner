@@ -2,7 +2,6 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from cityplanner import models
 from rest_framework_simplejwt.authentication import JWTAuthentication
-from rest_framework.renderers import JSONRenderer
 import openai
 import os
 from dotenv import load_dotenv
@@ -10,6 +9,7 @@ import logging
 import json
 import time
 import requests
+import re
 
 load_dotenv()
 google_api_key = os.getenv("GOOGLE_API_KEY")
@@ -66,17 +66,30 @@ class Search(APIView):
             }
         res = requests.post(url, json=params, headers=headers)
 
+        # If user is making their first selection we dont need a locationBias
         if not locationBias:
             return Response({"searchResults": res.json()}, status=200)
+        # Otherwise we use the previous location as a locationBias
         data = res.json()
         for place in data["places"]:
             distance = requests.post(
                 f"https://maps.googleapis.com/maps/api/directions/json?origin={locationBias['latitude']},{locationBias['longitude']}&destination={place['location']['latitude']},{place['location']['longitude']}&key={google_api_key}"
             )
             logger.info(distance.json())
-            place["distance"] = distance.json()["routes"][0]["legs"][0]["duration"][
-                "text"
-            ]
+            distance_text = distance.json()["routes"][0]["legs"][0]["duration"]["text"]
+            distance_value = re.sub(r"\D", "", distance_text)
+            logger.info(distance_value)
+            place["distance"] = distance_value + " minutes drive"
+            # show walking distance if less than 5 minutes drive
+            if int(distance_value) < 3:
+                distance = requests.post(
+                    f"https://maps.googleapis.com/maps/api/directions/json?origin={locationBias['latitude']},{locationBias['longitude']}&destination={place['location']['latitude']},{place['location']['longitude']}&mode=walking&key={google_api_key}"
+                )
+                distance_text = distance.json()["routes"][0]["legs"][0]["duration"][
+                    "text"
+                ]
+                distance_value = re.sub(r"\D", "", distance_text)
+                place["distance"] = distance_value + " minutes walk"
 
         return Response({"searchResults": data}, status=200)
 

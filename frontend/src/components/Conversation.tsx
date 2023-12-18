@@ -36,6 +36,7 @@ const Conversation = ({ setTempMapItem, selections, setSelections }: any) => {
   const [currentResultIndex, setCurrentResultIndex] = React.useState(-1);
   const [searchResults, setSearchResults] = useState<SearchResult | null>(null);
   const [locationBias, setLocationBias] = useState({});
+  const [message, setMessage] = useState("");
 
   // current result index is the index of the itinerary array that we are currently on
   // Allows us to search for each item in the itinerary
@@ -86,6 +87,9 @@ const Conversation = ({ setTempMapItem, selections, setSelections }: any) => {
     } else if (searchResults !== null) {
       ConversationAPI("", thread, selections).then((response) => {
         console.log(response);
+        if (response.message) {
+          setMessage(response.message[0][2][1][0][0][1][1][1]);
+        }
       });
       setSearchResults(null);
     }
@@ -120,7 +124,7 @@ const Conversation = ({ setTempMapItem, selections, setSelections }: any) => {
               // onMouseLeave={() => setTempMapItem({})}
             >
               <h2 className="placeName">{place.displayName.text}</h2>
-              <p className="placeDistance">{place.distance} drive</p>
+              <p className="placeDistance">{place.distance}</p>
               <p className="placeAddress">{place.formattedAddress}</p>
               <a href={place.websiteUri} className="placeWebsite">
                 Visit Website
@@ -142,6 +146,9 @@ const Conversation = ({ setTempMapItem, selections, setSelections }: any) => {
           </label>
           <input type="submit" value="Submit" />
         </form>
+      </div>
+      <div className="message">
+        <p>{message}</p>
       </div>
     </div>
   );
