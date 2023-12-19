@@ -108,32 +108,34 @@ const Conversation = ({ setTempMapItem, selections, setSelections }: any) => {
 
   return (
     <div className="conversationContainer">
-      <div className="searchResults">
+      <div className="searchResultsContainer">
         <div className="itineraryItem">
           <h2 className="placeName">{itinerary[currentResultIndex]}</h2>
         </div>
-        {searchResults?.searchResults.places.map(
-          (place: any, index: number) => (
-            <div
-              className="searchResultCard"
-              key={place.displayName.text}
-              onClick={handleSelection}
-              id={searchResults?.searchResults?.places
-                ?.indexOf(place)
-                ?.toString()}
-              onMouseEnter={() => handleMouseEnter(index)}
-              // onMouseLeave={() => setTempMapItem({})}
-            >
-              <h2 className="placeName">{place.displayName.text}</h2>
-              <p className="placeDistance">{place.distance}</p>
-              <p className="placeAddress">{place.formattedAddress}</p>
-              <a href={place.websiteUri} className="placeWebsite">
-                Visit Website
-              </a>
-              <p className="placeTypes">{place.types.join(", ")}</p>
-            </div>
-          )
-        )}
+        <div className="searchResults">
+          {searchResults?.searchResults.places.map(
+            (place: any, index: number) => (
+              <div
+                className="searchResultCard"
+                key={place.displayName.text}
+                onClick={handleSelection}
+                id={searchResults?.searchResults?.places
+                  ?.indexOf(place)
+                  ?.toString()}
+                onMouseEnter={() => handleMouseEnter(index)}
+                // onMouseLeave={() => setTempMapItem({})}
+              >
+                <div className="placeName">{place.displayName.text}</div>
+                <div className="placeDistance">{place.distance}</div>
+                <div className="placeAddress">{place.formattedAddress}</div>
+                <a href={place.websiteUri} className="placeWebsite">
+                  Visit Website
+                </a>
+                <div className="placeTypes">{place.types.join(", ")}</div>
+              </div>
+            )
+          )}
+        </div>
       </div>
       <div className="inputField">
         <form onSubmit={handleSubmit}>
