@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import ConversationAPI from "../utils/conversationApi";
 import searchItinerary from "../utils/searchItinerary";
+import "./Conversation.css";
 
 interface DisplayName {
   text: string;
@@ -139,6 +140,7 @@ const Conversation = ({ setTempMapItem, selections, setSelections }: any) => {
           <label>
             Input:
             <input
+              id="input"
               type="text"
               value={input}
               onChange={(event) => setInput(event.target.value)}

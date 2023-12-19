@@ -90,6 +90,10 @@ class Search(APIView):
                 ]
                 distance_value = re.sub(r"\D", "", distance_text)
                 place["distance"] = distance_value + " minutes walk"
+            with open("outputs.json", "a") as f:
+                json.dump(data, f)
+                f.write("\n")
+                json.dump(data, f)
 
         return Response({"searchResults": data}, status=200)
 

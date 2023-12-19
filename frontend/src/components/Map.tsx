@@ -60,6 +60,9 @@ function Map({ tempMapItem, selections }: any) {
     mapSrc = mapSrc.slice(0, -1);
   }
 
+  if (Object.keys(tempMapItem).length === 0) {
+    return <br></br>;
+  }
   return (
     <iframe
       key={mapSrc}
