@@ -29,10 +29,15 @@ interface SearchResult {
   searchResults: SearchResults;
 }
 
-const Conversation = ({ setTempMapItem, selections, setSelections }: any) => {
+const Conversation = ({
+  setTempMapItem,
+  selections,
+  setSelections,
+  itinerary,
+  setItinerary,
+}: any) => {
   const [input, setInput] = useState("");
   const [thread, setThread] = useState("new");
-  const [itinerary, setItinerary] = useState([]);
   const [location, setLocation] = useState("");
   const [currentResultIndex, setCurrentResultIndex] = React.useState(-1);
   const [searchResults, setSearchResults] = useState<SearchResult | null>(null);
@@ -97,7 +102,6 @@ const Conversation = ({ setTempMapItem, selections, setSelections }: any) => {
   }, [currentResultIndex]);
 
   const handleMouseEnter = (index: number) => {
-    console.log("hovering");
     setTempMapItem(searchResults?.searchResults?.places[index]);
   };
 

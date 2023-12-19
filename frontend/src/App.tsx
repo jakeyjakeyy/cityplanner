@@ -7,6 +7,7 @@ import Conversation from "./components/Conversation";
 function App() {
   const [tempMapItem, setTempMapItem] = useState({});
   const [selections, setSelections] = useState([]);
+  const [itinerary, setItinerary] = useState([]);
 
   useEffect(() => {
     console.log(selections);
@@ -20,8 +21,14 @@ function App() {
           setTempMapItem={setTempMapItem}
           selections={selections}
           setSelections={setSelections}
+          itinerary={itinerary}
+          setItinerary={setItinerary}
         />
-        <Map tempMapItem={tempMapItem} selections={selections} />
+        <Map
+          tempMapItem={tempMapItem}
+          selections={selections}
+          itinerary={itinerary}
+        />
       </header>
     </div>
   );
