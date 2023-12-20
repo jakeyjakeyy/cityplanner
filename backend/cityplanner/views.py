@@ -40,6 +40,7 @@ class Search(APIView):
     def post(self, request):
         query = request.data["query"]
         locationBias = request.data["locationBias"]
+        priceLevels = request.data["priceLevels"]
         logger.info(query)
         logger.info(locationBias)
         url = "https://places.googleapis.com/v1/places:searchText"
@@ -64,8 +65,11 @@ class Search(APIView):
                     }
                 },
             }
-        res = requests.post(url, json=params, headers=headers)
+        if priceLevels != "":
+            logger.info(priceLevels)
+            params["priceLevels"] = priceLevels
 
+        res = requests.post(url, json=params, headers=headers)
         # If user is making their first selection we dont need a locationBias
         if not locationBias:
             return Response({"searchResults": res.json()}, status=200)

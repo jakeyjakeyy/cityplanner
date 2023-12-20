@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import ReactMarkdown from "react-markdown";
 import ConversationAPI from "../utils/conversationApi";
 import searchItinerary from "../utils/searchItinerary";
+import PriceLevelSelector from "./PriceLevelSelector";
 import "./Conversation.css";
 
 interface DisplayName {
@@ -44,6 +45,7 @@ const Conversation = ({
   const [searchResults, setSearchResults] = useState<SearchResult | null>(null);
   const [locationBias, setLocationBias] = useState({});
   const [message, setMessage] = useState("");
+  const [priceLevels, setPriceLevels] = useState([]);
 
   // current result index is the index of the itinerary array that we are currently on
   // Allows us to search for each item in the itinerary
@@ -88,7 +90,7 @@ const Conversation = ({
     console.log(currentResultIndex);
     if (currentResultIndex < itinerary.length && currentResultIndex >= 0) {
       let query = location + " " + itinerary[currentResultIndex];
-      searchItinerary(query, locationBias).then((response) => {
+      searchItinerary(query, priceLevels, locationBias).then((response) => {
         setSearchResults(response);
       });
     } else if (searchResults !== null) {
@@ -155,6 +157,7 @@ const Conversation = ({
           </label>
           <input type="submit" value="Submit" />
         </form>
+        <PriceLevelSelector setPriceLevels={setPriceLevels} />
       </div>
       <div className="message">
         <ReactMarkdown>{message}</ReactMarkdown>
