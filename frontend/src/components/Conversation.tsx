@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import ReactMarkdown from "react-markdown";
 import ConversationAPI from "../utils/conversationApi";
 import searchItinerary from "../utils/searchItinerary";
 import "./Conversation.css";
@@ -156,7 +157,7 @@ const Conversation = ({
         </form>
       </div>
       <div className="message">
-        <p>{message}</p>
+        <ReactMarkdown>{message}</ReactMarkdown>
       </div>
     </div>
   );
