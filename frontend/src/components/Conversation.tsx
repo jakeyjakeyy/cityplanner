@@ -90,9 +90,12 @@ const Conversation = ({
     console.log(currentResultIndex);
     if (currentResultIndex < itinerary.length && currentResultIndex >= 0) {
       let query = location + " " + itinerary[currentResultIndex];
-      searchItinerary(query, priceLevels, locationBias).then((response) => {
-        setSearchResults(response);
-      });
+      searchItinerary(query, priceLevels, location, locationBias).then(
+        (response) => {
+          console.log(response);
+          setSearchResults(response);
+        }
+      );
     } else if (searchResults !== null) {
       ConversationAPI("", thread, selections).then((response) => {
         console.log(response);
@@ -120,7 +123,7 @@ const Conversation = ({
           <h2 className="placeName">{itinerary[currentResultIndex]}</h2>
         </div>
         <div className="searchResults">
-          {searchResults?.searchResults.places.map(
+          {searchResults?.searchResults?.places.map(
             (place: any, index: number) => (
               <div
                 className="searchResultCard"
@@ -157,7 +160,7 @@ const Conversation = ({
           </label>
           <input type="submit" value="Submit" />
         </form>
-        <PriceLevelSelector setPriceLevels={setPriceLevels} />
+        {/* <PriceLevelSelector setPriceLevels={setPriceLevels} /> */}
       </div>
       <div className="message">
         <ReactMarkdown>{message}</ReactMarkdown>

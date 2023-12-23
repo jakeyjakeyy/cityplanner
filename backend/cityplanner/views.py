@@ -16,6 +16,7 @@ google_api_key = os.getenv("GOOGLE_API_KEY")
 openai.api_key = os.getenv("OPENAI_API_KEY")
 assistant_id = os.getenv("ASSISTANT_3.5")
 assistant = openai.beta.assistants.retrieve(assistant_id)
+seatgeek_client_id = os.getenv("SEATGEEK_CLIENT_ID")
 
 logger = logging.getLogger(__name__)
 
@@ -40,6 +41,7 @@ class Search(APIView):
     def post(self, request):
         query = request.data["query"]
         locationBias = request.data["locationBias"]
+        location = request.data["location"]
         priceLevels = request.data["priceLevels"]
         logger.info(query)
         logger.info(locationBias)
@@ -65,22 +67,41 @@ class Search(APIView):
                     }
                 },
             }
-        if priceLevels != "":
+        if priceLevels != []:
             logger.info(f"SERVER: Price Levels is: {priceLevels}")
             params["priceLevels"] = priceLevels
 
         res = requests.post(url, json=params, headers=headers)
+        data = res.json()
+        logger.debug(data)
+        event_venue = False
+        for place in data["places"]:
+            if "event_venue" in place["types"]:
+                logger.info("SERVER: Event Venue detected")
+                event_venue = True
+                break
+        if event_venue:
+            url = "https://api.seatgeek.com/2/events"
+            params = {
+                "client_id": seatgeek_client_id,
+                "q": location,
+                "per_page": 5,
+            }
+            logger.info(params)
+            res = requests.get(url, params=params)
+            data = res.json()
+            logger.debug(data)
+            return Response({"events": data}, status=200)
+
         # If user is making their first selection we dont need a locationBias
         if not locationBias:
-            return Response({"searchResults": res.json()}, status=200)
+            return Response({"searchResults": data}, status=200)
         # Otherwise we use the previous location as a locationBias
-        data = res.json()
         for place in data["places"]:
             distance = requests.post(
                 f"https://maps.googleapis.com/maps/api/directions/json?origin={locationBias['latitude']},{locationBias['longitude']}&destination={place['location']['latitude']},{place['location']['longitude']}&key={google_api_key}"
             )
             distance_text = distance.json()["routes"][0]["legs"][0]["duration"]["text"]
-            distance_value = re.sub(r"\D", "", distance_text)
             place["distance"] = distance_value + " minutes drive"
             # show walking distance if less than 5 minutes drive
             if int(distance_value) < 3:
