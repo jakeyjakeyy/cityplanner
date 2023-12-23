@@ -66,7 +66,7 @@ class Search(APIView):
                 },
             }
         if priceLevels != "":
-            logger.info(priceLevels)
+            logger.info(f"SERVER: Price Levels is: {priceLevels}")
             params["priceLevels"] = priceLevels
 
         res = requests.post(url, json=params, headers=headers)
@@ -79,10 +79,8 @@ class Search(APIView):
             distance = requests.post(
                 f"https://maps.googleapis.com/maps/api/directions/json?origin={locationBias['latitude']},{locationBias['longitude']}&destination={place['location']['latitude']},{place['location']['longitude']}&key={google_api_key}"
             )
-            logger.info(distance.json())
             distance_text = distance.json()["routes"][0]["legs"][0]["duration"]["text"]
             distance_value = re.sub(r"\D", "", distance_text)
-            logger.info(distance_value)
             place["distance"] = distance_value + " minutes drive"
             # show walking distance if less than 5 minutes drive
             if int(distance_value) < 3:

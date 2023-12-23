@@ -8,7 +8,7 @@ async function searchItinerary(
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({ query, locationBias, priceLevels }),
+    body: JSON.stringify({ query, priceLevels, locationBias }),
   })
     .then((res) => res.json())
     .then((data) => {
