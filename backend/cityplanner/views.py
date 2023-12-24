@@ -90,8 +90,8 @@ class Search(APIView):
             logger.info(params)
             res = requests.get(url, params=params)
             data = res.json()
-            logger.debug(data)
-            return Response({"events": data}, status=200)
+            logger.info(data)
+            return Response({"events": data["events"]}, status=200)
 
         # If user is making their first selection we dont need a locationBias
         if not locationBias:

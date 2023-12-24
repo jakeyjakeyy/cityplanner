@@ -29,6 +29,7 @@ interface SearchResults {
 
 interface SearchResult {
   searchResults: SearchResults;
+  events: any[];
 }
 
 const Conversation = ({
@@ -123,28 +124,43 @@ const Conversation = ({
           <h2 className="placeName">{itinerary[currentResultIndex]}</h2>
         </div>
         <div className="searchResults">
-          {searchResults?.searchResults?.places.map(
-            (place: any, index: number) => (
-              <div
-                className="searchResultCard"
-                key={place.displayName.text}
-                onClick={handleSelection}
-                id={searchResults?.searchResults?.places
-                  ?.indexOf(place)
-                  ?.toString()}
-                onMouseEnter={() => handleMouseEnter(index)}
-                // onMouseLeave={() => setTempMapItem({})}
-              >
-                <div className="placeName">{place.displayName.text}</div>
-                <div className="placeDistance">{place.distance}</div>
-                <div className="placeAddress">{place.formattedAddress}</div>
-                <a href={place.websiteUri} className="placeWebsite">
-                  Visit Website
-                </a>
-                <div className="placeTypes">{place.types.join(", ")}</div>
-              </div>
-            )
-          )}
+          {searchResults?.searchResults
+            ? searchResults.searchResults.places.map(
+                (place: any, index: number) => (
+                  <div
+                    className="searchResultCard"
+                    key={place.displayName.text}
+                    onClick={handleSelection}
+                    id={searchResults?.searchResults?.places
+                      ?.indexOf(place)
+                      ?.toString()}
+                    onMouseEnter={() => handleMouseEnter(index)}
+                    // onMouseLeave={() => setTempMapItem({})}
+                  >
+                    <div className="placeName">{place.displayName.text}</div>
+                    <div className="placeDistance">{place.distance}</div>
+                    <div className="placeAddress">{place.formattedAddress}</div>
+                    <a href={place.websiteUri} className="placeWebsite">
+                      Visit Website
+                    </a>
+                    <div className="placeTypes">{place.types.join(", ")}</div>
+                  </div>
+                )
+              )
+            : searchResults?.events.map((event: any, index: number) => (
+                <div className="eventResultCard">
+                  <div className="eventName">{event.short_title}</div>
+                  <div className="eventVenueName">{event.venue.name_v2}</div>
+                  <div className="eventVenueAddress">
+                    {event.venue.address}, {event.venue.extended_address}
+                  </div>
+                  <div className="eventPrices">
+                    Low as ${event.stats.lowest_price}
+                    <br />
+                    Average price: ${event.stats.average_price}
+                  </div>
+                </div>
+              ))}
         </div>
       </div>
       <div className="inputField">
