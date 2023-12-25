@@ -3,15 +3,27 @@ import React from "react";
 const defaultMapSrc = `https://www.google.com/maps/embed/v1/view?key=${process.env.REACT_APP_GOOGLE_MAPS_API_KEY}&center=45.515194,-122.678379&zoom=13`;
 let mapSrc = defaultMapSrc;
 function Map({ tempMapItem, selections, itinerary }: any) {
+  // If item is a ticketmaster event, we 'convert' it to the same format as google places
+  if (tempMapItem.short_title) {
+    console.log("tempMapItem", tempMapItem);
+    tempMapItem.displayName = {
+      text: tempMapItem.short_title,
+    };
+    tempMapItem.location = {
+      latitude: tempMapItem.venue.location.lat,
+      longitude: tempMapItem.venue.location.lon,
+    };
+    tempMapItem.formattedAddress =
+      tempMapItem.venue.address + ", " + tempMapItem.venue.extended_address;
+    console.log("tempMapItem Updated", tempMapItem);
+  }
   if (
     Object.keys(tempMapItem).length > 0 &&
     Object.keys(selections).length === 0
   ) {
     mapSrc = `https://www.google.com/maps/embed/v1/place?key=${
       process.env.REACT_APP_GOOGLE_MAPS_API_KEY
-    }&q=${encodeURIComponent(tempMapItem.displayName.text)} ${
-      tempMapItem.formattedAddress
-    }`;
+    }&q=${encodeURIComponent(tempMapItem.formattedAddress)}`;
     console.log(mapSrc);
   }
   if (Object.keys(selections).length === 1) {

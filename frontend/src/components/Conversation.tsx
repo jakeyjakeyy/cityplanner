@@ -154,6 +154,7 @@ const Conversation = ({
                       ?.indexOf(place)
                       ?.toString()}
                     onMouseEnter={() => handleMouseEnter(index)}
+
                     // onMouseLeave={() => setTempMapItem({})}
                   >
                     <div className="placeName">{place.displayName.text}</div>
@@ -169,15 +170,29 @@ const Conversation = ({
             : searchResults?.events.map((event: any, index: number) => (
                 <div
                   className="eventResultCard"
-                  onClick={handleSelectionEvent}
                   id={index.toString()}
+                  onClick={handleSelectionEvent}
+                  onMouseEnter={() => handleMouseEnter(index)}
                 >
-                  <div className="eventName">{event.short_title}</div>
-                  <div className="eventVenueName">{event.venue.name_v2}</div>
-                  <div className="eventVenueAddress">
+                  <div className="eventName" style={{ pointerEvents: "none" }}>
+                    {event.short_title}
+                  </div>
+                  <div
+                    className="eventVenueName"
+                    style={{ pointerEvents: "none" }}
+                  >
+                    {event.venue.name_v2}
+                  </div>
+                  <div
+                    className="eventVenueAddress"
+                    style={{ pointerEvents: "none" }}
+                  >
                     {event.venue.address}, {event.venue.extended_address}
                   </div>
-                  <div className="eventPrices">
+                  <div
+                    className="eventPrices"
+                    style={{ pointerEvents: "none" }}
+                  >
                     Low as ${event.stats.lowest_price}
                     <br />
                     Average price: ${event.stats.average_price}
