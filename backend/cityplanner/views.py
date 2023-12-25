@@ -74,23 +74,22 @@ class Search(APIView):
         res = requests.post(url, json=params, headers=headers)
         data = res.json()
         logger.debug(data)
-        event_venue = False
+        event_venue = 0
         for place in data["places"]:
             if "event_venue" in place["types"]:
-                logger.info("SERVER: Event Venue detected")
-                event_venue = True
-                break
-        if event_venue:
+                logger.debug("SERVER: Event Venue detected")
+                event_venue += 1
+        if event_venue == 5:
             url = "https://api.seatgeek.com/2/events"
             params = {
                 "client_id": seatgeek_client_id,
                 "q": location,
                 "per_page": 5,
             }
-            logger.info(params)
+            logger.debug(params)
             res = requests.get(url, params=params)
             data = res.json()
-            logger.info(data)
+            logger.debug(data)
             return Response({"events": data["events"]}, status=200)
 
         # If user is making their first selection we dont need a locationBias
@@ -102,6 +101,7 @@ class Search(APIView):
                 f"https://maps.googleapis.com/maps/api/directions/json?origin={locationBias['latitude']},{locationBias['longitude']}&destination={place['location']['latitude']},{place['location']['longitude']}&key={google_api_key}"
             )
             distance_text = distance.json()["routes"][0]["legs"][0]["duration"]["text"]
+            distance_value = re.sub(r"\D", "", distance_text)
             place["distance"] = distance_value + " minutes drive"
             # show walking distance if less than 5 minutes drive
             if int(distance_value) < 3:
@@ -111,7 +111,6 @@ class Search(APIView):
                 distance_text = distance.json()["routes"][0]["legs"][0]["duration"][
                     "text"
                 ]
-                distance_value = re.sub(r"\D", "", distance_text)
                 place["distance"] = distance_value + " minutes walk"
             with open("outputs.json", "a") as f:
                 json.dump(data, f)

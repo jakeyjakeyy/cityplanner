@@ -85,6 +85,21 @@ const Conversation = ({
       handlePick();
     }
   };
+  const handleSelectionEvent = (event: any) => {
+    event.preventDefault();
+    console.log(searchResults);
+    console.log(searchResults?.events[event.target.id]);
+    const eventResult = searchResults?.events[event.target.id];
+
+    if (eventResult) {
+      setSelections([...selections, eventResult]);
+      setLocationBias({
+        latitude: eventResult.venue.location.lat,
+        longitude: eventResult.venue.location.lon,
+      });
+      handlePick();
+    }
+  };
 
   // Search for next item in itinerary in a radius of last selected place
   useEffect(() => {
@@ -152,7 +167,11 @@ const Conversation = ({
                 )
               )
             : searchResults?.events.map((event: any, index: number) => (
-                <div className="eventResultCard">
+                <div
+                  className="eventResultCard"
+                  onClick={handleSelectionEvent}
+                  id={index.toString()}
+                >
                   <div className="eventName">{event.short_title}</div>
                   <div className="eventVenueName">{event.venue.name_v2}</div>
                   <div className="eventVenueAddress">
