@@ -109,13 +109,17 @@ const Conversation = ({
   }, [currentResultIndex]);
 
   const handleMouseEnter = (index: number) => {
-    setTempMapItem(searchResults?.searchResults?.places[index]);
+    setTempMapItem(
+      searchResults?.searchResults
+        ? searchResults.searchResults.places[index]
+        : searchResults?.events[index]
+    );
   };
 
   // debugging
   useEffect(() => {
-    console.log(locationBias);
-  }, [locationBias]);
+    console.log(setTempMapItem);
+  }, [setTempMapItem]);
 
   return (
     <div className="conversationContainer">
