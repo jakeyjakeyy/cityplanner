@@ -30,8 +30,6 @@ function Map({ tempMapItem, selections, itinerary }: any) {
     mapSrc = `https://www.google.com/maps/embed/v1/directions?key=${
       process.env.REACT_APP_GOOGLE_MAPS_API_KEY
     }&origin=${encodeURIComponent(
-      selections[selections.length - 1].displayName.text
-    )}%20${encodeURIComponent(
       selections[selections.length - 1].formattedAddress
     )}&destination=${tempMapItem.location.latitude},${
       tempMapItem.location.longitude
@@ -44,7 +42,7 @@ function Map({ tempMapItem, selections, itinerary }: any) {
       }&origin=${encodeURIComponent(
         selections[0].formattedAddress
       )}&destination=${encodeURIComponent(
-        tempMapItem.displayName.text
+        tempMapItem.formattedAddress
       )}&waypoints=${selections[1].location.latitude},${
         selections[1].location.longitude
       }`;
