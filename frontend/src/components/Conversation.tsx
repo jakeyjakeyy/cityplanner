@@ -158,6 +158,7 @@ const Conversation = ({
                     // onMouseLeave={() => setTempMapItem({})}
                   >
                     <div className="placeName">{place.displayName.text}</div>
+                    <div className="placeRating">{place.rating}</div>
                     <div className="placeDistance">{place.distance}</div>
                     <div className="placeAddress">{place.formattedAddress}</div>
                     <a href={place.websiteUri} className="placeWebsite">

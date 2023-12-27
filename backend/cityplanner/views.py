@@ -50,7 +50,7 @@ class Search(APIView):
         headers = {
             "Content-Type": "application/json",
             "X-Goog-Api-Key": google_api_key,
-            "X-Goog-FieldMask": "places.displayName,places.formattedAddress,places.websiteUri,places.types,places.location",
+            "X-Goog-FieldMask": "places.displayName,places.formattedAddress,places.websiteUri,places.types,places.location,places.rating",
         }
         params = {
             "textQuery": query,
@@ -67,14 +67,15 @@ class Search(APIView):
                     }
                 },
             }
-        if priceLevels != []:
-            logger.info(f"SERVER: Price Levels is: {priceLevels}")
-            params["priceLevels"] = priceLevels
+        # if priceLevels != []:
+        #     logger.info(f"SERVER: Price Levels is: {priceLevels}")
+        #     params["priceLevels"] = priceLevels
 
         res = requests.post(url, json=params, headers=headers)
         data = res.json()
         logger.debug(data)
         event_venue = 0
+        # if all 5 results are event venues, we search the seatgeek api for local events
         for place in data["places"]:
             if "event_venue" in place["types"]:
                 logger.debug("SERVER: Event Venue detected")
@@ -112,10 +113,6 @@ class Search(APIView):
                     "text"
                 ]
                 place["distance"] = distance_value + " minutes walk"
-            with open("outputs.json", "a") as f:
-                json.dump(data, f)
-                f.write("\n")
-                json.dump(data, f)
 
         return Response({"searchResults": data}, status=200)
 
