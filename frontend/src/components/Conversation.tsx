@@ -138,6 +138,25 @@ const Conversation = ({
 
   return (
     <div className="conversationContainer">
+      <div className="titleContainer">
+        <h1>City Trip Planner</h1>
+        <p>"Fun night with friends in Portland"</p>
+      </div>
+      <div className="inputField">
+        <form onSubmit={handleSubmit}>
+          <input
+            id="input"
+            type="text"
+            value={input}
+            onChange={(event) => setInput(event.target.value)}
+          />
+          <input type="submit" value="Submit" />
+        </form>
+        {/* <PriceLevelSelector setPriceLevels={setPriceLevels} /> */}
+      </div>
+      <div className="message">
+        <ReactMarkdown>{message}</ReactMarkdown>
+      </div>
       <div className="searchResultsContainer">
         <div className="itineraryItem">
           <h2 className="placeName">{itinerary[currentResultIndex]}</h2>
@@ -201,24 +220,6 @@ const Conversation = ({
                 </div>
               ))}
         </div>
-      </div>
-      <div className="inputField">
-        <form onSubmit={handleSubmit}>
-          <label>
-            Input:
-            <input
-              id="input"
-              type="text"
-              value={input}
-              onChange={(event) => setInput(event.target.value)}
-            />
-          </label>
-          <input type="submit" value="Submit" />
-        </form>
-        {/* <PriceLevelSelector setPriceLevels={setPriceLevels} /> */}
-      </div>
-      <div className="message">
-        <ReactMarkdown>{message}</ReactMarkdown>
       </div>
     </div>
   );
