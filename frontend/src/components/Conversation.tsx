@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import ReactMarkdown from "react-markdown";
 import ConversationAPI from "../utils/conversationApi";
 import searchItinerary from "../utils/searchItinerary";
-import PriceLevelSelector from "./PriceLevelSelector";
+import SearchResultCard from "./SearchResultCard";
 import "./Conversation.css";
 
 interface DisplayName {
@@ -152,7 +152,6 @@ const Conversation = ({
           />
           <input type="submit" value="Submit" />
         </form>
-        {/* <PriceLevelSelector setPriceLevels={setPriceLevels} /> */}
       </div>
       <div className="message">
         <ReactMarkdown>{message}</ReactMarkdown>
@@ -166,7 +165,7 @@ const Conversation = ({
             ? searchResults.searchResults.places.map(
                 (place: any, index: number) => (
                   <div
-                    className="searchResultCard"
+                    className="searchResultCardContainer"
                     key={place.displayName.text}
                     onClick={handleSelection}
                     id={searchResults?.searchResults?.places
@@ -176,14 +175,7 @@ const Conversation = ({
 
                     // onMouseLeave={() => setTempMapItem({})}
                   >
-                    <div className="placeName">{place.displayName.text}</div>
-                    <div className="placeRating">{place.rating}</div>
-                    <div className="placeDistance">{place.distance}</div>
-                    <div className="placeAddress">{place.formattedAddress}</div>
-                    <a href={place.websiteUri} className="placeWebsite">
-                      Visit Website
-                    </a>
-                    <div className="placeTypes">{place.types.join(", ")}</div>
+                    <SearchResultCard item={place} type="place" />
                   </div>
                 )
               )
@@ -194,29 +186,7 @@ const Conversation = ({
                   onClick={handleSelectionEvent}
                   onMouseEnter={() => handleMouseEnter(index)}
                 >
-                  <div className="eventName" style={{ pointerEvents: "none" }}>
-                    {event.short_title}
-                  </div>
-                  <div
-                    className="eventVenueName"
-                    style={{ pointerEvents: "none" }}
-                  >
-                    {event.venue.name_v2}
-                  </div>
-                  <div
-                    className="eventVenueAddress"
-                    style={{ pointerEvents: "none" }}
-                  >
-                    {event.venue.address}, {event.venue.extended_address}
-                  </div>
-                  <div
-                    className="eventPrices"
-                    style={{ pointerEvents: "none" }}
-                  >
-                    Low as ${event.stats.lowest_price}
-                    <br />
-                    Average price: ${event.stats.average_price}
-                  </div>
+                  <SearchResultCard item={event} type="event" />
                 </div>
               ))}
         </div>
