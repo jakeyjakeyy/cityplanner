@@ -6,6 +6,23 @@
   padding: 0 2rem;
 }
 
+.inputField {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+
+.submit {
+  background-color: #525353;
+  width: fit-content;
+  margin: auto;
+  cursor: pointer;
+  border-radius: 14px;
+  padding: 0.25rem 0.5rem;
+}
+
 #input {
   width: 100%;
   height: 100%;
@@ -54,4 +71,8 @@
   font-size: 1.2rem;
   line-height: 1rem;
   width: 50%;
+}
+
+.placeName {
+  margin: 0;
 }

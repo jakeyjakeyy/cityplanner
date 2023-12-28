@@ -138,10 +138,14 @@ const Conversation = ({
 
   return (
     <div className="conversationContainer">
-      <div className="titleContainer">
-        <h1>City Trip Planner</h1>
-        <p>"Fun night with friends in Portland"</p>
-      </div>
+      {searchResults == null ? (
+        <div className="titleContainer">
+          <h1>City Trip Planner</h1>
+          <p>"Fun night with friends in Portland"</p>
+        </div>
+      ) : (
+        <p></p>
+      )}
       <div className="inputField">
         <form onSubmit={handleSubmit}>
           <input
@@ -150,16 +154,16 @@ const Conversation = ({
             value={input}
             onChange={(event) => setInput(event.target.value)}
           />
-          <input type="submit" value="Submit" />
+          <div className="submit" onClick={handleSubmit}>
+            Submit
+          </div>
         </form>
       </div>
       <div className="message">
         <ReactMarkdown>{message}</ReactMarkdown>
       </div>
       <div className="searchResultsContainer">
-        <div className="itineraryItem">
-          <h2 className="placeName">{itinerary[currentResultIndex]}</h2>
-        </div>
+        <p className="placeName">{itinerary[currentResultIndex]}</p>
         <div className="searchResults">
           {searchResults?.searchResults
             ? searchResults.searchResults.places.map(

@@ -5,7 +5,7 @@
   justify-content: space-evenly;
   margin-left: 1rem;
   border: 1px solid #7cdfce;
-  height: 400px;
+  height: 350px;
   width: 90%;
   transition: all 0.2s ease-in-out;
   &:hover {
