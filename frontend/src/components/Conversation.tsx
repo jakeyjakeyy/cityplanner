@@ -103,7 +103,6 @@ const Conversation = ({
 
   // Search for next item in itinerary in a radius of last selected place
   useEffect(() => {
-    console.log(currentResultIndex);
     if (currentResultIndex < itinerary.length && currentResultIndex >= 0) {
       let query = location + " " + itinerary[currentResultIndex];
       searchItinerary(query, priceLevels, location, locationBias).then(
@@ -130,11 +129,6 @@ const Conversation = ({
         : searchResults?.events[index]
     );
   };
-
-  // debugging
-  useEffect(() => {
-    console.log(setTempMapItem);
-  }, [setTempMapItem]);
 
   return (
     <div className="conversationContainer">

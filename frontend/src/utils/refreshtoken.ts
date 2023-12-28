@@ -16,6 +16,7 @@ function RefreshToken() {
       }
       if (data.access) {
         localStorage.setItem("token", data.access);
+        return { message: "Token refreshed" };
       } else {
         return { message: "Please log in again" };
       }
