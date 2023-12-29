@@ -9,7 +9,7 @@ const NavDropdown = ({ showLoginForm, setShowLoginForm }: any) => {
       return;
     }
     RefreshToken().then((response) => {
-      if (response && response.message === "Token refreshed") {
+      if (response && response.message === "Expired token") {
         localStorage.removeItem("token");
         localStorage.removeItem("refresh");
       }
@@ -20,6 +20,11 @@ const NavDropdown = ({ showLoginForm, setShowLoginForm }: any) => {
     setShowLoginForm(!showLoginForm);
   };
 
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("refresh");
+  };
+
   useEffect(() => {
     checkToken();
   }, []);
@@ -27,7 +32,9 @@ const NavDropdown = ({ showLoginForm, setShowLoginForm }: any) => {
   return (
     <div className="navDropdownContainer">
       {localStorage.getItem("token") ? (
-        <div className="navDropdownItem">Logout</div>
+        <div className="navDropdownItem" onClick={handleLogout}>
+          Logout
+        </div>
       ) : (
         <div className="navDropdownItem" onClick={handleShowLoginForm}>
           Login
