@@ -30,7 +30,7 @@ class Register(APIView):
             )
             user.save()
             return Response({"message": "User created"}, status=200)
-        except:
+        except Exception as e:
             return Response({"message": "User creation failed"}, status=400)
 
 

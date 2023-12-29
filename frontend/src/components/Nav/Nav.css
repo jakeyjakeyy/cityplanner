@@ -6,3 +6,7 @@
   align-items: end;
   flex-direction: row;
 }
+
+.userIcon {
+  cursor: pointer;
+}

@@ -3,7 +3,12 @@ import "./NavDropdown.css";
 import RefreshToken from "../../utils/refreshtoken";
 import { useState, useEffect } from "react";
 
-const NavDropdown = ({ showLoginForm, setShowLoginForm }: any) => {
+const NavDropdown = ({
+  showLoginForm,
+  setShowLoginForm,
+  toggleNav,
+  setRegister,
+}: any) => {
   const checkToken = () => {
     if (!localStorage.getItem("token")) {
       return;
@@ -19,10 +24,15 @@ const NavDropdown = ({ showLoginForm, setShowLoginForm }: any) => {
   const handleShowLoginForm = () => {
     setShowLoginForm(!showLoginForm);
   };
+  const handleShowRegisterForm = () => {
+    setShowLoginForm(!showLoginForm);
+    setRegister(true);
+  };
 
   const handleLogout = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("refresh");
+    toggleNav();
   };
 
   useEffect(() => {
@@ -36,8 +46,13 @@ const NavDropdown = ({ showLoginForm, setShowLoginForm }: any) => {
           Logout
         </div>
       ) : (
-        <div className="navDropdownItem" onClick={handleShowLoginForm}>
-          Login
+        <div className="navDropdownItemContainer">
+          <div className="navDropdownItem" onClick={handleShowLoginForm}>
+            Login
+          </div>
+          <div className="navDropdownItem" onClick={handleShowRegisterForm}>
+            Register
+          </div>
         </div>
       )}
     </div>

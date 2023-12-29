@@ -8,12 +8,11 @@ import LoginForm from "./LoginForm";
 const Login = () => {
   const [showDropdown, setShowDropdown] = useState(false);
   const [showLoginForm, setShowLoginForm] = useState(false);
+  const [register, setRegister] = useState(false);
 
   const toggleNav = () => {
     setShowDropdown(!showDropdown);
   };
-
-  useEffect(() => {}, [showLoginForm]);
 
   return (
     <div className="loginContainer">
@@ -21,31 +20,21 @@ const Login = () => {
         <NavDropdown
           showLoginForm={showLoginForm}
           setShowLoginForm={setShowLoginForm}
+          toggleNav={toggleNav}
+          setRegister={setRegister}
         />
       ) : null}
       <div className="userIcon" onClick={toggleNav}>
         <FaUser size={20} />
       </div>
-      {/* <form onSubmit={handleSubmit}>
-        <label>
-          Username:
-          <input
-            type="text"
-            value={username}
-            onChange={(event) => setUsername(event.target.value)}
-          />
-        </label>
-        <label>
-          Password:
-          <input
-            type="password"
-            value={password}
-            onChange={(event) => setPassword(event.target.value)}
-          />
-        </label>
-        <input type="submit" value="Submit" />
-      </form> */}
-      {showLoginForm ? <LoginForm setShowLoginForm={setShowLoginForm} /> : null}
+      {showLoginForm ? (
+        <LoginForm
+          setShowLoginForm={setShowLoginForm}
+          toggleNav={toggleNav}
+          register={register}
+          setRegister={setRegister}
+        />
+      ) : null}
     </div>
   );
 };
