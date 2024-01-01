@@ -2,10 +2,18 @@ import React from "react";
 
 import "./SearchResultCard.css";
 
-const SearchResultCard = ({ item, type }: { item: any; type: string }) => {
+const SearchResultCard = ({
+  item,
+  type,
+  index,
+}: {
+  item: any;
+  type: string;
+  index: number;
+}) => {
   if (type === "place") {
     return (
-      <div className="searchResultCard" style={{ pointerEvents: "none" }}>
+      <div className="searchResultCard" id={index.toString()}>
         <div className="cardName">{item.displayName.text}</div>
         <div className="cardRating">{item.rating}</div>
         <div className="cardDistance">{item.distance}</div>
@@ -26,7 +34,7 @@ const SearchResultCard = ({ item, type }: { item: any; type: string }) => {
     );
   }
   return (
-    <div className="searchResultCard" style={{ pointerEvents: "none" }}>
+    <div className="searchResultCard">
       <div className="eventName">{item.short_title}</div>
       <div className="eventVenueName">{item.venue.name_v2}</div>
       <div className="eventVenueAddress">

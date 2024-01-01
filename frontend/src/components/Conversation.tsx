@@ -72,7 +72,9 @@ const Conversation = ({
   // User selects preferred place from search results
   const handleSelection = (event: any) => {
     event.preventDefault();
+    event.stopPropagation();
     console.log(searchResults);
+    console.log(event.target.id);
     console.log(searchResults?.searchResults?.places[event.target.id]);
     const place = searchResults?.searchResults?.places[event.target.id];
 
@@ -87,8 +89,9 @@ const Conversation = ({
   };
   const handleSelectionEvent = (event: any) => {
     event.preventDefault();
+    event.stopPropagation();
     console.log(searchResults);
-    console.log(event.target.id);
+    console.log(event.currentTarget.id);
     console.log(searchResults?.events[event.target.id]);
     const eventResult = searchResults?.events[event.target.id];
 
@@ -174,7 +177,7 @@ const Conversation = ({
 
                     // onMouseLeave={() => setTempMapItem({})}
                   >
-                    <SearchResultCard item={place} type="place" />
+                    <SearchResultCard item={place} type="place" index={index} />
                   </div>
                 )
               )
@@ -185,7 +188,7 @@ const Conversation = ({
                   onClick={handleSelectionEvent}
                   onMouseEnter={() => handleMouseEnter(index)}
                 >
-                  <SearchResultCard item={event} type="event" />
+                  <SearchResultCard item={event} type="event" index={index} />
                 </div>
               ))}
         </div>

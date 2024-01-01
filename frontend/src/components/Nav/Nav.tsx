@@ -12,7 +12,6 @@ const Login = () => {
   const userIconRef = useRef<HTMLDivElement>(null);
 
   const toggleNav = () => {
-    console.log("toggle nav");
     setShowDropdown(!showDropdown);
   };
 
