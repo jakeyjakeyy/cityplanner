@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useRef } from "react";
 import "./Nav.css";
 import GetTokens from "../../utils/gettokens";
 import { FaUser } from "react-icons/fa";
@@ -9,8 +9,10 @@ const Login = () => {
   const [showDropdown, setShowDropdown] = useState(false);
   const [showLoginForm, setShowLoginForm] = useState(false);
   const [register, setRegister] = useState(false);
+  const userIconRef = useRef<HTMLDivElement>(null);
 
   const toggleNav = () => {
+    console.log("toggle nav");
     setShowDropdown(!showDropdown);
   };
 
@@ -20,11 +22,12 @@ const Login = () => {
         <NavDropdown
           showLoginForm={showLoginForm}
           setShowLoginForm={setShowLoginForm}
-          toggleNav={toggleNav}
+          setShowDropdown={setShowDropdown}
           setRegister={setRegister}
+          userIconRef={userIconRef}
         />
       ) : null}
-      <div className="userIcon" onClick={toggleNav}>
+      <div className="userIcon" onClick={toggleNav} ref={userIconRef}>
         <FaUser size={20} />
       </div>
       {showLoginForm ? (

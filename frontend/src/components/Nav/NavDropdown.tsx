@@ -1,14 +1,16 @@
-import React from "react";
+import React, { useState, useEffect, useRef } from "react";
 import "./NavDropdown.css";
 import RefreshToken from "../../utils/refreshtoken";
-import { useState, useEffect } from "react";
 
 const NavDropdown = ({
   showLoginForm,
   setShowLoginForm,
-  toggleNav,
+  setShowDropdown,
   setRegister,
+  userIconRef,
 }: any) => {
+  const dropdownRef = useRef<HTMLDivElement>(null);
+
   const checkToken = () => {
     if (!localStorage.getItem("token")) {
       return;
@@ -24,6 +26,7 @@ const NavDropdown = ({
   const handleShowLoginForm = () => {
     setShowLoginForm(!showLoginForm);
   };
+
   const handleShowRegisterForm = () => {
     setShowLoginForm(!showLoginForm);
     setRegister(true);
@@ -32,15 +35,33 @@ const NavDropdown = ({
   const handleLogout = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("refresh");
-    toggleNav();
+    setShowDropdown(false);
   };
 
   useEffect(() => {
+    // check token on load to see user's authentication status
     checkToken();
+
+    // init handle closing of dropdown when clicking outside of it
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        dropdownRef.current &&
+        userIconRef.current &&
+        !dropdownRef.current.contains(event.target as Node) &&
+        !userIconRef.current.contains(event.target as Node)
+      ) {
+        setShowDropdown(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
   }, []);
 
   return (
-    <div className="navDropdownContainer">
+    <div className="navDropdownContainer" ref={dropdownRef}>
       {localStorage.getItem("token") ? (
         <div className="navDropdownItem" onClick={handleLogout}>
           Logout

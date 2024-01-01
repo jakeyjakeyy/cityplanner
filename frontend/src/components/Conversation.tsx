@@ -88,6 +88,7 @@ const Conversation = ({
   const handleSelectionEvent = (event: any) => {
     event.preventDefault();
     console.log(searchResults);
+    console.log(event.target.id);
     console.log(searchResults?.events[event.target.id]);
     const eventResult = searchResults?.events[event.target.id];
 
@@ -180,7 +181,7 @@ const Conversation = ({
             : searchResults?.events.map((event: any, index: number) => (
                 <div
                   className="eventResultCard"
-                  id={index.toString()}
+                  id={searchResults?.events?.indexOf(event)?.toString()}
                   onClick={handleSelectionEvent}
                   onMouseEnter={() => handleMouseEnter(index)}
                 >

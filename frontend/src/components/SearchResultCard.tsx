@@ -5,7 +5,7 @@ import "./SearchResultCard.css";
 const SearchResultCard = ({ item, type }: { item: any; type: string }) => {
   if (type === "place") {
     return (
-      <div className="searchResultCard">
+      <div className="searchResultCard" style={{ pointerEvents: "none" }}>
         <div className="cardName">{item.displayName.text}</div>
         <div className="cardRating">{item.rating}</div>
         <div className="cardDistance">{item.distance}</div>
@@ -26,17 +26,13 @@ const SearchResultCard = ({ item, type }: { item: any; type: string }) => {
     );
   }
   return (
-    <div className="searchResultCard">
-      <div className="eventName" style={{ pointerEvents: "none" }}>
-        {item.short_title}
-      </div>
-      <div className="eventVenueName" style={{ pointerEvents: "none" }}>
-        {item.venue.name_v2}
-      </div>
-      <div className="eventVenueAddress" style={{ pointerEvents: "none" }}>
+    <div className="searchResultCard" style={{ pointerEvents: "none" }}>
+      <div className="eventName">{item.short_title}</div>
+      <div className="eventVenueName">{item.venue.name_v2}</div>
+      <div className="eventVenueAddress">
         {item.venue.address}, {item.venue.extended_address}
       </div>
-      <div className="eventPrices" style={{ pointerEvents: "none" }}>
+      <div className="eventPrices">
         Low as ${item.stats.lowest_price}
         <br />
         Average price: ${item.stats.average_price}
