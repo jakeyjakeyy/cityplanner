@@ -17,6 +17,7 @@ openai.api_key = os.getenv("OPENAI_API_KEY")
 assistant_id = os.getenv("ASSISTANT_3.5")
 assistant = openai.beta.assistants.retrieve(assistant_id)
 seatgeek_client_id = os.getenv("SEATGEEK_CLIENT_ID")
+ticketmaster_api_key = os.getenv("TICKETMASTER_API_KEY")
 
 logger = logging.getLogger(__name__)
 
@@ -89,11 +90,12 @@ class Search(APIView):
             }
             logger.debug(params)
             res = requests.get(url, params=params)
-            data = res.json()
+            data = {"ticketmaster": {}, "seatgeek": res.json()["events"]}
+            url = f"https://app.ticketmaster.com/discovery/v2/events.json?apikey={ticketmaster_api_key}&city={location}&size=5&sort=date,asc"
+            res = requests.get(url)
+            data["ticketmaster"] = res.json()["_embedded"]["events"]
             logger.debug(data)
-            return Response(
-                {"events": data["events"], "searchResults": goog_res}, status=200
-            )
+            return Response({"events": data, "searchResults": goog_res}, status=200)
 
         # If user is making their first selection we dont need a locationBias
         if not locationBias:
