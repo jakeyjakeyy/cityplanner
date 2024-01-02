@@ -48,6 +48,20 @@ const Conversation = ({
   const [message, setMessage] = useState("");
   const [priceLevels, setPriceLevels] = useState([]);
 
+  const resetConversation = () => {
+    setInput("");
+    setThread("new");
+    setLocation("");
+    setCurrentResultIndex(-1);
+    setSearchResults(null);
+    setLocationBias({});
+    setMessage("");
+    setPriceLevels([]);
+    setSelections([]);
+    setItinerary([]);
+    setTempMapItem({});
+  };
+
   // current result index is the index of the itinerary array that we are currently on
   // Allows us to search for each item in the itinerary
   const handlePick = () => {
@@ -156,6 +170,9 @@ const Conversation = ({
             Submit
           </div>
         </form>
+        <div className="reset" onClick={resetConversation}>
+          Reset
+        </div>
       </div>
       <div className="message">
         <ReactMarkdown>{message}</ReactMarkdown>

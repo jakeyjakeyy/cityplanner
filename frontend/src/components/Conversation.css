@@ -70,9 +70,13 @@
   overflow-y: scroll;
   font-size: 1.2rem;
   line-height: 1rem;
-  width: 50%;
 }
 
 .placeName {
   margin: 0;
+}
+
+ol {
+  text-align: left;
+  line-height: 1.5rem;
 }

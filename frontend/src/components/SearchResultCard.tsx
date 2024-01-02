@@ -37,9 +37,10 @@ const SearchResultCard = ({
     <div className="searchResultCard">
       <div className="eventName">{item.short_title}</div>
       <div className="eventVenueName">{item.venue.name_v2}</div>
-      <div className="eventVenueAddress">
-        {item.venue.address}, {item.venue.extended_address}
-      </div>
+      <div className="eventTime">{item.datetime_local}</div>
+      <a href={item.url} className="eventWebsite">
+        View Event
+      </a>
       <div className="eventPrices">
         Low as ${item.stats.lowest_price}
         <br />

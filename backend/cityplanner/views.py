@@ -78,9 +78,9 @@ class Search(APIView):
         # if all 5 results are event venues, we search the seatgeek api for local events
         for place in data["places"]:
             if "event_venue" in place["types"]:
-                logger.debug("SERVER: Event Venue detected")
                 event_venue += 1
         if event_venue == 5:
+            goog_res = data
             url = "https://api.seatgeek.com/2/events"
             params = {
                 "client_id": seatgeek_client_id,
@@ -91,7 +91,9 @@ class Search(APIView):
             res = requests.get(url, params=params)
             data = res.json()
             logger.debug(data)
-            return Response({"events": data["events"]}, status=200)
+            return Response(
+                {"events": data["events"], "searchResults": goog_res}, status=200
+            )
 
         # If user is making their first selection we dont need a locationBias
         if not locationBias:
