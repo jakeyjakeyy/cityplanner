@@ -9,7 +9,7 @@ const SearchResultCardContainer = ({
   handleMouseEnter,
 }: any) => {
   return (
-    <div className="searchResults">
+    <div className="searchResults snaps-inline">
       {searchResults?.searchResults.places.map((place: any, index: number) => (
         <div
           className="searchResultCardContainer"

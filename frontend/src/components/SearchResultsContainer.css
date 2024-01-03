@@ -5,5 +5,15 @@
   grid-auto-columns: 26%;
   gap: 1rem;
   overflow-x: auto;
+  overscroll-behavior-inline: contain;
   padding: 1rem;
+}
+
+.snaps-inline {
+  scroll-snap-type: inline mandatory;
+  scroll-padding-inline: 1rem;
+}
+
+.snaps-inline > * {
+  scroll-snap-align: start;
 }
