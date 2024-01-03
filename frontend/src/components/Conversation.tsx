@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import ReactMarkdown from "react-markdown";
 import ConversationAPI from "../utils/conversationApi";
 import searchItinerary from "../utils/searchItinerary";
-import SearchResultCard from "./SearchResultCard";
+import SearchResultCardContainer from "./SearchResultsContainer";
 import "./Conversation.css";
 
 interface DisplayName {
@@ -177,39 +177,13 @@ const Conversation = ({
       <div className="message">
         <ReactMarkdown>{message}</ReactMarkdown>
       </div>
-      <div className="searchResultsContainer">
-        <p className="placeName">{itinerary[currentResultIndex]}</p>
-        <div className="searchResults">
-          {searchResults?.searchResults
-            ? searchResults.searchResults.places.map(
-                (place: any, index: number) => (
-                  <div
-                    className="searchResultCardContainer"
-                    key={place.displayName.text}
-                    onClick={handleSelection}
-                    id={searchResults?.searchResults?.places
-                      ?.indexOf(place)
-                      ?.toString()}
-                    onMouseEnter={() => handleMouseEnter(index)}
-
-                    // onMouseLeave={() => setTempMapItem({})}
-                  >
-                    <SearchResultCard item={place} type="place" index={index} />
-                  </div>
-                )
-              )
-            : searchResults?.events.map((event: any, index: number) => (
-                <div
-                  className="eventResultCard"
-                  id={searchResults?.events?.indexOf(event)?.toString()}
-                  onClick={handleSelectionEvent}
-                  onMouseEnter={() => handleMouseEnter(index)}
-                >
-                  <SearchResultCard item={event} type="event" index={index} />
-                </div>
-              ))}
-        </div>
-      </div>
+      <p className="placeName">{itinerary[currentResultIndex]}</p>
+      <SearchResultCardContainer
+        searchResults={searchResults}
+        handleSelection={handleSelection}
+        handleSelectionEvent={handleSelectionEvent}
+        handleMouseEnter={handleMouseEnter}
+      />
     </div>
   );
 };

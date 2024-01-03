@@ -35,17 +35,36 @@ const SearchResultCard = ({
   }
   return (
     <div className="searchResultCard">
-      <div className="eventName">{item.short_title}</div>
-      <div className="eventVenueName">{item.venue.name_v2}</div>
-      <div className="eventTime">{item.datetime_local}</div>
-      <a href={item.url} className="eventWebsite">
-        View Event
-      </a>
-      <div className="eventPrices">
-        Low as ${item.stats.lowest_price}
-        <br />
-        Average price: ${item.stats.average_price}
+      <div className="eventName">
+        {type === "seatgeek" ? item.short_title : item.name}
       </div>
+      <div className="eventVenueName">
+        {type === "seatgeek" ? item.venue.name_v2 : ""}
+      </div>
+      <div className="eventTime">
+        {type === "seatgeek"
+          ? item.datetime_local
+          : item.dates?.start.localTime}
+      </div>
+      <a href={item.url} className="eventWebsite">
+        View Event on {type === "seatgeek" ? "SeatGeek" : "Ticketmaster"}
+      </a>
+      {type === "Ticketmaster" ? (
+        <a href={item.outlets[0].url} className="eventWebsite">
+          Venue Website
+        </a>
+      ) : (
+        <div></div>
+      )}
+      {type === "seatgeek" ? (
+        <div className="eventPrices">
+          Low as ${item.stats.lowest_price}
+          <br />
+          Average price: ${item.stats.average_price}
+        </div>
+      ) : (
+        <div></div>
+      )}
     </div>
   );
 };

@@ -41,20 +41,6 @@
   }
 }
 
-.searchResultsContainer {
-  display: flex;
-  flex-direction: column;
-}
-
-.searchResults {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  padding: 0.5rem 1rem;
-  margin: 0.5rem 0;
-  overflow-y: scroll;
-}
-
 .placeDistance {
   font-size: 1.5rem;
   font-weight: 400;
