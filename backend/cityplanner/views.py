@@ -10,6 +10,7 @@ import json
 import time
 import requests
 import re
+from utils.hourDiff import hourDiff
 
 load_dotenv()
 google_api_key = os.getenv("GOOGLE_API_KEY")
@@ -43,7 +44,6 @@ class Search(APIView):
         query = request.data["query"]
         locationBias = request.data["locationBias"]
         location = request.data["location"]
-        priceLevels = request.data["priceLevels"]
         logger.info(query)
         logger.info(locationBias)
         url = "https://places.googleapis.com/v1/places:searchText"
@@ -76,7 +76,7 @@ class Search(APIView):
         data = res.json()
         logger.debug(data)
         event_venue = 0
-        # if all 5 results are event venues, we search the seatgeek api for local events
+        # if all 5 results are event venues, we search the seatgeek + ticketmaster api for local events
         for place in data["places"]:
             if "event_venue" in place["types"]:
                 event_venue += 1
@@ -88,7 +88,6 @@ class Search(APIView):
                 "q": location,
                 "per_page": 5,
             }
-            logger.debug(params)
             res = requests.get(url, params=params)
             data = {"ticketmaster": {}, "seatgeek": res.json()["events"]}
             url = f"https://app.ticketmaster.com/discovery/v2/events.json?apikey={ticketmaster_api_key}&city={location}&size=5&sort=date,asc"

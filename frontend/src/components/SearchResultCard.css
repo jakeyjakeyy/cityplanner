@@ -4,23 +4,36 @@
   align-items: center;
   justify-content: space-evenly;
   border: 1px solid #7cdfce;
+  border-radius: 14px;
   height: 350px;
   transition: all 0.2s ease-in-out;
+  padding: 0 0.5rem 0.5rem 0.5rem;
   &:hover {
     background-color: #3e4140;
     color: #fff;
   }
 }
 
-.cardName {
+.cardName,
+.eventName {
   font-size: 2rem;
   font-weight: 600;
+  height: 25%;
+  overflow: scroll;
+}
+
+.cardRating {
+  font-size: 1.2rem;
+  font-weight: 400;
+  height: 10%;
 }
 
 .cardAddress,
 .cardTypes {
-  font-size: 1.4rem;
+  font-size: 1.2rem;
   font-weight: 400;
+  height: 10%;
+  overflow: scroll;
 }
 
 .cardWebsite {
@@ -39,4 +52,5 @@
   font-weight: 400;
   height: 50px;
   overflow: scroll;
+  text-align: start;
 }

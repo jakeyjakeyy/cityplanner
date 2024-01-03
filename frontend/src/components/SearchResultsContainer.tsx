@@ -23,20 +23,26 @@ const SearchResultCardContainer = ({
           <SearchResultCard item={place} type="place" index={index} />
         </div>
       ))}
-      {searchResults?.events ? (
-        searchResults?.events?.ticketmaster.map((event: any, index: number) => (
-          <div
-            className="eventResultCard"
-            id={searchResults?.events?.ticketmaster.indexOf(event)?.toString()}
-            onClick={handleSelectionEvent}
-            onMouseEnter={() => handleMouseEnter(index)}
-          >
-            <SearchResultCard item={event} type="ticketmaster" index={index} />
-          </div>
-        ))
-      ) : (
-        <div></div>
-      )}
+      {searchResults?.events
+        ? searchResults?.events?.ticketmaster.map(
+            (event: any, index: number) => (
+              <div
+                className="eventResultCard"
+                id={searchResults?.events?.ticketmaster
+                  .indexOf(event)
+                  ?.toString()}
+                onClick={handleSelectionEvent}
+                onMouseEnter={() => handleMouseEnter(index)}
+              >
+                <SearchResultCard
+                  item={event}
+                  type="ticketmaster"
+                  index={index}
+                />
+              </div>
+            )
+          )
+        : ""}
       {searchResults?.events?.seatgeek.map((event: any, index: number) => (
         <div
           className="eventResultCard"

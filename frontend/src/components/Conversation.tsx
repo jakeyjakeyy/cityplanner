@@ -152,7 +152,7 @@ const Conversation = ({
     <div className="conversationContainer">
       {searchResults == null ? (
         <div className="titleContainer">
-          <h1>City Trip Planner</h1>
+          <h1 id="titleText">City Trip Planner</h1>
           <p>"Fun night with friends in Portland"</p>
         </div>
       ) : (

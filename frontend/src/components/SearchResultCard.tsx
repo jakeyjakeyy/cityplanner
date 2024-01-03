@@ -17,7 +17,7 @@ const SearchResultCard = ({
         <div className="cardName">{item.displayName.text}</div>
         <div className="cardRating">{item.rating}</div>
         <div className="cardDistance">{item.distance}</div>
-        <div className="cardAddress">{item.formattedAddress}</div>
+        {/* <div className="cardAddress">{item.formattedAddress}</div> */}
         <a href={item.websiteUri} className="cardWebsite">
           Visit Website
         </a>
