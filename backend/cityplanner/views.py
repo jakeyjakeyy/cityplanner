@@ -10,7 +10,7 @@ import json
 import time
 import requests
 import re
-from utils.hourDiff import hourDiff
+from .utils import hourDiff
 
 load_dotenv()
 google_api_key = os.getenv("GOOGLE_API_KEY")
@@ -89,10 +89,18 @@ class Search(APIView):
                 "per_page": 5,
             }
             res = requests.get(url, params=params)
-            data = {"ticketmaster": {}, "seatgeek": res.json()["events"]}
+            resjson = res.json()
+            for event in resjson["events"]:
+                event["hourDiff"] = hourDiff.hourDiff(event["datetime_utc"], "seatgeek")
+            data = {"ticketmaster": {}, "seatgeek": resjson["events"]}
             url = f"https://app.ticketmaster.com/discovery/v2/events.json?apikey={ticketmaster_api_key}&city={location}&size=5&sort=date,asc"
             res = requests.get(url)
-            data["ticketmaster"] = res.json()["_embedded"]["events"]
+            resjson = res.json()
+            for event in resjson["_embedded"]["events"]:
+                event["hourDiff"] = hourDiff.hourDiff(
+                    event["dates"]["start"]["dateTime"], "ticketmaster"
+                )
+            data["ticketmaster"] = resjson["_embedded"]["events"]
             logger.debug(data)
             return Response({"events": data, "searchResults": goog_res}, status=200)
 
