@@ -1,12 +1,7 @@
-.searchResultsContainer {
-  display: flex;
-  flex-direction: column;
-}
-
 .searchResults {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  padding: 0.5rem 1rem;
-  margin: 0.5rem 0;
+  display: grid;
+  width: 90%;
+  grid-auto-flow: column;
+  grid-auto-columns: 19%;
+  overflow-x: auto;
 }
