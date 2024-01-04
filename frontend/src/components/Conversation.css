@@ -15,7 +15,8 @@
   width: 100%;
 }
 
-.submit {
+.submit,
+.reset {
   background-color: #525353;
   width: fit-content;
   margin: auto;

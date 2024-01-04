@@ -4,7 +4,7 @@
   align-items: center;
   justify-content: space-evenly;
   border-radius: 14px;
-  box-shadow: 0.5rem 0.5rem 0.5rem 0.2rem rgba(0, 0, 0, 0.5);
+  box-shadow: 0.2rem 0.2rem 0.5rem 0.2rem rgba(0, 0, 0, 0.5);
   height: 350px;
   transition: all 0.2s ease-in-out;
   padding: 0 0.5rem 0.5rem 0.5rem;

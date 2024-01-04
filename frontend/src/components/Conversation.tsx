@@ -169,10 +169,10 @@ const Conversation = ({
           <div className="submit" onClick={handleSubmit}>
             Submit
           </div>
+          <div className="reset" onClick={resetConversation}>
+            Reset
+          </div>
         </form>
-        <div className="reset" onClick={resetConversation}>
-          Reset
-        </div>
       </div>
       <div className="message">
         <ReactMarkdown>{message}</ReactMarkdown>
