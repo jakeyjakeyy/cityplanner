@@ -1,6 +1,6 @@
 import React from "react";
 import "./LoginForm.css";
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import GetTokens from "../../utils/gettokens";
 import Register from "../../utils/register";
 
@@ -13,6 +13,7 @@ const LoginForm = ({
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [password2, setPassword2] = useState("");
+  const loginRef = useRef<HTMLDivElement>(null);
 
   const onClose = () => {
     setShowLoginForm(false);
@@ -44,41 +45,59 @@ const LoginForm = ({
     toggleNav();
   };
 
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        loginRef.current &&
+        !loginRef.current.contains(event.target as Node)
+      ) {
+        onClose();
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
   return (
     <div className="loginFormOverlay">
-      <div className="loginForm">
-        <div className="closeButton" onClick={onClose}>
-          X
-        </div>
-        <form onSubmit={handleSubmit}>
-          <label>
-            Username:
-            <input
-              type="text"
-              value={username}
-              onChange={(event) => setUsername(event.target.value)}
-            />
-          </label>
-          <label>
-            Password:
-            <input
-              type="password"
-              value={password}
-              onChange={(event) => setPassword(event.target.value)}
-            />
-          </label>
-          {register ? (
-            <label>
-              Confirm Password:
+      <div className="loginFormContainer" ref={loginRef}>
+        <div className="loginForm">
+          <div className="closeButton" onClick={onClose}>
+            X
+          </div>
+          <div className="inputContainer">
+            <div id="formUsername">
+              Username:
+              <input
+                type="text"
+                value={username}
+                onChange={(event) => setUsername(event.target.value)}
+              />
+            </div>
+            <div id="formPassword">
+              Password:
               <input
                 type="password"
-                value={password2}
-                onChange={(event) => setPassword2(event.target.value)}
+                value={password}
+                onChange={(event) => setPassword(event.target.value)}
               />
-            </label>
-          ) : null}
-          <input type="submit" value="Submit" />
-        </form>
+            </div>
+            {register ? (
+              <div id="formConfirmPassword">
+                Confirm Password:
+                <input
+                  type="password"
+                  value={password2}
+                  onChange={(event) => setPassword2(event.target.value)}
+                />
+              </div>
+            ) : null}
+            <input type="submit" value="Submit" onClick={handleSubmit} />
+          </div>
+        </div>
       </div>
     </div>
   );
