@@ -13,8 +13,8 @@
 }
 
 .loginFormContainer {
-  width: 50%;
-  height: 50%;
+  width: 25%;
+  height: fit-content;
   background-color: rgb(169, 171, 172);
   border-radius: 14px;
   box-shadow: 0.2rem 0.2rem 0.5rem 0.2rem rgba(138, 138, 138, 1);
@@ -44,6 +44,16 @@
   align-items: center;
 }
 
+#lcForm {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  margin: 0 1rem 1rem 1rem;
+}
+
 #formUsername,
 #formPassword,
 #formConfirmPassword {
@@ -54,6 +64,6 @@
 
 .closeButton {
   cursor: pointer;
-  padding: 1rem;
+  padding: 1rem 1rem 0 0;
   margin-left: auto;
 }

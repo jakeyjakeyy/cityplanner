@@ -17,6 +17,7 @@ const LoginForm = ({
 
   const onClose = () => {
     setShowLoginForm(false);
+    setRegister(false);
   };
 
   const handleSubmit = async (event: any) => {
@@ -27,7 +28,6 @@ const LoginForm = ({
       return;
     } else if (register && password === password2) {
       const response = await Register(username, password);
-      console.log(response);
       if (response && response.message === "User creation failed") {
         alert("User creation failed");
         setUsername("");
@@ -36,6 +36,8 @@ const LoginForm = ({
         return;
       }
     }
+
+    console.log("username: " + username);
 
     const tokens = await GetTokens(username, password);
     localStorage.setItem("token", tokens.access);
@@ -56,6 +58,14 @@ const LoginForm = ({
     };
     document.addEventListener("mousedown", handleClickOutside);
 
+    // document.addEventListener("keydown", (event) => {
+    //   if (event.key === "Escape") {
+    //     onClose();
+    //   } else if (event.key === "Enter") {
+    //     handleSubmit(event);
+    //   }
+    // });
+
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
@@ -69,33 +79,36 @@ const LoginForm = ({
             X
           </div>
           <div className="inputContainer">
-            <div id="formUsername">
-              Username:
-              <input
-                type="text"
-                value={username}
-                onChange={(event) => setUsername(event.target.value)}
-              />
-            </div>
-            <div id="formPassword">
-              Password:
-              <input
-                type="password"
-                value={password}
-                onChange={(event) => setPassword(event.target.value)}
-              />
-            </div>
-            {register ? (
-              <div id="formConfirmPassword">
-                Confirm Password:
+            <form id="lcForm">
+              <div id="formUsername">
+                Username:
                 <input
-                  type="password"
-                  value={password2}
-                  onChange={(event) => setPassword2(event.target.value)}
+                  type="text"
+                  value={username}
+                  autoFocus
+                  onChange={(event) => setUsername(event.target.value)}
                 />
               </div>
-            ) : null}
-            <input type="submit" value="Submit" onClick={handleSubmit} />
+              <div id="formPassword">
+                Password:
+                <input
+                  type="password"
+                  value={password}
+                  onChange={(event) => setPassword(event.target.value)}
+                />
+              </div>
+              {register ? (
+                <div id="formConfirmPassword">
+                  Confirm Password:
+                  <input
+                    type="password"
+                    value={password2}
+                    onChange={(event) => setPassword2(event.target.value)}
+                  />
+                </div>
+              ) : null}
+              <input type="submit" value="Submit" onClick={handleSubmit} />
+            </form>
           </div>
         </div>
       </div>
