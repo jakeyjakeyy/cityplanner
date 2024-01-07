@@ -73,6 +73,7 @@ const Conversation = ({
   const handleSubmit = (event: any) => {
     event.preventDefault();
     ConversationAPI(input, thread).then((response) => {
+      console.log(response);
       if (response.location && response.itinerary) {
         console.log(response);
         setItinerary(response.itinerary);
