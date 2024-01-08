@@ -2,6 +2,8 @@ import React from "react";
 
 import "./SearchResultCard.css";
 
+import floatToTime from "../utils/floatToTime";
+
 const SearchResultCard = ({
   item,
   type,
@@ -42,9 +44,7 @@ const SearchResultCard = ({
         {type === "seatgeek" ? item.venue.name_v2 : ""}
       </div>
       <div className="eventTime">
-        {type === "seatgeek"
-          ? item.datetime_local
-          : item.dates?.start.localTime}
+        Starts in: <span id="spanTime">{floatToTime(item.hourDiff)}</span>
       </div>
       <a href={item.url} className="eventWebsite">
         View Event on {type === "seatgeek" ? "SeatGeek" : "Ticketmaster"}

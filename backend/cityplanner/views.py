@@ -46,6 +46,9 @@ class Search(APIView):
         location = request.data["location"]
         logger.info(query)
         logger.info(locationBias)
+        city = location.split(",")[0]
+        state = location.split(",")[1]
+        state = state.strip()
         url = "https://places.googleapis.com/v1/places:searchText"
 
         headers = {
@@ -90,16 +93,22 @@ class Search(APIView):
             }
             res = requests.get(url, params=params)
             resjson = res.json()
+            # get hour difference between now and event
             for event in resjson["events"]:
                 event["hourDiff"] = hourDiff.hourDiff(event["datetime_utc"], "seatgeek")
             data = {"ticketmaster": {}, "seatgeek": resjson["events"]}
-            url = f"https://app.ticketmaster.com/discovery/v2/events.json?apikey={ticketmaster_api_key}&city={location}&size=5&sort=date,asc"
+            url = f"https://app.ticketmaster.com/discovery/v2/events.json?apikey={ticketmaster_api_key}&city={city}&state={state}&size=5&sort=date,asc"
+            logger.info(url)
             res = requests.get(url)
             resjson = res.json()
             for event in resjson["_embedded"]["events"]:
                 event["hourDiff"] = hourDiff.hourDiff(
                     event["dates"]["start"]["dateTime"], "ticketmaster"
                 )
+            for event in resjson["_embedded"]["events"]:
+                if event["hourDiff"] < 0:
+                    resjson["_embedded"]["events"].remove(event)
+
             data["ticketmaster"] = resjson["_embedded"]["events"]
             logger.debug(data)
             return Response({"events": data, "searchResults": goog_res}, status=200)
