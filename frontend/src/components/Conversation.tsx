@@ -46,7 +46,6 @@ const Conversation = ({
   const [searchResults, setSearchResults] = useState<SearchResult | null>(null);
   const [locationBias, setLocationBias] = useState({});
   const [message, setMessage] = useState("");
-  const [priceLevels, setPriceLevels] = useState([]);
 
   const resetConversation = () => {
     setInput("");
@@ -56,7 +55,6 @@ const Conversation = ({
     setSearchResults(null);
     setLocationBias({});
     setMessage("");
-    setPriceLevels([]);
     setSelections([]);
     setItinerary([]);
     setTempMapItem({});
@@ -130,12 +128,10 @@ const Conversation = ({
   useEffect(() => {
     if (currentResultIndex < itinerary.length && currentResultIndex >= 0) {
       let query = location + " " + itinerary[currentResultIndex];
-      searchItinerary(query, priceLevels, location, locationBias).then(
-        (response) => {
-          console.log(response);
-          setSearchResults(response);
-        }
-      );
+      searchItinerary(query, location, locationBias).then((response) => {
+        console.log(response);
+        setSearchResults(response);
+      });
     } else if (searchResults !== null) {
       ConversationAPI("", thread, selections).then((response) => {
         console.log(response);

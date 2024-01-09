@@ -167,18 +167,29 @@ class Conversation(APIView):
                 thread_id=thread.id,
                 run_id=run.data[0].id,
             )
-            run = openai.beta.threads.runs.submit_tool_outputs(
-                thread_id=thread.id,
-                run_id=run.id,
-                tool_outputs=[
-                    {
-                        "tool_call_id": run.required_action.submit_tool_outputs.tool_calls[
-                            0
-                        ].id,
-                        "output": json.dumps(request.data["selections"]),
-                    }
-                ],
-            )
+            if run.status == "requires_action":
+                run = openai.beta.threads.runs.submit_tool_outputs(
+                    thread_id=thread.id,
+                    run_id=run.id,
+                    tool_outputs=[
+                        {
+                            "tool_call_id": run.required_action.submit_tool_outputs.tool_calls[
+                                0
+                            ].id,
+                            "output": json.dumps(request.data["selections"]),
+                        }
+                    ],
+                )
+            else:
+                openai.beta.threads.messages.create(
+                    thread.id,
+                    role="user",
+                    content=request.data["input"],
+                )
+                run = openai.beta.threads.runs.create(
+                    thread_id=thread.id,
+                    assistant_id=assistant.id,
+                )
 
         while run.status == "in_progress" or run.status == "queued":
             time.sleep(1)
@@ -186,6 +197,8 @@ class Conversation(APIView):
                 thread_id=thread.id,
                 run_id=run.id,
             )
+
+        # api returned the initial itinerary, send list to frontend for selections
         if run.status == "requires_action":
             function_arguments = json.loads(
                 run.required_action.submit_tool_outputs.tool_calls[0].function.arguments

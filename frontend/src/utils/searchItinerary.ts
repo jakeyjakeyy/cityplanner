@@ -1,6 +1,5 @@
 async function searchItinerary(
   query: String,
-  priceLevels: Array<String>,
   location: String,
   locationBias?: {}
 ): Promise<any> {
@@ -9,7 +8,7 @@ async function searchItinerary(
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({ query, priceLevels, location, locationBias }),
+    body: JSON.stringify({ query, location, locationBias }),
   })
     .then((res) => res.json())
     .then((data) => {
