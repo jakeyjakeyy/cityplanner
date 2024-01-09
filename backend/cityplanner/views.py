@@ -96,7 +96,8 @@ class Search(APIView):
             # get hour difference between now and event
             for event in resjson["events"]:
                 event["hourDiff"] = hourDiff.hourDiff(event["datetime_utc"], "seatgeek")
-            data = {"ticketmaster": {}, "seatgeek": resjson["events"]}
+                event["apiType"] = "seatgeek"
+            data = resjson["events"]
             url = f"https://app.ticketmaster.com/discovery/v2/events.json?apikey={ticketmaster_api_key}&city={city}&state={state}&size=5&sort=date,asc"
             logger.info(url)
             res = requests.get(url)
@@ -105,12 +106,13 @@ class Search(APIView):
                 event["hourDiff"] = hourDiff.hourDiff(
                     event["dates"]["start"]["dateTime"], "ticketmaster"
                 )
+                event["apiType"] = "ticketmaster"
             for event in resjson["_embedded"]["events"]:
-                if event["hourDiff"] < 0:
-                    resjson["_embedded"]["events"].remove(event)
+                if event["hourDiff"] > 0:
+                    data.append(event)
 
-            data["ticketmaster"] = resjson["_embedded"]["events"]
             logger.debug(data)
+            data = sorted(data, key=lambda event: event["hourDiff"])
             return Response({"events": data, "searchResults": goog_res}, status=200)
 
         # If user is making their first selection we dont need a locationBias
