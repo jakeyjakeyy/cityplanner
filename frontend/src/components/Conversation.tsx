@@ -66,7 +66,6 @@ const Conversation = ({
   // Allows us to search for each item in the itinerary
   const handlePick = () => {
     setCurrentResultIndex(currentResultIndex + 1);
-    console.log(currentResultIndex);
   };
 
   // Communication with assistant API
@@ -107,15 +106,22 @@ const Conversation = ({
     event.stopPropagation();
     console.log(searchResults);
     console.log(event.currentTarget.id);
-    console.log(searchResults?.events[event.target.id]);
-    const eventResult = searchResults?.events[event.target.id];
+    console.log(searchResults?.events[event.currentTarget.id]);
+    const eventResult = searchResults?.events[event.currentTarget.id];
 
     if (eventResult) {
       setSelections([...selections, eventResult]);
-      setLocationBias({
-        latitude: eventResult.venue.location.lat,
-        longitude: eventResult.venue.location.lon,
-      });
+      if (eventResult.venue?.location.lat) {
+        setLocationBias({
+          latitude: eventResult.venue.location.lat,
+          longitude: eventResult.venue.location.lon,
+        });
+      } else {
+        setLocationBias({
+          latitude: eventResult._embedded.venues[0].location.latitude,
+          longitude: eventResult._embedded.venues[0].location.longitude,
+        });
+      }
       handlePick();
     }
   };
