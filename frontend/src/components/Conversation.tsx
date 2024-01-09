@@ -73,10 +73,19 @@ const Conversation = ({
       console.log(response);
       if (response.location && response.itinerary) {
         console.log(response);
+        setMessage("");
+        setSelections([]);
+        setSearchResults(null);
+        setTempMapItem({});
+        setLocationBias({});
         setItinerary(response.itinerary);
         setLocation(response.location);
         setThread(response.thread);
-        handlePick();
+        if (currentResultIndex === -1) {
+          handlePick();
+        } else {
+          setCurrentResultIndex(0);
+        }
       }
     });
   };
@@ -126,6 +135,8 @@ const Conversation = ({
 
   // Search for next item in itinerary in a radius of last selected place
   useEffect(() => {
+    console.log(currentResultIndex);
+    console.log(itinerary);
     if (currentResultIndex < itinerary.length && currentResultIndex >= 0) {
       let query = location + " " + itinerary[currentResultIndex];
       searchItinerary(query, location, locationBias).then((response) => {
