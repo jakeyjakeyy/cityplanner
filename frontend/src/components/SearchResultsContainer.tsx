@@ -16,7 +16,7 @@ const SearchResultCardContainer = ({
           key={place.displayName.text}
           onClick={handleSelection}
           id={searchResults?.searchResults?.places?.indexOf(place)?.toString()}
-          onMouseEnter={() => handleMouseEnter(index)}
+          onMouseEnter={() => handleMouseEnter(index, "place")}
 
           // onMouseLeave={() => setTempMapItem({})}
         >
@@ -29,7 +29,7 @@ const SearchResultCardContainer = ({
               className="eventResultCard"
               id={searchResults?.events?.indexOf(event)?.toString()}
               onClick={handleSelectionEvent}
-              onMouseEnter={() => handleMouseEnter(index)}
+              onMouseEnter={() => handleMouseEnter(index, "event")}
             >
               <SearchResultCard
                 item={event}

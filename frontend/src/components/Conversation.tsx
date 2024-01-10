@@ -154,12 +154,12 @@ const Conversation = ({
     }
   }, [currentResultIndex]);
 
-  const handleMouseEnter = (index: number) => {
-    setTempMapItem(
-      searchResults?.searchResults
-        ? searchResults.searchResults.places[index]
-        : searchResults?.events[index]
-    );
+  const handleMouseEnter = (index: number, type: string) => {
+    if (type === "place") {
+      setTempMapItem(searchResults?.searchResults.places[index]);
+    } else {
+      setTempMapItem(searchResults?.events[index]);
+    }
   };
 
   return (
