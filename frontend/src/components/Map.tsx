@@ -4,10 +4,27 @@ const defaultMapSrc = `https://www.google.com/maps/embed/v1/view?key=${process.e
 let mapSrc = defaultMapSrc;
 function Map({ tempMapItem, selections, itinerary }: any) {
   // If item is a ticketmaster event, we 'convert' it to the same format as google places
-  if (tempMapItem.short_title) {
+  if (tempMapItem.name) {
     console.log("tempMapItem", tempMapItem);
     tempMapItem.displayName = {
       text: tempMapItem.short_title,
+    };
+    tempMapItem.location = {
+      latitude: tempMapItem._embedded.venues[0].location.latitude,
+      longitude: tempMapItem._embedded.venues[0].location.longitude,
+    };
+    tempMapItem.formattedAddress =
+      tempMapItem._embedded.venues[0].address.line1 +
+      ", " +
+      tempMapItem._embedded.venues[0].city.name +
+      ", " +
+      tempMapItem._embedded.venues[0].state.name;
+    console.log("tempMapItem Updated", tempMapItem);
+  }
+  // Same for seatgeek
+  if (tempMapItem.title) {
+    tempMapItem.displayName = {
+      text: tempMapItem.title,
     };
     tempMapItem.location = {
       latitude: tempMapItem.venue.location.lat,
@@ -15,7 +32,6 @@ function Map({ tempMapItem, selections, itinerary }: any) {
     };
     tempMapItem.formattedAddress =
       tempMapItem.venue.address + ", " + tempMapItem.venue.extended_address;
-    console.log("tempMapItem Updated", tempMapItem);
   }
   if (
     Object.keys(tempMapItem).length > 0 &&
@@ -26,14 +42,22 @@ function Map({ tempMapItem, selections, itinerary }: any) {
     }&q=${encodeURIComponent(tempMapItem.formattedAddress)}`;
     console.log(mapSrc);
   }
-  if (Object.keys(selections).length === 1) {
-    mapSrc = `https://www.google.com/maps/embed/v1/directions?key=${
-      process.env.REACT_APP_GOOGLE_MAPS_API_KEY
-    }&origin=${encodeURIComponent(
-      selections[selections.length - 1].formattedAddress
-    )}&destination=${tempMapItem.location.latitude},${
-      tempMapItem.location.longitude
-    }`;
+  if (Object.keys(selections).length === 1 && tempMapItem) {
+    if (tempMapItem.name === selections[0].name) {
+      // if only one selection has been made and no new tempMapItem has been selected, show just the selections
+      mapSrc = `https://www.google.com/maps/embed/v1/place?key=${
+        process.env.REACT_APP_GOOGLE_MAPS_API_KEY
+      }&q=${encodeURIComponent(tempMapItem.formattedAddress)}`;
+    } else {
+      // else display selection and tempMapItem
+      mapSrc = `https://www.google.com/maps/embed/v1/directions?key=${
+        process.env.REACT_APP_GOOGLE_MAPS_API_KEY
+      }&origin=${encodeURIComponent(
+        selections[selections.length - 1].formattedAddress
+      )}&destination=${tempMapItem.location.latitude},${
+        tempMapItem.location.longitude
+      }`;
+    }
   }
   if (Object.keys(selections).length === 2) {
     if (Object.keys(tempMapItem).length > 0) {
