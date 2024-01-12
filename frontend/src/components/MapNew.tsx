@@ -84,7 +84,7 @@ const darkModeStyle = [
   },
 ];
 
-function NewMap({ tempMapItem }: any) {
+function NewMap({ tempMapItem, selections }: any) {
   // Default to Portland, OR
   let position = {
     lat: 45.515194,
@@ -92,27 +92,65 @@ function NewMap({ tempMapItem }: any) {
   };
 
   if (Object.keys(tempMapItem).length === 0) {
-    return (
-      <APIProvider apiKey={apiKey || ""}>
-        <Map
-          className="map"
-          center={position}
-          zoom={12}
-          styles={darkModeStyle}
-        />
-      </APIProvider>
-    );
+    if (selections.length > 0) {
+      position = {
+        lat: selections[selections.length - 1].location.latitude,
+        lng: selections[selections.length - 1].location.longitude,
+      };
+      return (
+        <div className="mapContainer">
+          <APIProvider apiKey={apiKey || ""}>
+            <Map
+              className="map"
+              center={position}
+              zoom={12}
+              styles={darkModeStyle}
+            />
+          </APIProvider>
+        </div>
+      );
+    }
+    return <div></div>;
   } else {
-    position = {
-      lat: tempMapItem.location.latitude,
-      lng: tempMapItem.location.longitude,
-    };
+    let positionOrigin = null;
+    let zoom = 16;
+    console.log(position);
+    if (tempMapItem.location) {
+      position = {
+        lat: tempMapItem.location.latitude,
+        lng: tempMapItem.location.longitude,
+      };
+    }
+    if (tempMapItem.apiType) {
+      position = {
+        lat: parseFloat(
+          tempMapItem._embedded
+            ? tempMapItem._embedded.venues[0].location.latitude
+            : tempMapItem.venue.location.lat
+        ),
+        lng: parseFloat(
+          tempMapItem._embedded
+            ? tempMapItem._embedded.venues[0].location.longitude
+            : tempMapItem.venue.location.lon
+        ),
+      };
+    }
+    console.log(position);
+    if (selections.length > 0) {
+      positionOrigin = {
+        lat: selections[selections.length - 1].location.latitude,
+        lng: selections[selections.length - 1].location.longitude,
+      };
+    }
     return (
-      <APIProvider apiKey={apiKey || ""}>
-        <Map className="map" center={position} zoom={16}>
-          <Marker position={position} />
-        </Map>
-      </APIProvider>
+      <div className="mapContainer">
+        <APIProvider apiKey={apiKey || ""}>
+          <Map className="map" center={position} zoom={zoom}>
+            <Marker position={position} />
+            {positionOrigin ? <Marker position={positionOrigin} /> : <p></p>}
+          </Map>
+        </APIProvider>
+      </div>
     );
   }
 }

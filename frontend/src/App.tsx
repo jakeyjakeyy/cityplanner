@@ -20,9 +20,7 @@ function App() {
         itinerary={itinerary}
         setItinerary={setItinerary}
       />
-      <div className="mapContainer">
-        <NewMap tempMapItem={tempMapItem} />
-      </div>
+      <NewMap tempMapItem={tempMapItem} selections={selections} />
       {/* <Map
         tempMapItem={tempMapItem}
         selections={selections}

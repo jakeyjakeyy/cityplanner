@@ -38,11 +38,6 @@
   }
 }
 
-.mapContainer {
-  width: 50vw;
-  height: 40vh;
-}
-
 /* font */
 @import url("https://fonts.googleapis.com/css?family=Poppins:700|Poppins:400");
 
