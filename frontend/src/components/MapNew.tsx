@@ -135,17 +135,30 @@ function NewMap({ tempMapItem, selections }: any) {
         ),
       };
     }
-    console.log(position);
     if (selections.length > 0) {
+      let selection = selections[selections.length - 1];
       positionOrigin = {
-        lat: selections[selections.length - 1].location.latitude,
-        lng: selections[selections.length - 1].location.longitude,
+        lat: selection.location.latitude
+          ? selection.location.latitude
+          : selection.venue.location.lat
+          ? selection.venue.location.lat
+          : selection._embedded.venues[0].location.latitude,
+        lng: selection.location.longitude
+          ? selection.location.longitude
+          : selection.venue.location.lon
+          ? selection.venue.location.lon
+          : selection._embedded.venues[0].location.longitude,
       };
     }
     return (
       <div className="mapContainer">
         <APIProvider apiKey={apiKey || ""}>
-          <Map className="map" center={position} zoom={zoom}>
+          <Map
+            className="map"
+            center={position}
+            zoom={zoom}
+            styles={darkModeStyle}
+          >
             <Marker position={position} />
             {positionOrigin ? <Marker position={positionOrigin} /> : <p></p>}
           </Map>
