@@ -1,7 +1,7 @@
-import React from "react";
-import { APIProvider, Map, Marker } from "@vis.gl/react-google-maps";
+import React, { useEffect } from "react";
 import "./Map.css";
 const apiKey = process.env.REACT_APP_GOOGLE_MAPS_API_KEY;
+import GoogleMapReact from "google-map-react";
 
 const darkModeStyle = [
   { elementType: "geometry", stylers: [{ color: "#242f3e" }] },
@@ -85,6 +85,7 @@ const darkModeStyle = [
 ];
 
 function NewMap({ tempMapItem, selections }: any) {
+  let positionOrigin: any = null;
   // Default to Portland, OR
   let position = {
     lat: 45.515194,
@@ -112,9 +113,7 @@ function NewMap({ tempMapItem, selections }: any) {
     }
     return <div></div>;
   } else {
-    let positionOrigin = null;
     let zoom = 16;
-    console.log(position);
     if (tempMapItem.location) {
       position = {
         lat: tempMapItem.location.latitude,
