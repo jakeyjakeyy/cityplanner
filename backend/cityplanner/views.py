@@ -71,9 +71,6 @@ class Search(APIView):
                     }
                 },
             }
-        # if priceLevels != []:
-        #     logger.info(f"SERVER: Price Levels is: {priceLevels}")
-        #     params["priceLevels"] = priceLevels
 
         res = requests.post(url, json=params, headers=headers)
         data = res.json()
@@ -93,11 +90,16 @@ class Search(APIView):
             }
             res = requests.get(url, params=params)
             resjson = res.json()
-            # get hour difference between now and event
+            # get hour difference between now and event for seatgeek
+            data = []
             for event in resjson["events"]:
                 event["hourDiff"] = hourDiff.hourDiff(event["datetime_utc"], "seatgeek")
                 event["apiType"] = "seatgeek"
-            data = resjson["events"]
+            for event in resjson["events"]:
+                if event["hourDiff"] > 0:
+                    data.append(event)
+
+            # get data and hour difference for ticketmaster
             url = f"https://app.ticketmaster.com/discovery/v2/events.json?apikey={ticketmaster_api_key}&city={city}&state={state}&size=5&sort=date,asc"
             logger.info(url)
             res = requests.get(url)
@@ -112,6 +114,7 @@ class Search(APIView):
                     data.append(event)
 
             logger.debug(data)
+            # sort most recent events first and return retults
             data = sorted(data, key=lambda event: event["hourDiff"])
             return Response({"events": data, "searchResults": goog_res}, status=200)
 

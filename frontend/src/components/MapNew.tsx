@@ -1,8 +1,8 @@
 import React, { useEffect } from "react";
 import GoogleMapReact from "google-map-react";
 import "./Map.css";
+import { FaMapMarkerAlt } from "react-icons/fa";
 const apiKey = process.env.REACT_APP_GOOGLE_MAPS_API_KEY;
-import GoogleMapReact from "google-map-react";
 
 const darkModeStyle = [
   { elementType: "geometry", stylers: [{ color: "#242f3e" }] },
@@ -85,6 +85,10 @@ const darkModeStyle = [
   },
 ];
 
+const Marker = ({ color, size }: any) => (
+  <FaMapMarkerAlt color={color} size={size} />
+);
+
 function NewMap({ tempMapItem, selections }: any) {
   let positionOrigin: any = null;
   // Default to Portland, OR
@@ -104,12 +108,12 @@ function NewMap({ tempMapItem, selections }: any) {
           <GoogleMapReact
             bootstrapURLKeys={{ key: apiKey || "" }}
             defaultCenter={position}
-            defaultZoom={16}
+            defaultZoom={15}
           />
         </div>
       );
     }
-    return <div>test</div>;
+    return <div></div>;
   } else {
     let zoom = 16;
     if (tempMapItem.location) {
@@ -135,19 +139,45 @@ function NewMap({ tempMapItem, selections }: any) {
     if (selections.length > 0) {
       let selection = selections[selections.length - 1];
       positionOrigin = {
-        lat: selection.location.latitude
+        lat: selection.location?.latitude
           ? selection.location.latitude
-          : selection.venue.location.lat
+          : selection.venue?.location.lat
           ? selection.venue.location.lat
           : selection._embedded.venues[0].location.latitude,
-        lng: selection.location.longitude
+        lng: selection.location?.longitude
           ? selection.location.longitude
-          : selection.venue.location.lon
+          : selection.venue?.location.lon
           ? selection.venue.location.lon
           : selection._embedded.venues[0].location.longitude,
       };
     }
-    return <div className="mapContainer"></div>;
+    return (
+      <div className="mapContainer">
+        <GoogleMapReact
+          bootstrapURLKeys={{ key: apiKey || "" }}
+          center={position}
+          defaultZoom={15}
+          options={{ styles: darkModeStyle }}
+        >
+          <Marker
+            lat={position.lat}
+            lng={position.lng}
+            color="red"
+            size={30}
+            text="Placeholder"
+          />
+          {positionOrigin && (
+            <Marker
+              lat={positionOrigin.lat}
+              lng={positionOrigin.lng}
+              color="white"
+              size={30}
+              text="Placeholder"
+            />
+          )}
+        </GoogleMapReact>
+      </div>
+    );
   }
 }
 
