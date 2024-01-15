@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import GoogleMapReact from "google-map-react";
 import "./Map.css";
 const apiKey = process.env.REACT_APP_GOOGLE_MAPS_API_KEY;
+import GoogleMapReact from "google-map-react";
 
 const darkModeStyle = [
   { elementType: "geometry", stylers: [{ color: "#242f3e" }] },
