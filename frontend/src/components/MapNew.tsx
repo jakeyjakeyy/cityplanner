@@ -1,5 +1,5 @@
-import React from "react";
-import { APIProvider, Map, Marker } from "@vis.gl/react-google-maps";
+import React, { useEffect } from "react";
+import GoogleMapReact from "google-map-react";
 import "./Map.css";
 const apiKey = process.env.REACT_APP_GOOGLE_MAPS_API_KEY;
 
@@ -85,6 +85,7 @@ const darkModeStyle = [
 ];
 
 function NewMap({ tempMapItem, selections }: any) {
+  let positionOrigin: any = null;
   // Default to Portland, OR
   let position = {
     lat: 45.515194,
@@ -99,22 +100,17 @@ function NewMap({ tempMapItem, selections }: any) {
       };
       return (
         <div className="mapContainer">
-          <APIProvider apiKey={apiKey || ""}>
-            <Map
-              className="map"
-              center={position}
-              zoom={12}
-              styles={darkModeStyle}
-            />
-          </APIProvider>
+          <GoogleMapReact
+            bootstrapURLKeys={{ key: apiKey || "" }}
+            defaultCenter={position}
+            defaultZoom={16}
+          />
         </div>
       );
     }
-    return <div></div>;
+    return <div>test</div>;
   } else {
-    let positionOrigin = null;
     let zoom = 16;
-    console.log(position);
     if (tempMapItem.location) {
       position = {
         lat: tempMapItem.location.latitude,
@@ -150,21 +146,7 @@ function NewMap({ tempMapItem, selections }: any) {
           : selection._embedded.venues[0].location.longitude,
       };
     }
-    return (
-      <div className="mapContainer">
-        <APIProvider apiKey={apiKey || ""}>
-          <Map
-            className="map"
-            center={position}
-            zoom={zoom}
-            styles={darkModeStyle}
-          >
-            <Marker position={position} />
-            {positionOrigin ? <Marker position={positionOrigin} /> : <p></p>}
-          </Map>
-        </APIProvider>
-      </div>
-    );
+    return <div className="mapContainer"></div>;
   }
 }
 
