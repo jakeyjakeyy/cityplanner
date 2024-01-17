@@ -191,7 +191,11 @@ const Conversation = ({
   }, [message]);
 
   return (
-    <div className="conversationContainer">
+    <div
+      className={
+        searchResults ? "conversationContainer" : "conversationContainerNoMap"
+      }
+    >
       {searchResults == null ? (
         <div className="titleContainer">
           <h1 id="titleText">City Trip Planner</h1>

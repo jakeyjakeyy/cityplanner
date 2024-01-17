@@ -5,7 +5,8 @@
 
 .mapContainer {
   width: 75%;
-  height: 40vh;
+  height: 100vh;
+  padding-top: 1rem;
 }
 
 #markerWrapper {
