@@ -46,6 +46,7 @@ const Conversation = ({
   const [searchResults, setSearchResults] = useState<SearchResult | null>(null);
   const [locationBias, setLocationBias] = useState({});
   const [message, setMessage] = useState("");
+  const [directionsURL, setDirectionsURL] = useState("");
 
   const resetConversation = () => {
     setInput("");
@@ -162,6 +163,32 @@ const Conversation = ({
     }
   };
 
+  // Display directions link when itinerary is complete
+  useEffect(() => {
+    if (message) {
+      let url = "https://www.google.com/maps/dir/";
+      for (let i = 0; i < selections.length; i++) {
+        let selection = selections[i];
+        if (selection.formattedAddress) {
+          url += selection.formattedAddress + "/";
+          continue;
+        }
+        let lng = selection.location?.longitude
+          ? selection.location.longitude
+          : selection.venue?.location.lon
+          ? selection.venue.location.lon
+          : selection._embedded.venues[0].location.longitude;
+        let lat = selection.location?.latitude
+          ? selection.location.latitude
+          : selection.venue?.location.lat
+          ? selection.venue.location.lat
+          : selection._embedded.venues[0].location.latitude;
+        url += lat + "," + lng + "/";
+      }
+      setDirectionsURL(url);
+    }
+  }, [message]);
+
   return (
     <div className="conversationContainer">
       {searchResults == null ? (
@@ -190,6 +217,13 @@ const Conversation = ({
       </div>
       <div className="message">
         <ReactMarkdown>{message}</ReactMarkdown>
+        {directionsURL ? (
+          <div id="directionsLink">
+            <a href={directionsURL}>Directions</a>
+          </div>
+        ) : (
+          <p></p>
+        )}
       </div>
       <p className="placeName">{itinerary[currentResultIndex]}</p>
       <SearchResultCardContainer
