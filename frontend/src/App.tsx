@@ -20,7 +20,11 @@ function App() {
         itinerary={itinerary}
         setItinerary={setItinerary}
       />
-      <NewMap tempMapItem={tempMapItem} selections={selections} />
+      <NewMap
+        tempMapItem={tempMapItem}
+        selections={selections}
+        itinerary={itinerary}
+      />
       {/* <Map
         tempMapItem={tempMapItem}
         selections={selections}
