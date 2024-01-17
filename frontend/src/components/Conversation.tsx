@@ -59,6 +59,7 @@ const Conversation = ({
     setSelections([]);
     setItinerary([]);
     setTempMapItem({});
+    setDirectionsURL("");
   };
 
   // current result index is the index of the itinerary array that we are currently on
