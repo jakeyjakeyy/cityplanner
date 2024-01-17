@@ -86,8 +86,9 @@ const darkModeStyle = [
   },
 ];
 
-const Marker = ({ color, size }: any) => (
+const Marker = ({ color, size, index }: any) => (
   <div id="markerWrapper">
+    <div id="markerIndex">{index ? index : ""}</div>
     <FaMapMarkerAlt color={color} size={size} />
   </div>
 );
@@ -195,7 +196,7 @@ function NewMap({ tempMapItem, selections, itinerary }: any) {
           defaultZoom={15}
           options={{ styles: darkModeStyle }}
         >
-          {selections.map((selection: any) => {
+          {selections.map((selection: any, index: number) => {
             return (
               <Marker
                 lat={
@@ -215,6 +216,7 @@ function NewMap({ tempMapItem, selections, itinerary }: any) {
                 color="white"
                 size={30}
                 text="Placeholder"
+                index={index + 1}
               />
             );
           })}
