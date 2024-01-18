@@ -38,6 +38,7 @@ const Conversation = ({
   setSelections,
   itinerary,
   setItinerary,
+  tempMapItem,
 }: any) => {
   const [input, setInput] = useState("");
   const [thread, setThread] = useState("new");
@@ -189,6 +190,15 @@ const Conversation = ({
       setDirectionsURL(url);
     }
   }, [message]);
+
+  // Set temp map item to first search result.
+  // This is used mainly to display the map when the user first searches for a location
+  // as the map is not displayed on initial load
+  useEffect(() => {
+    if (searchResults) {
+      setTempMapItem(searchResults?.searchResults.places[0]);
+    }
+  }, [searchResults]);
 
   return (
     <div

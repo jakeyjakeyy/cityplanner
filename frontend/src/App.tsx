@@ -19,6 +19,7 @@ function App() {
         setSelections={setSelections}
         itinerary={itinerary}
         setItinerary={setItinerary}
+        tempMapItem={tempMapItem}
       />
       <NewMap
         tempMapItem={tempMapItem}

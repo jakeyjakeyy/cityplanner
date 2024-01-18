@@ -58,12 +58,12 @@ class Search(APIView):
         }
         params = {
             "textQuery": query,
-            "maxResultCount": "5",
+            "maxResultCount": "20",
         }
         if locationBias != {}:
             params = {
                 "textQuery": query,
-                "maxResultCount": "5",
+                "maxResultCount": "20",
                 "locationBias": {
                     "circle": {
                         "center": locationBias,

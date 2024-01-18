@@ -17,6 +17,9 @@ const Login = () => {
 
   return (
     <div className="loginContainer">
+      <div className="userIcon" onClick={toggleNav} ref={userIconRef}>
+        <FaUser size={20} />
+      </div>
       {showDropdown ? (
         <NavDropdown
           showLoginForm={showLoginForm}
@@ -26,9 +29,6 @@ const Login = () => {
           userIconRef={userIconRef}
         />
       ) : null}
-      <div className="userIcon" onClick={toggleNav} ref={userIconRef}>
-        <FaUser size={20} />
-      </div>
       {showLoginForm ? (
         <LoginForm
           setShowLoginForm={setShowLoginForm}
