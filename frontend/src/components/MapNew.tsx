@@ -157,29 +157,31 @@ function NewMap({ tempMapItem, selections, itinerary }: any) {
     }
     return (
       <div className="mapContainer">
-        <GoogleMapReact
-          bootstrapURLKeys={{ key: apiKey || "" }}
-          center={position}
-          defaultZoom={15}
-          options={{ styles: darkModeStyle }}
-        >
-          <Marker
-            lat={position.lat}
-            lng={position.lng}
-            color="red"
-            size={30}
-            text="Placeholder"
-          />
-          {positionOrigin && (
+        <div className="map">
+          <GoogleMapReact
+            bootstrapURLKeys={{ key: apiKey || "" }}
+            center={position}
+            defaultZoom={15}
+            options={{ styles: darkModeStyle }}
+          >
             <Marker
-              lat={positionOrigin.lat}
-              lng={positionOrigin.lng}
-              color="white"
+              lat={position.lat}
+              lng={position.lng}
+              color="red"
               size={30}
               text="Placeholder"
             />
-          )}
-        </GoogleMapReact>
+            {positionOrigin && (
+              <Marker
+                lat={positionOrigin.lat}
+                lng={positionOrigin.lng}
+                color="white"
+                size={30}
+                text="Placeholder"
+              />
+            )}
+          </GoogleMapReact>
+        </div>
       </div>
     );
   } else if (

@@ -76,11 +76,11 @@ class Search(APIView):
         data = res.json()
         logger.debug(data)
         event_venue = 0
-        # if all 5 results are event venues, we search the seatgeek + ticketmaster api for local events
+        # if all results are event venues, we search the seatgeek + ticketmaster api for local events
         for place in data["places"]:
             if "event_venue" in place["types"]:
                 event_venue += 1
-        if event_venue == 5:
+        if event_venue == 20:
             goog_res = data
             url = "https://api.seatgeek.com/2/events"
             params = {

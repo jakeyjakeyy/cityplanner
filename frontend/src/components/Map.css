@@ -1,9 +1,12 @@
 .map {
   width: 100%;
-  height: 100%;
+  height: 97%;
 }
 
 .mapContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: end;
   width: 75%;
   height: 100vh;
   padding-top: 1rem;
