@@ -12,3 +12,10 @@ class Thread(models.Model):
     message = models.TextField()
     thread_id = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
+
+
+class Itinerary(models.Model):
+    user = models.ForeignKey(User, null=True, blank=True, on_delete=models.SET_NULL)
+    location = models.TextField()
+    itinerary = models.JSONField()
+    created_at = models.DateTimeField(auto_now_add=True)

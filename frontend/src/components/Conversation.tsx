@@ -147,6 +147,7 @@ const Conversation = ({
         setSearchResults(response);
       });
     } else if (searchResults !== null) {
+      console.log(selections);
       ConversationAPI("", thread, selections).then((response) => {
         console.log(response);
         if (response.message) {
