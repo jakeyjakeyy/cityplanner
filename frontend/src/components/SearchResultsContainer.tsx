@@ -10,23 +10,10 @@ const SearchResultCardContainer = ({
 }: any) => {
   return (
     <div className="searchResults">
-      {searchResults?.searchResults.places.map((place: any, index: number) => (
-        <div
-          className="searchResultCardContainer"
-          key={place.displayName.text}
-          onClick={handleSelection}
-          id={searchResults?.searchResults?.places?.indexOf(place)?.toString()}
-          onMouseEnter={() => handleMouseEnter(index, "place")}
-
-          // onMouseLeave={() => setTempMapItem({})}
-        >
-          <SearchResultCard item={place} type="place" index={index} />
-        </div>
-      ))}
       {searchResults?.events
         ? searchResults?.events?.map((event: any, index: number) => (
             <div
-              className="eventResultCard"
+              className="searchResultCardContainer"
               id={searchResults?.events?.indexOf(event)?.toString()}
               onClick={handleSelectionEvent}
               onMouseEnter={() => handleMouseEnter(index, "event")}
@@ -39,6 +26,17 @@ const SearchResultCardContainer = ({
             </div>
           ))
         : ""}
+      {searchResults?.searchResults.places.map((place: any, index: number) => (
+        <div
+          className="searchResultCardContainer"
+          key={place.displayName.text}
+          onClick={handleSelection}
+          id={searchResults?.searchResults?.places?.indexOf(place)?.toString()}
+          onMouseEnter={() => handleMouseEnter(index, "place")}
+        >
+          <SearchResultCard item={place} type="place" index={index} />
+        </div>
+      ))}
     </div>
   );
 };
