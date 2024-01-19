@@ -37,7 +37,7 @@ const SearchResultCard = ({
   }
   return (
     <div className="searchResultCard">
-      <div className="eventName">
+      <div className="cardName">
         {type === "seatgeek" ? item.short_title : item.name}
       </div>
       <div className="eventVenueName">
@@ -46,11 +46,11 @@ const SearchResultCard = ({
       <div className="eventTime">
         Starts in: <span id="spanTime">{floatToTime(item.hourDiff)}</span>
       </div>
-      <a href={item.url} className="eventWebsite">
+      <a href={item.url} className="cardWebsite">
         View Event on {type === "seatgeek" ? "SeatGeek" : "Ticketmaster"}
       </a>
       {type === "Ticketmaster" ? (
-        <a href={item.outlets[0].url} className="eventWebsite">
+        <a href={item.outlets[0].url} className="cardWebsite">
           Venue Website
         </a>
       ) : (
