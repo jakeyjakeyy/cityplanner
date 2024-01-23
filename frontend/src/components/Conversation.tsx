@@ -48,6 +48,7 @@ const Conversation = ({
   const [locationBias, setLocationBias] = useState({});
   const [message, setMessage] = useState("");
   const [directionsURL, setDirectionsURL] = useState("");
+  const [searchResultsLoading, setSearchResultsLoading] = useState(false);
 
   const resetConversation = () => {
     setInput("");
@@ -141,8 +142,10 @@ const Conversation = ({
     console.log(currentResultIndex);
     console.log(itinerary);
     if (currentResultIndex < itinerary.length && currentResultIndex >= 0) {
+      setSearchResultsLoading(true);
       let query = location + " " + itinerary[currentResultIndex];
       searchItinerary(query, location, locationBias).then((response) => {
+        setSearchResultsLoading(false);
         console.log(response);
         setSearchResults(response);
       });
@@ -241,12 +244,13 @@ const Conversation = ({
           <p></p>
         )}
       </div>
-      <p className="placeName">{itinerary[currentResultIndex]}</p>
+      <p className="itineraryItem">{itinerary[currentResultIndex]}</p>
       <SearchResultCardContainer
         searchResults={searchResults}
         handleSelection={handleSelection}
         handleSelectionEvent={handleSelectionEvent}
         handleMouseEnter={handleMouseEnter}
+        searchResultsLoading={searchResultsLoading}
       />
     </div>
   );

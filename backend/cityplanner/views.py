@@ -169,6 +169,7 @@ class Conversation(APIView):
                 run_id=run.data[0].id,
             )
             if run.status == "requires_action":
+                logger.info(run.required_action.submit_tool_outputs.tool_calls)
                 run = openai.beta.threads.runs.submit_tool_outputs(
                     thread_id=thread.id,
                     run_id=run.id,
@@ -231,6 +232,7 @@ class Conversation(APIView):
             thread_id=thread.id,
         )
 
+        # Save to DB
         thread = models.Thread.objects.create(
             user=user,
             message=messages,

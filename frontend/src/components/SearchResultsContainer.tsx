@@ -7,6 +7,7 @@ const SearchResultCardContainer = ({
   handleSelection,
   handleSelectionEvent,
   handleMouseEnter,
+  searchResultsLoading,
 }: any) => {
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -16,6 +17,18 @@ const SearchResultCardContainer = ({
     }
   }, [searchResults]);
 
+  // if we are loading, display a loading card
+  if (searchResultsLoading) {
+    return (
+      <div className="searchResults">
+        <div className="searchResultCardContainer">
+          <SearchResultCard item={null} type="loading" index={0} />
+          {/* <p>Loading...</p> */}
+        </div>
+      </div>
+    );
+  }
+  // else we return search results
   return (
     <div className="searchResults" ref={containerRef}>
       {searchResults?.events

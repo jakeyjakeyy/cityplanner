@@ -34,6 +34,12 @@ const SearchResultCard = ({
         </div>
       </div>
     );
+  } else if (type === "loading") {
+    return (
+      <div className="searchResultCard">
+        <div className="cardName">Loading...</div>
+      </div>
+    );
   }
   return (
     <div className="searchResultCard">
