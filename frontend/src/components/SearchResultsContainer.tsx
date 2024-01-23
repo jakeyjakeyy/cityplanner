@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import "./SearchResultsContainer.css";
 import SearchResultCard from "./SearchResultCard";
 
@@ -8,8 +8,16 @@ const SearchResultCardContainer = ({
   handleSelectionEvent,
   handleMouseEnter,
 }: any) => {
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (containerRef.current) {
+      containerRef.current.scrollTop = 0;
+    }
+  }, [searchResults]);
+
   return (
-    <div className="searchResults">
+    <div className="searchResults" ref={containerRef}>
       {searchResults?.events
         ? searchResults?.events?.map((event: any, index: number) => (
             <div
