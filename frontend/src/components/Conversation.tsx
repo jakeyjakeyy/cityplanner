@@ -207,10 +207,12 @@ const Conversation = ({
   return (
     <div
       className={
-        searchResults ? "conversationContainer" : "conversationContainerNoMap"
+        searchResults || message !== ""
+          ? "conversationContainer"
+          : "conversationContainerNoMap"
       }
     >
-      {searchResults == null ? (
+      {searchResults == null && message === "" ? (
         <div className="titleContainer">
           <h1 id="titleText">City Trip Planner</h1>
           <p>"Fun night with friends in Portland"</p>
