@@ -49,6 +49,7 @@ const Conversation = ({
   const [message, setMessage] = useState("");
   const [directionsURL, setDirectionsURL] = useState("");
   const [searchResultsLoading, setSearchResultsLoading] = useState(false);
+  const [queryMessage, setQueryMessage] = useState("");
 
   const resetConversation = () => {
     setInput("");
@@ -62,6 +63,7 @@ const Conversation = ({
     setItinerary([]);
     setTempMapItem({});
     setDirectionsURL("");
+    setQueryMessage("");
   };
 
   // current result index is the index of the itinerary array that we are currently on
@@ -90,6 +92,10 @@ const Conversation = ({
         } else {
           setCurrentResultIndex(0);
         }
+      } else if (response.message) {
+        setQueryMessage(response.message[0][2][1][0][0][1][1][1]);
+        setThread(response.message[0][9][1]);
+        setInput("");
       }
     });
   };
@@ -151,9 +157,11 @@ const Conversation = ({
       });
     } else if (searchResults !== null) {
       console.log(selections);
+      setSearchResultsLoading(true);
       ConversationAPI("", thread, selections).then((response) => {
         console.log(response);
         if (response.message) {
+          setSearchResultsLoading(false);
           setMessage(response.message[0][2][1][0][0][1][1][1]);
         }
       });
@@ -216,6 +224,13 @@ const Conversation = ({
         <div className="titleContainer">
           <h1 id="titleText">City Trip Planner</h1>
           <p>"Fun night with friends in Portland"</p>
+        </div>
+      ) : (
+        <p></p>
+      )}
+      {queryMessage ? (
+        <div className="queryMessage">
+          <ReactMarkdown>{queryMessage}</ReactMarkdown>
         </div>
       ) : (
         <p></p>
