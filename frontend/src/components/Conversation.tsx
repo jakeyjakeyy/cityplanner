@@ -241,24 +241,29 @@ const Conversation = ({
         <p></p>
       )}
       <div className="inputField">
-        <form onSubmit={handleSubmit}>
-          <div className="inputTextContainer">
+        <div className="inputTextContainer">
+          <div className="inputText">
             <input
               id="input"
               type="text"
               value={input}
               onChange={(event) => setInput(event.target.value)}
+              onKeyDown={(event) => {
+                if (event.key === "Enter") {
+                  handleSubmit(event);
+                }
+              }}
             />
-            <div className="inputIconContainer">
-              <div className="submit" onClick={handleSubmit}>
-                <IoSendSharp color="black" size={20} />
-              </div>
-              <div className="reset" onClick={resetConversation}>
-                <SlReload color="black" size={20} />
-              </div>
+          </div>
+          <div className="inputIconContainer">
+            <div className="submit" onClick={handleSubmit}>
+              <IoSendSharp color="black" size={20} />
+            </div>
+            <div className="reset" onClick={resetConversation}>
+              <SlReload color="black" size={20} />
             </div>
           </div>
-        </form>
+        </div>
       </div>
       <div className="message">
         <ReactMarkdown>{message}</ReactMarkdown>

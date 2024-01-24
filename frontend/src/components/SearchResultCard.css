@@ -9,7 +9,7 @@
   justify-content: space-evenly;
   border-radius: 14px;
   box-shadow: 0.2rem 0.2rem 0.5rem 0.2rem rgba(0, 0, 0, 0.5);
-  height: 30vh;
+  height: 25vh;
   width: 25vw;
   transition: all 0.2s ease-in-out;
   padding: 0 0.5rem 0.5rem 0.5rem;
@@ -54,10 +54,11 @@
 }
 
 .cardDescription {
-  font-size: 0.75rem;
+  font-size: 1rem;
   font-weight: 400;
   height: 50px;
   overflow: scroll;
+  padding: 0 2rem;
   text-align: start;
 }
 

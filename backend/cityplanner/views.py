@@ -54,7 +54,7 @@ class Search(APIView):
         headers = {
             "Content-Type": "application/json",
             "X-Goog-Api-Key": google_api_key,
-            "X-Goog-FieldMask": "places.displayName,places.formattedAddress,places.websiteUri,places.types,places.location,places.rating",
+            "X-Goog-FieldMask": "places.displayName,places.formattedAddress,places.websiteUri,places.types,places.location,places.rating,places.photos,places.editorial_summary",
         }
         params = {
             "textQuery": query,
