@@ -4,6 +4,7 @@ import ConversationAPI from "../utils/conversationApi";
 import searchItinerary from "../utils/searchItinerary";
 import SearchResultCardContainer from "./SearchResultsContainer";
 import "./Conversation.css";
+import { SlReload } from "react-icons/sl";
 
 interface DisplayName {
   text: string;
@@ -75,6 +76,9 @@ const Conversation = ({
   // Communication with assistant API
   const handleSubmit = (event: any) => {
     event.preventDefault();
+    if (input === "") {
+      return;
+    }
     ConversationAPI(input, thread).then((response) => {
       console.log(response);
       if (response.location && response.itinerary) {
@@ -237,17 +241,19 @@ const Conversation = ({
       )}
       <div className="inputField">
         <form onSubmit={handleSubmit}>
-          <input
-            id="input"
-            type="text"
-            value={input}
-            onChange={(event) => setInput(event.target.value)}
-          />
+          <div className="inputTextContainer">
+            <input
+              id="input"
+              type="text"
+              value={input}
+              onChange={(event) => setInput(event.target.value)}
+            />
+            <div className="reset" onClick={resetConversation}>
+              <SlReload color="black" size={20} />
+            </div>
+          </div>
           <div className="submit" onClick={handleSubmit}>
             Submit
-          </div>
-          <div className="reset" onClick={resetConversation}>
-            Reset
           </div>
         </form>
       </div>

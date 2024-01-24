@@ -18,8 +18,32 @@
   width: 100%;
 }
 
-.submit,
+.inputTextContainer {
+  display: flex;
+  flex-direction: row;
+}
+
 .reset {
+  position: absolute;
+  transform: translate(260px, 10px);
+  transform-origin: center;
+  cursor: pointer;
+  width: 20px;
+  height: 20px;
+  &:hover {
+    animation: spinReset 0.5s ease-in-out;
+  }
+}
+
+@keyframes spinReset {
+  0% {
+    transform: translate(260px, 10px) rotate(0deg);
+  }
+  100% {
+    transform: translate(260px, 10px) rotate(-360deg);
+  }
+}
+.submit {
   background-color: #525353;
   width: fit-content;
   margin: auto;
