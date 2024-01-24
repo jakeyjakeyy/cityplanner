@@ -23,7 +23,6 @@ const SearchResultCardContainer = ({
       <div className="searchResults">
         <div className="searchResultCardContainer">
           <SearchResultCard item={null} type="loading" index={0} />
-          {/* <p>Loading...</p> */}
         </div>
       </div>
     );
