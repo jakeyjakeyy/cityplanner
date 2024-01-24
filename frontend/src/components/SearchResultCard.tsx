@@ -1,9 +1,7 @@
 import React from "react";
-
 import "./SearchResultCard.css";
-
 import floatToTime from "../utils/floatToTime";
-
+import { FaStar } from "react-icons/fa";
 const SearchResultCard = ({
   item,
   type,
@@ -17,13 +15,15 @@ const SearchResultCard = ({
     return (
       <div className="searchResultCard" id={index.toString()}>
         <div className="cardName">{item.displayName.text}</div>
-        <div className="cardRating">{item.rating}</div>
+        <div className="cardRating">
+          {item.rating} <FaStar color="gold" size={16} />
+        </div>
         <div className="cardDistance">{item.distance}</div>
         {/* <div className="cardAddress">{item.formattedAddress}</div> */}
         <a href={item.websiteUri} className="cardWebsite">
           Visit Website
         </a>
-        <div className="cardDescription">
+        {/* <div className="cardDescription">
           Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
           eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
           minim veniam, quis nostrud exercitation ullamco laboris nisi ut
@@ -31,7 +31,7 @@ const SearchResultCard = ({
           reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
           pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
           culpa qui officia deserunt mollit anim id est laborum.
-        </div>
+        </div> */}
       </div>
     );
   } else if (type === "loading") {

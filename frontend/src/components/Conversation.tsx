@@ -5,6 +5,7 @@ import searchItinerary from "../utils/searchItinerary";
 import SearchResultCardContainer from "./SearchResultsContainer";
 import "./Conversation.css";
 import { SlReload } from "react-icons/sl";
+import { IoSendSharp } from "react-icons/io5";
 
 interface DisplayName {
   text: string;
@@ -248,12 +249,14 @@ const Conversation = ({
               value={input}
               onChange={(event) => setInput(event.target.value)}
             />
-            <div className="reset" onClick={resetConversation}>
-              <SlReload color="black" size={20} />
+            <div className="inputIconContainer">
+              <div className="submit" onClick={handleSubmit}>
+                <IoSendSharp color="black" size={20} />
+              </div>
+              <div className="reset" onClick={resetConversation}>
+                <SlReload color="black" size={20} />
+              </div>
             </div>
-          </div>
-          <div className="submit" onClick={handleSubmit}>
-            Submit
           </div>
         </form>
       </div>
