@@ -35,8 +35,9 @@
   align-items: center;
   justify-content: space-between;
   width: 50px;
-  background-color: #f5f5f5;
+  background-color: #b6b6b6;
   border-radius: 0 0.5rem 0.5rem 0;
+  padding: 0 0.5rem;
 }
 
 .reset {
@@ -45,7 +46,7 @@
   width: 20px;
   height: 20px;
   &:hover {
-    animation: spinReset 0.5s ease-in-out;
+    animation: spinReset 0.3s ease-in-out;
   }
 }
 
@@ -62,6 +63,21 @@
   width: 20px;
   height: 20px;
   cursor: pointer;
+  &:hover {
+    animation: submitDashRight 0.2s ease-in-out;
+  }
+}
+
+@keyframes submitDashRight {
+  0% {
+    transform: translateX(0);
+  }
+  50% {
+    transform: translateX(0.2rem);
+  }
+  100% {
+    transform: translateX(0);
+  }
 }
 
 .inputText {

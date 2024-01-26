@@ -76,7 +76,16 @@ class Search(APIView):
 
         res = requests.post(url, json=params, headers=headers)
         data = res.json()
-        logger.debug(data)
+        logger.info(data)
+
+        # Get photos for each place
+        for place in data["places"]:
+            if "photos" in place:
+                photo = place["photos"][0]["name"]
+                place[
+                    "photo"
+                ] = f"https://places.googleapis.com/v1/{photo}/media?maxHeightPx=400&maxWidthPx=400&key={google_api_key}"
+
         # if searching for event venues, we search the seatgeek + ticketmaster api for local events
         if "live" in query.lower():
             goog_res = data
