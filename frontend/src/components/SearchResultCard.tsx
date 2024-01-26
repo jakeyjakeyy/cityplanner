@@ -26,6 +26,9 @@ const SearchResultCard = ({
         <div className="cardDescription">
           {item.editorialSummary ? item.editorialSummary.text : ""}
         </div>
+        <div className="cardPicture">
+          {/* <img src={item.photo} alt="" /> */}
+        </div>
       </div>
     );
   } else if (type === "loading") {
