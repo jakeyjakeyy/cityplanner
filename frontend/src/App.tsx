@@ -7,7 +7,7 @@ import Conversation from "./components/Conversation";
 
 function App() {
   const [tempMapItem, setTempMapItem] = useState({});
-  const [selections, setSelections] = useState([]);
+  const [selections, setSelections] = useState({});
   const [itinerary, setItinerary] = useState([]);
 
   return (

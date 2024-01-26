@@ -3,7 +3,7 @@ import RefreshToken from "./refreshtoken";
 async function ConversationAPI(
   input: String,
   thread: String,
-  selections: any[] = []
+  selections: Record<string, any> = {}
 ): Promise<any> {
   return fetch("http://localhost:8000/api/conversation", {
     method: "POST",

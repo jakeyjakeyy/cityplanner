@@ -61,7 +61,7 @@ const Conversation = ({
     setSearchResults(null);
     setLocationBias({});
     setMessage("");
-    setSelections([]);
+    setSelections({});
     setItinerary([]);
     setTempMapItem({});
     setDirectionsURL("");
@@ -85,7 +85,7 @@ const Conversation = ({
       if (response.location && response.itinerary) {
         console.log(response);
         setMessage("");
-        setSelections([]);
+        setSelections({});
         setSearchResults(null);
         setTempMapItem({});
         setLocationBias({});
@@ -109,13 +109,14 @@ const Conversation = ({
   const handleSelection = (event: any) => {
     event.preventDefault();
     event.stopPropagation();
-    console.log(searchResults);
-    console.log(event.target.id);
-    console.log(searchResults?.searchResults?.places[event.target.id]);
+    console.log(selections);
     const place = searchResults?.searchResults?.places[event.target.id];
 
     if (place) {
-      setSelections([...selections, place]);
+      let newSelections = selections;
+      let itineraryItem = itinerary[currentResultIndex];
+      newSelections[itineraryItem] = place;
+      setSelections(newSelections);
       setLocationBias({
         latitude: place.location.latitude,
         longitude: place.location.longitude,
@@ -126,13 +127,14 @@ const Conversation = ({
   const handleSelectionEvent = (event: any) => {
     event.preventDefault();
     event.stopPropagation();
-    console.log(searchResults);
-    console.log(event.currentTarget.id);
-    console.log(searchResults?.events[event.currentTarget.id]);
+    console.log(selections);
     const eventResult = searchResults?.events[event.currentTarget.id];
 
     if (eventResult) {
-      setSelections([...selections, eventResult]);
+      let newSelections = selections;
+      let itineraryItem = itinerary[currentResultIndex];
+      newSelections[itineraryItem] = eventResult;
+      setSelections(newSelections);
       if (eventResult.venue?.location.lat) {
         setLocationBias({
           latitude: eventResult.venue.location.lat,
