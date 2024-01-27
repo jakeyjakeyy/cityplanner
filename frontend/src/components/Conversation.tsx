@@ -7,6 +7,7 @@ import "./Conversation.css";
 import { SlReload } from "react-icons/sl";
 import { IoSendSharp } from "react-icons/io5";
 import { GrUndo } from "react-icons/gr";
+import { FaArrowCircleRight } from "react-icons/fa";
 
 interface DisplayName {
   text: string;
@@ -157,15 +158,20 @@ const Conversation = ({
     }
   };
 
-  // Search for next item in itinerary in a radius of last selected place
+  // This is used to move through the itinerary and display it's relative
+  // search results
   useEffect(() => {
     console.log(currentResultIndex);
     console.log(itinerary);
     if (currentResultIndex < itinerary.length && currentResultIndex >= 0) {
+      // User is moving through the itinerary,
+      // with active search results on their screen
       if (currentResultIndex < prevStateResultIndex) {
-        console.log("going back");
+        // Going back to previous result
         setSearchResults(storedSearchResults[currentResultIndex]);
       } else if (!storedSearchResults[currentResultIndex]) {
+        // Else user is moving forward in the itinerary,
+        // and we need to search for the next item
         setSearchResultsLoading(true);
         let query = location + " " + itinerary[currentResultIndex];
         searchItinerary(query, location, locationBias).then((response) => {
@@ -174,9 +180,11 @@ const Conversation = ({
           setSearchResults(response);
         });
       } else {
+        // we already have the search results stored, no need to search again
         setSearchResults(storedSearchResults[currentResultIndex]);
       }
     } else if (searchResults !== null) {
+      // User has reached the end of the itinerary
       console.log(selections);
       setSearchResultsLoading(true);
       ConversationAPI("", thread, selections).then((response) => {
@@ -233,7 +241,6 @@ const Conversation = ({
       setTempMapItem(searchResults?.searchResults.places[0]);
 
       // store search results in case user wants to go back to previous results
-      console.log("storing search results");
       let newStoredSearchResults: { [key: number]: any } = storedSearchResults;
       newStoredSearchResults[currentResultIndex] = searchResults;
       setStoredSearchResults(newStoredSearchResults);
@@ -300,12 +307,26 @@ const Conversation = ({
         )}
       </div>
       <p className="itineraryItem">{itinerary[currentResultIndex]}</p>
-      <div
-        className="undo"
-        onClick={() => setCurrentResultIndex(currentResultIndex - 1)}
-      >
-        <GrUndo color="black" size={20} />
-      </div>
+      {currentResultIndex > 0 && currentResultIndex < itinerary.length ? (
+        <div
+          className="undo"
+          onClick={() => setCurrentResultIndex(currentResultIndex - 1)}
+        >
+          <GrUndo color="black" size={20} />
+        </div>
+      ) : (
+        <div></div>
+      )}
+      {currentResultIndex >= 0 && currentResultIndex < itinerary.length - 1 ? (
+        <div
+          className="next"
+          onClick={() => setCurrentResultIndex(currentResultIndex + 1)}
+        >
+          <FaArrowCircleRight color="black" size={20} />
+        </div>
+      ) : (
+        <div></div>
+      )}
       <SearchResultCardContainer
         searchResults={searchResults}
         handleSelection={handleSelection}
