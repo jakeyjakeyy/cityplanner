@@ -6,6 +6,7 @@ import SearchResultCardContainer from "./SearchResultsContainer";
 import "./Conversation.css";
 import { SlReload } from "react-icons/sl";
 import { IoSendSharp } from "react-icons/io5";
+import { GrUndo } from "react-icons/gr";
 
 interface DisplayName {
   text: string;
@@ -52,6 +53,10 @@ const Conversation = ({
   const [directionsURL, setDirectionsURL] = useState("");
   const [searchResultsLoading, setSearchResultsLoading] = useState(false);
   const [queryMessage, setQueryMessage] = useState("");
+  const [storedSearchResults, setStoredSearchResults] = useState<{
+    [key: number]: any;
+  }>({});
+  const [prevStateResultIndex, setPrevStateResultIndex] = useState(-1);
 
   const resetConversation = () => {
     setInput("");
@@ -66,6 +71,7 @@ const Conversation = ({
     setTempMapItem({});
     setDirectionsURL("");
     setQueryMessage("");
+    setStoredSearchResults({});
   };
 
   // current result index is the index of the itinerary array that we are currently on
@@ -135,6 +141,7 @@ const Conversation = ({
       let itineraryItem = itinerary[currentResultIndex];
       newSelections[itineraryItem] = eventResult;
       setSelections(newSelections);
+      // set location for both seatgeek and ticketmaster results
       if (eventResult.venue?.location.lat) {
         setLocationBias({
           latitude: eventResult.venue.location.lat,
@@ -155,13 +162,20 @@ const Conversation = ({
     console.log(currentResultIndex);
     console.log(itinerary);
     if (currentResultIndex < itinerary.length && currentResultIndex >= 0) {
-      setSearchResultsLoading(true);
-      let query = location + " " + itinerary[currentResultIndex];
-      searchItinerary(query, location, locationBias).then((response) => {
-        setSearchResultsLoading(false);
-        console.log(response);
-        setSearchResults(response);
-      });
+      if (currentResultIndex < prevStateResultIndex) {
+        console.log("going back");
+        setSearchResults(storedSearchResults[currentResultIndex]);
+      } else if (!storedSearchResults[currentResultIndex]) {
+        setSearchResultsLoading(true);
+        let query = location + " " + itinerary[currentResultIndex];
+        searchItinerary(query, location, locationBias).then((response) => {
+          setSearchResultsLoading(false);
+          console.log(response);
+          setSearchResults(response);
+        });
+      } else {
+        setSearchResults(storedSearchResults[currentResultIndex]);
+      }
     } else if (searchResults !== null) {
       console.log(selections);
       setSearchResultsLoading(true);
@@ -174,6 +188,7 @@ const Conversation = ({
       });
       setSearchResults(null);
     }
+    setPrevStateResultIndex(currentResultIndex);
   }, [currentResultIndex]);
 
   const handleMouseEnter = (index: number, type: string) => {
@@ -210,13 +225,20 @@ const Conversation = ({
     }
   }, [message]);
 
-  // Set temp map item to first search result.
-  // This is used mainly to display the map when the user first searches for a location
-  // as the map is not displayed on initial load
   useEffect(() => {
     if (searchResults) {
+      // Set temp map item to first search result.
+      // This is used mainly to display the map when the user first searches for a location
+      // as the map is not displayed on initial load
       setTempMapItem(searchResults?.searchResults.places[0]);
+
+      // store search results in case user wants to go back to previous results
+      console.log("storing search results");
+      let newStoredSearchResults: { [key: number]: any } = storedSearchResults;
+      newStoredSearchResults[currentResultIndex] = searchResults;
+      setStoredSearchResults(newStoredSearchResults);
     }
+    console.log(storedSearchResults);
   }, [searchResults]);
 
   return (
@@ -278,6 +300,12 @@ const Conversation = ({
         )}
       </div>
       <p className="itineraryItem">{itinerary[currentResultIndex]}</p>
+      <div
+        className="undo"
+        onClick={() => setCurrentResultIndex(currentResultIndex - 1)}
+      >
+        <GrUndo color="black" size={20} />
+      </div>
       <SearchResultCardContainer
         searchResults={searchResults}
         handleSelection={handleSelection}

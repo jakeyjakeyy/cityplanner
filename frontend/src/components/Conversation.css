@@ -8,6 +8,7 @@
   border-radius: 0px 60px 60px 0;
   background-color: #919191;
   contain: content;
+  overflow: hidden;
 }
 
 .conversationContainerNoMap {
