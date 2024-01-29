@@ -76,12 +76,12 @@ const Conversation = ({
   };
 
   // current result index is the index of the itinerary array that we are currently on
-  // Allows us to search for each item in the itinerary
+  // Allows us to move forward and backward through the itinerary
   const handlePick = () => {
     setCurrentResultIndex(currentResultIndex + 1);
   };
 
-  // Communication with assistant API
+  // Initial communication with assistant API when user enters a query
   const handleSubmit = (event: any) => {
     event.preventDefault();
     if (input === "") {
@@ -90,6 +90,8 @@ const Conversation = ({
     ConversationAPI(input, thread).then((response) => {
       console.log(response);
       if (response.location && response.itinerary) {
+        // If we get a location and itinerary back from the assistant API,
+        // we can start the search process
         console.log(response);
         setMessage("");
         setSelections({});
@@ -99,12 +101,24 @@ const Conversation = ({
         setItinerary(response.itinerary);
         setLocation(response.location);
         setThread(response.thread);
+
+        // // Initialize selections with 'none' for each itinerary item
+        // let newSelections: { [key: string]: any } = {};
+        // for (let i = 0; i < response.itinerary.length; i++) {
+        //   newSelections[response.itinerary[i]] =
+        //     "User skipped this item. Ignore it.";
+        // }
+        // console.log(newSelections);
+        // setSelections(newSelections);
+
         if (currentResultIndex === -1) {
           handlePick();
         } else {
           setCurrentResultIndex(0);
         }
       } else if (response.message) {
+        // Else we set the message from the assistant API to be displayed
+        // The assistant is likely asking for more information
         setQueryMessage(response.message[0][2][1][0][0][1][1][1]);
         setThread(response.message[0][9][1]);
         setInput("");
@@ -207,7 +221,7 @@ const Conversation = ({
     }
   };
 
-  // Display directions link when itinerary is complete
+  // Generate directions link when itinerary is complete
   useEffect(() => {
     if (message) {
       let url = "https://www.google.com/maps/dir/";
@@ -233,6 +247,7 @@ const Conversation = ({
     }
   }, [message]);
 
+  // Store search results
   useEffect(() => {
     if (searchResults) {
       // Set temp map item to first search result.
@@ -240,13 +255,27 @@ const Conversation = ({
       // as the map is not displayed on initial load
       setTempMapItem(searchResults?.searchResults.places[0]);
 
-      // store search results in case user wants to go back to previous results
       let newStoredSearchResults: { [key: number]: any } = storedSearchResults;
       newStoredSearchResults[currentResultIndex] = searchResults;
       setStoredSearchResults(newStoredSearchResults);
     }
     console.log(storedSearchResults);
   }, [searchResults]);
+
+  const skipItem = () => {
+    let newSelections = selections;
+    let itineraryItem = itinerary[currentResultIndex];
+    newSelections[itineraryItem] = {
+      skip: "User skipped this item. Ignore it.",
+    };
+    setSelections(newSelections);
+    handlePick();
+  };
+
+  // debug
+  useEffect(() => {
+    console.log(selections);
+  }, [selections]);
 
   return (
     <div
@@ -317,11 +346,8 @@ const Conversation = ({
       ) : (
         <div></div>
       )}
-      {currentResultIndex >= 0 && currentResultIndex < itinerary.length - 1 ? (
-        <div
-          className="next"
-          onClick={() => setCurrentResultIndex(currentResultIndex + 1)}
-        >
+      {currentResultIndex >= 0 && currentResultIndex < itinerary.length ? (
+        <div className="next" onClick={skipItem}>
           <FaArrowCircleRight color="black" size={20} />
         </div>
       ) : (

@@ -94,6 +94,7 @@ const Marker = ({ color, size, index }: any) => (
 );
 
 function NewMap({ tempMapItem, selections, itinerary }: any) {
+  console.log(selections);
   let positionOrigin: any = null;
   // Default to Portland, OR
   let position = {
@@ -140,7 +141,10 @@ function NewMap({ tempMapItem, selections, itinerary }: any) {
         ),
       };
     }
-    if (selections.length > 0) {
+    if (
+      selections.length > 0 &&
+      selections.length < Object.keys(itinerary).length
+    ) {
       let selection = selections[selections.length - 1];
       positionOrigin = {
         lat: selection.location?.latitude
@@ -198,29 +202,31 @@ function NewMap({ tempMapItem, selections, itinerary }: any) {
           defaultZoom={15}
           options={{ styles: darkModeStyle }}
         >
-          {selections.map((selection: any, index: number) => {
-            return (
-              <Marker
-                lat={
-                  selection.location?.latitude
-                    ? selection.location.latitude
-                    : selection.venue?.location.lat
-                    ? selection.venue.location.lat
-                    : selection._embedded.venues[0].location.latitude
-                }
-                lng={
-                  selection.location?.longitude
-                    ? selection.location.longitude
-                    : selection.venue?.location.lon
-                    ? selection.venue.location.lon
-                    : selection._embedded.venues[0].location.longitude
-                }
-                color="white"
-                size={30}
-                text="Placeholder"
-                index={index + 1}
-              />
-            );
+          {Object.values(selections).map((selection: any, index: number) => {
+            if (typeof selection === "object" && selection.location) {
+              return (
+                <Marker
+                  lat={
+                    selection.location?.latitude
+                      ? selection.location.latitude
+                      : selection.venue?.location.lat
+                      ? selection.venue.location.lat
+                      : selection._embedded.venues[0].location.latitude
+                  }
+                  lng={
+                    selection.location?.longitude
+                      ? selection.location.longitude
+                      : selection.venue?.location.lon
+                      ? selection.venue.location.lon
+                      : selection._embedded.venues[0].location.longitude
+                  }
+                  color="white"
+                  size={30}
+                  text="Placeholder"
+                  index={index + 1}
+                />
+              );
+            }
           })}
         </GoogleMapReact>
       </div>
