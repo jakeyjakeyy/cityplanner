@@ -102,18 +102,13 @@ const Conversation = ({
         setLocation(response.location);
         setThread(response.thread);
 
-        // // Initialize selections with 'none' for each itinerary item
-        // let newSelections: { [key: string]: any } = {};
-        // for (let i = 0; i < response.itinerary.length; i++) {
-        //   newSelections[response.itinerary[i]] =
-        //     "User skipped this item. Ignore it.";
-        // }
-        // console.log(newSelections);
-        // setSelections(newSelections);
+        // Between these steps before we update currentResultIndex(which will start the search process), we will let the user review the itinerary and make changes
 
         if (currentResultIndex === -1) {
+          // If we are at the beginning of the itinerary, we can start the search process
           handlePick();
         } else {
+          // Else user is restarting the search process with a new input
           setCurrentResultIndex(0);
         }
       } else if (response.message) {
@@ -130,7 +125,6 @@ const Conversation = ({
   const handleSelection = (event: any) => {
     event.preventDefault();
     event.stopPropagation();
-    console.log(selections);
     const place = searchResults?.searchResults?.places[event.target.id];
 
     if (place) {
@@ -148,7 +142,6 @@ const Conversation = ({
   const handleSelectionEvent = (event: any) => {
     event.preventDefault();
     event.stopPropagation();
-    console.log(selections);
     const eventResult = searchResults?.events[event.currentTarget.id];
 
     if (eventResult) {
@@ -172,8 +165,7 @@ const Conversation = ({
     }
   };
 
-  // This is used to move through the itinerary and display it's relative
-  // search results
+  // This is used to move through the itinerary and display it's relative search results
   useEffect(() => {
     console.log(currentResultIndex);
     console.log(itinerary);
