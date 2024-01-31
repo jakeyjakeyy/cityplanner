@@ -3,6 +3,7 @@ import ReactMarkdown from "react-markdown";
 import ConversationAPI from "../utils/conversationApi";
 import searchItinerary from "../utils/searchItinerary";
 import SearchResultCardContainer from "./SearchResultsContainer";
+import ConfirmItinerary from "./ConfirmItinerary";
 import "./Conversation.css";
 import { SlReload } from "react-icons/sl";
 import { IoSendSharp } from "react-icons/io5";
@@ -58,6 +59,9 @@ const Conversation = ({
     [key: number]: any;
   }>({});
   const [prevStateResultIndex, setPrevStateResultIndex] = useState(-1);
+  var userConfirmed = false;
+  const [userActivelyChangingItinerary, setUserActivelyChangingItinerary] =
+    useState(false);
 
   const resetConversation = () => {
     setInput("");
@@ -103,14 +107,15 @@ const Conversation = ({
         setThread(response.thread);
 
         // Between these steps before we update currentResultIndex(which will start the search process), we will let the user review the itinerary and make changes
+        setUserActivelyChangingItinerary(true);
 
-        if (currentResultIndex === -1) {
-          // If we are at the beginning of the itinerary, we can start the search process
-          handlePick();
-        } else {
-          // Else user is restarting the search process with a new input
-          setCurrentResultIndex(0);
-        }
+        // if (currentResultIndex === -1) {
+        //   // If we are at the beginning of the itinerary, we can start the search process
+        //   handlePick();
+        // } else {
+        //   // Else user is restarting the search process with a new input
+        //   setCurrentResultIndex(0);
+        // }
       } else if (response.message) {
         // Else we set the message from the assistant API to be displayed
         // The assistant is likely asking for more information
@@ -327,6 +332,11 @@ const Conversation = ({
           <p></p>
         )}
       </div>
+      {userActivelyChangingItinerary ? (
+        <ConfirmItinerary itinerary={itinerary} />
+      ) : (
+        ""
+      )}
       <p className="itineraryItem">{itinerary[currentResultIndex]}</p>
       {currentResultIndex > 0 && currentResultIndex < itinerary.length ? (
         <div
