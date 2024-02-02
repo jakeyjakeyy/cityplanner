@@ -118,6 +118,7 @@ function NewMap({ tempMapItem, selections, itinerary }: any) {
         </div>
       );
     }
+    // return nothing while confirming itinerary
     return <div></div>;
   } else if (Object.keys(selections).length < Object.keys(itinerary).length) {
     let zoom = 16;
@@ -142,10 +143,14 @@ function NewMap({ tempMapItem, selections, itinerary }: any) {
       };
     }
     if (
-      selections.length > 0 &&
-      selections.length < Object.keys(itinerary).length
+      Object.keys(selections).length > 0 &&
+      Object.keys(selections).length < Object.keys(itinerary).length
     ) {
-      let selection = selections[selections.length - 1];
+      // User has selected a location and is hovering over a new location
+      // Display the hovered location as the center marker, and the last selected location as the other marker
+      let selection = Object.values(selections)[
+        Object.keys(selections).length - 1
+      ] as any;
       positionOrigin = {
         lat: selection.location?.latitude
           ? selection.location.latitude
@@ -192,7 +197,9 @@ function NewMap({ tempMapItem, selections, itinerary }: any) {
     Object.keys(selections).length === Object.keys(itinerary).length &&
     Object.keys(selections).length > 0
   ) {
+    // user has selected all locations and we will show markers for each stop
     let zoom = 15;
+    console.log("selections", Object.values(selections));
 
     return (
       <div className="mapContainer">
@@ -203,30 +210,28 @@ function NewMap({ tempMapItem, selections, itinerary }: any) {
           options={{ styles: darkModeStyle }}
         >
           {Object.values(selections).map((selection: any, index: number) => {
-            if (typeof selection === "object" && selection.location) {
-              return (
-                <Marker
-                  lat={
-                    selection.location?.latitude
-                      ? selection.location.latitude
-                      : selection.venue?.location.lat
-                      ? selection.venue.location.lat
-                      : selection._embedded.venues[0].location.latitude
-                  }
-                  lng={
-                    selection.location?.longitude
-                      ? selection.location.longitude
-                      : selection.venue?.location.lon
-                      ? selection.venue.location.lon
-                      : selection._embedded.venues[0].location.longitude
-                  }
-                  color="white"
-                  size={30}
-                  text="Placeholder"
-                  index={index + 1}
-                />
-              );
-            }
+            return (
+              <Marker
+                lat={
+                  selection.location?.latitude
+                    ? selection.location.latitude
+                    : selection.venue?.location.lat
+                    ? selection.venue.location.lat
+                    : selection._embedded.venues[0].location.latitude
+                }
+                lng={
+                  selection.location?.longitude
+                    ? selection.location.longitude
+                    : selection.venue?.location.lon
+                    ? selection.venue.location.lon
+                    : selection._embedded.venues[0].location.longitude
+                }
+                color="white"
+                size={30}
+                text="Placeholder"
+                index={index + 1}
+              />
+            );
           })}
         </GoogleMapReact>
       </div>
