@@ -108,14 +108,6 @@ const Conversation = ({
 
         // Between these steps before we update currentResultIndex(which will start the search process), we will let the user review the itinerary and make changes
         setUserActivelyChangingItinerary(true);
-
-        // if (currentResultIndex === -1) {
-        //   // If we are at the beginning of the itinerary, we can start the search process
-        //   handlePick();
-        // } else {
-        //   // Else user is restarting the search process with a new input
-        //   setCurrentResultIndex(0);
-        // }
       } else if (response.message) {
         // Else we set the message from the assistant API to be displayed
         // The assistant is likely asking for more information
@@ -333,7 +325,13 @@ const Conversation = ({
         )}
       </div>
       {userActivelyChangingItinerary ? (
-        <ConfirmItinerary itinerary={itinerary} />
+        <ConfirmItinerary
+          itinerary={itinerary}
+          setItinerary={setItinerary}
+          setUserActivelyChangingItinerary={setUserActivelyChangingItinerary}
+          currentResultIndex={currentResultIndex}
+          setCurrentResultIndex={setCurrentResultIndex}
+        />
       ) : (
         ""
       )}
