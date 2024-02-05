@@ -76,15 +76,15 @@ class Search(APIView):
 
         res = requests.post(url, json=params, headers=headers)
         data = res.json()
-        logger.info(data)
+        # logger.info(data)
 
         # Get photos for each place
         for place in data["places"]:
             if "photos" in place:
                 photo = place["photos"][0]["name"]
-                place[
-                    "photo"
-                ] = f"https://places.googleapis.com/v1/{photo}/media?maxHeightPx=400&maxWidthPx=400&key={google_api_key}"
+                place["photo"] = (
+                    f"https://places.googleapis.com/v1/{photo}/media?maxHeightPx=400&maxWidthPx=400&key={google_api_key}"
+                )
 
         # if searching for event venues, we search the seatgeek + ticketmaster api for local events
         if "live" in query.lower():
@@ -108,7 +108,7 @@ class Search(APIView):
 
             # get data and hour difference for ticketmaster
             url = f"https://app.ticketmaster.com/discovery/v2/events.json?apikey={ticketmaster_api_key}&city={city}&state={state}&size=5&sort=date,asc"
-            logger.info(url)
+            # logger.info(url)
             res = requests.get(url)
             resjson = res.json()
             if "_embedded" in resjson:
@@ -121,7 +121,7 @@ class Search(APIView):
                     if event["hourDiff"] > 0:
                         data.append(event)
 
-            logger.debug(data)
+            # logger.debug(data)
             # sort most recent events first and return retults
             data = sorted(data, key=lambda event: event["hourDiff"])
             return Response({"events": data, "searchResults": goog_res}, status=200)
@@ -180,6 +180,10 @@ class Conversation(APIView):
             )
             if run.status == "requires_action":
                 logger.info(run.required_action.submit_tool_outputs.tool_calls)
+                response = {
+                    "order": request.data["newOrder"],
+                    "selections": request.data["selections"],
+                }
                 run = openai.beta.threads.runs.submit_tool_outputs(
                     thread_id=thread.id,
                     run_id=run.id,
@@ -188,7 +192,7 @@ class Conversation(APIView):
                             "tool_call_id": run.required_action.submit_tool_outputs.tool_calls[
                                 0
                             ].id,
-                            "output": json.dumps(request.data["selections"]),
+                            "output": json.dumps(response),
                         }
                     ],
                 )

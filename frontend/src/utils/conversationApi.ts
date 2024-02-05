@@ -3,7 +3,8 @@ import RefreshToken from "./refreshtoken";
 async function ConversationAPI(
   input: String,
   thread: String,
-  selections: Record<string, any> = {}
+  selections: Record<string, any> = {},
+  newOrder: Array<string> = []
 ): Promise<any> {
   return fetch("http://localhost:8000/api/conversation", {
     method: "POST",
@@ -11,7 +12,7 @@ async function ConversationAPI(
       "Content-Type": "application/json",
       Authorization: `JWT ${localStorage.getItem("token")}`,
     },
-    body: JSON.stringify({ input, thread, selections }),
+    body: JSON.stringify({ input, thread, selections, newOrder }),
   })
     .then((res) => res.json())
     .then((data) => {

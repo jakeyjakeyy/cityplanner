@@ -62,6 +62,7 @@ const Conversation = ({
   var userConfirmed = false;
   const [userActivelyChangingItinerary, setUserActivelyChangingItinerary] =
     useState(false);
+  const [newOrder, setNewOrder] = useState<any>([]);
 
   const resetConversation = () => {
     setInput("");
@@ -77,6 +78,9 @@ const Conversation = ({
     setDirectionsURL("");
     setQueryMessage("");
     setStoredSearchResults({});
+    setPrevStateResultIndex(-1);
+    setUserActivelyChangingItinerary(false);
+    setNewOrder([]);
   };
 
   // current result index is the index of the itinerary array that we are currently on
@@ -190,7 +194,7 @@ const Conversation = ({
       // User has reached the end of the itinerary
       console.log(selections);
       setSearchResultsLoading(true);
-      ConversationAPI("", thread, selections).then((response) => {
+      ConversationAPI("", thread, selections, newOrder).then((response) => {
         console.log(response);
         if (response.message) {
           setSearchResultsLoading(false);
@@ -263,8 +267,8 @@ const Conversation = ({
 
   // debug
   useEffect(() => {
-    console.log(selections);
-  }, [selections]);
+    console.log(newOrder);
+  }, [newOrder]);
 
   return (
     <div
@@ -331,6 +335,7 @@ const Conversation = ({
           setUserActivelyChangingItinerary={setUserActivelyChangingItinerary}
           currentResultIndex={currentResultIndex}
           setCurrentResultIndex={setCurrentResultIndex}
+          setNewOrder={setNewOrder}
         />
       ) : (
         ""

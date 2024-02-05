@@ -11,15 +11,13 @@ const ConfirmItinerary = ({
   setUserActivelyChangingItinerary,
   currentResultIndex,
   setCurrentResultIndex,
+  setNewOrder,
 }: any) => {
   const [objItinerary, setObjItinerary] = useState<any>([]);
-  const [newItinerary, setNewItinerary] = useState<any>([]);
-  const defaultOptions = ["Option 1", "Option 2", "Option 3"].map(
-    (option, index) => ({
-      value: index,
-      label: option,
-    })
-  );
+  const defaultOptions = ["Arcade", "Zoo", "Museum"].map((option, index) => ({
+    value: index,
+    label: option,
+  }));
 
   useEffect(() => {
     // Creating an object with the itinerary and similar items for each location
@@ -41,15 +39,24 @@ const ConfirmItinerary = ({
     const items = Array.from(objItinerary);
     // remove the item from the original position
     const [reorderedItem] = items.splice(result.source.index, 1);
+    console.log(reorderedItem);
     // and insert it into the new position
     items.splice(result.destination.index, 0, reorderedItem);
 
     // Update the state with the new order
     setObjItinerary(items);
+    let newOrder = [];
+    for (let i = 0; i < items.length; i++) {
+      newOrder.push((items[i] as any).name);
+    }
+    setNewOrder(newOrder);
   };
 
   const handleSelectChange = (selectedOption: any, index: number) => {
     // Logic for changing an itinerary item based on dropdown selection
+    let tempItinerary = [...objItinerary];
+    tempItinerary[index].name = selectedOption.label;
+    setObjItinerary(tempItinerary);
   };
 
   const handleSubmit = () => {
