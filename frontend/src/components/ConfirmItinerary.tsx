@@ -3,6 +3,7 @@ import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import { act } from "react-dom/test-utils";
 import Select from "react-select";
 import { GiConfirmed } from "react-icons/gi";
+import "./ConfirmItinerary.css";
 
 const ConfirmItinerary = ({
   itinerary,
@@ -79,48 +80,65 @@ const ConfirmItinerary = ({
   return (
     <div className="confirm-itinerary">
       <GiConfirmed onClick={handleSubmit} />
-      <DragDropContext onDragEnd={onDragEnd}>
-        <Droppable droppableId="droppable">
-          {(provided: any) => (
-            <div {...provided.droppableProps} ref={provided.innerRef}>
-              {objItinerary.map((activity: any, index: number) => (
-                <Draggable
-                  key={activity.id}
-                  draggableId={activity.id}
-                  index={index}
-                >
-                  {(provided: any) => (
-                    <div
-                      ref={provided.innerRef}
-                      {...provided.draggableProps}
-                      {...provided.dragHandleProps}
-                    >
-                      <Select
-                        defaultValue={activity.similarItems[0]}
-                        options={activity.similarItems}
-                        onChange={(selectedOption) =>
-                          handleSelectChange(selectedOption, index)
-                        }
-                        styles={{
-                          option: (provided: any) => ({
-                            ...provided,
-                            color: "black",
-                          }),
-                          singleValue: (provided: any) => ({
-                            ...provided,
-                            color: "black",
-                          }),
-                        }}
-                      />
-                    </div>
-                  )}
-                </Draggable>
-              ))}
-              {provided.placeholder}
+      <div className="drag-delete">
+        <DragDropContext onDragEnd={onDragEnd}>
+          <Droppable droppableId="droppable">
+            {(provided: any) => (
+              <div {...provided.droppableProps} ref={provided.innerRef}>
+                {objItinerary.map((activity: any, index: number) => (
+                  <Draggable
+                    key={activity.id}
+                    draggableId={activity.id}
+                    index={index}
+                  >
+                    {(provided: any) => (
+                      <div
+                        ref={provided.innerRef}
+                        {...provided.draggableProps}
+                        {...provided.dragHandleProps}
+                      >
+                        <Select
+                          defaultValue={activity.similarItems[0]}
+                          options={activity.similarItems}
+                          onChange={(selectedOption) =>
+                            handleSelectChange(selectedOption, index)
+                          }
+                          styles={{
+                            option: (provided: any) => ({
+                              ...provided,
+                              color: "black",
+                            }),
+                            singleValue: (provided: any) => ({
+                              ...provided,
+                              color: "black",
+                            }),
+                          }}
+                        />
+                      </div>
+                    )}
+                  </Draggable>
+                ))}
+                {provided.placeholder}
+              </div>
+            )}
+          </Droppable>
+        </DragDropContext>
+        <div className="delete-selection">
+          {objItinerary.map((activity: any, index: number) => (
+            <div className="delete-button" key={activity.id}>
+              <button
+                onClick={() => {
+                  let tempItinerary = [...objItinerary];
+                  tempItinerary.splice(index, 1);
+                  setObjItinerary(tempItinerary);
+                }}
+              >
+                X
+              </button>
             </div>
-          )}
-        </Droppable>
-      </DragDropContext>
+          ))}
+        </div>
+      </div>
     </div>
   );
 };
