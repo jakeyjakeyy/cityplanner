@@ -45,11 +45,7 @@ const ConfirmItinerary = ({
 
     // Update the state with the new order
     setObjItinerary(items);
-    let newOrder = [];
-    for (let i = 0; i < items.length; i++) {
-      newOrder.push((items[i] as any).name);
-    }
-    setNewOrder(newOrder);
+    updateOrder(items);
   };
 
   const handleSelectChange = (selectedOption: any, index: number) => {
@@ -57,6 +53,8 @@ const ConfirmItinerary = ({
     let tempItinerary = [...objItinerary];
     tempItinerary[index].name = selectedOption.label;
     setObjItinerary(tempItinerary);
+    // Update the itinerary to be sent to the assistant
+    updateOrder(tempItinerary);
   };
 
   const handleSubmit = () => {
@@ -77,6 +75,14 @@ const ConfirmItinerary = ({
       // Else user is restarting the search process with a new input
       setCurrentResultIndex(0);
     }
+  };
+
+  const updateOrder = (tempItinerary: any) => {
+    let newOrder = [];
+    for (let i = 0; i < tempItinerary.length; i++) {
+      newOrder.push((tempItinerary[i] as any).name);
+    }
+    setNewOrder(newOrder);
   };
 
   // debug printing
@@ -138,6 +144,7 @@ const ConfirmItinerary = ({
                   let tempItinerary = [...objItinerary];
                   tempItinerary.splice(index, 1);
                   setObjItinerary(tempItinerary);
+                  updateOrder(tempItinerary);
                 }}
               >
                 X
