@@ -188,6 +188,22 @@ function NewMap({
   ) {
     // user has selected all locations and we will show markers for each stop
     let zoom = 15;
+
+    let selection = Object.values(selections)[0] as any;
+    console.log("selection", selection);
+    position = {
+      lat: selection.location?.latitude
+        ? selection.location.latitude
+        : selection.venue?.location.lat
+        ? selection.venue.location.lat
+        : selection._embedded.venues[0].location.latitude,
+      lng: selection.location?.longitude
+        ? selection.location.longitude
+        : selection.venue?.location.lon
+        ? selection.venue.location.lon
+        : selection._embedded.venues[0].location.longitude,
+    };
+
     return (
       <div className="mapContainer">
         <GoogleMapReact

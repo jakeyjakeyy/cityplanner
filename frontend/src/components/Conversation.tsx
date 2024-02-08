@@ -280,7 +280,7 @@ const Conversation = ({
       ) : (
         ""
       )}
-      {queryMessage ? (
+      {queryMessage && !itinerary ? (
         <div className="queryMessage">
           <ReactMarkdown>{queryMessage}</ReactMarkdown>
         </div>
