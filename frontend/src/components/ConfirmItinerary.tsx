@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
-import { act } from "react-dom/test-utils";
 import Select from "react-select";
 import { GiConfirmed } from "react-icons/gi";
 import "./ConfirmItinerary.css";

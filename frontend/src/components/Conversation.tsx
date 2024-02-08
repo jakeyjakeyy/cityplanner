@@ -96,11 +96,9 @@ const Conversation = ({
       return;
     }
     ConversationAPI(input, thread).then((response) => {
-      console.log(response);
       if (response.location && response.itinerary) {
         // If we get a location and itinerary back from the assistant API,
         // we can start the search process
-        console.log(response);
         setMessage("");
         setSelections({});
         setSearchResults(null);
@@ -168,8 +166,6 @@ const Conversation = ({
 
   // This is used to move through the itinerary and display it's relative search results
   useEffect(() => {
-    console.log(currentResultIndex);
-    console.log(itinerary);
     if (currentResultIndex < itinerary.length && currentResultIndex >= 0) {
       // User is moving through the itinerary,
       // with active search results on their screen
@@ -183,7 +179,6 @@ const Conversation = ({
         let query = location + " " + itinerary[currentResultIndex];
         searchItinerary(query, location, locationBias).then((response) => {
           setSearchResultsLoading(false);
-          console.log(response);
           setSearchResults(response);
         });
       } else {
@@ -192,10 +187,8 @@ const Conversation = ({
       }
     } else if (searchResults !== null) {
       // User has reached the end of the itinerary
-      console.log(selections);
       setSearchResultsLoading(true);
       ConversationAPI("", thread, selections, newOrder).then((response) => {
-        console.log(response);
         if (response.message) {
           setSearchResultsLoading(false);
           setMessage(response.message[0][2][1][0][0][1][1][1]);
@@ -217,12 +210,13 @@ const Conversation = ({
   // Generate directions link when itinerary is complete
   useEffect(() => {
     if (message) {
+      console.log(selections);
       let url = "https://www.google.com/maps/dir/";
-      for (let i = 0; i < selections.length; i++) {
-        let selection = selections[i];
+      Object.keys(selections).forEach((key) => {
+        let selection = selections[key];
         if (selection.formattedAddress) {
           url += selection.formattedAddress + "/";
-          continue;
+          return;
         }
         let lng = selection.location?.longitude
           ? selection.location.longitude
@@ -235,7 +229,7 @@ const Conversation = ({
           ? selection.venue.location.lat
           : selection._embedded.venues[0].location.latitude;
         url += lat + "," + lng + "/";
-      }
+      });
       setDirectionsURL(url);
     }
   }, [message]);
@@ -252,7 +246,6 @@ const Conversation = ({
       newStoredSearchResults[currentResultIndex] = searchResults;
       setStoredSearchResults(newStoredSearchResults);
     }
-    console.log(storedSearchResults);
   }, [searchResults]);
 
   const skipItem = () => {
@@ -284,40 +277,44 @@ const Conversation = ({
           <p>"Fun night with friends in Portland"</p>
         </div>
       ) : (
-        <p></p>
+        ""
       )}
       {queryMessage ? (
         <div className="queryMessage">
           <ReactMarkdown>{queryMessage}</ReactMarkdown>
         </div>
       ) : (
-        <p></p>
+        ""
       )}
-      <div className="inputField">
-        <div className="inputTextContainer">
-          <div className="inputText">
-            <input
-              id="input"
-              type="text"
-              value={input}
-              onChange={(event) => setInput(event.target.value)}
-              onKeyDown={(event) => {
-                if (event.key === "Enter") {
-                  handleSubmit(event);
-                }
-              }}
-            />
-          </div>
-          <div className="inputIconContainer">
-            <div className="submit" onClick={handleSubmit}>
-              <IoSendSharp color="black" size={20} />
+      {itinerary.length === 0 ? (
+        <div className="inputField">
+          <div className="inputTextContainer">
+            <div className="inputText">
+              <input
+                id="input"
+                type="text"
+                value={input}
+                onChange={(event) => setInput(event.target.value)}
+                onKeyDown={(event) => {
+                  if (event.key === "Enter") {
+                    handleSubmit(event);
+                  }
+                }}
+              />
             </div>
-            <div className="reset" onClick={resetConversation}>
-              <SlReload color="black" size={20} />
+            <div className="inputIconContainer">
+              <div className="submit" onClick={handleSubmit}>
+                <IoSendSharp color="black" size={20} />
+              </div>
+              <div className="reset" onClick={resetConversation}>
+                <SlReload color="black" size={20} />
+              </div>
             </div>
           </div>
         </div>
-      </div>
+      ) : (
+        ""
+      )}
       <div className="message">
         <ReactMarkdown>{message}</ReactMarkdown>
         {directionsURL ? (
@@ -325,7 +322,7 @@ const Conversation = ({
             <a href={directionsURL}>Directions</a>
           </div>
         ) : (
-          <p></p>
+          ""
         )}
       </div>
       {userActivelyChangingItinerary ? (
