@@ -314,8 +314,13 @@ const Conversation = ({
           </div>
         </div>
       ) : (
-        ""
+        <div className="inputField">
+          <div className="reset" onClick={resetConversation}>
+            <SlReload color="black" size={20} />
+          </div>
+        </div>
       )}
+
       <div className="message">
         <ReactMarkdown>{message}</ReactMarkdown>
         {directionsURL ? (
