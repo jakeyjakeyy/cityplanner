@@ -93,7 +93,12 @@ const Marker = ({ color, size, index }: any) => (
   </div>
 );
 
-function NewMap({ tempMapItem, selections, itinerary }: any) {
+function NewMap({
+  tempMapItem,
+  selections,
+  itinerary,
+  currentResultIndex,
+}: any) {
   let positionOrigin: any = null;
   // Default to Portland, OR
   let position = {
@@ -105,7 +110,6 @@ function NewMap({ tempMapItem, selections, itinerary }: any) {
     Object.keys(tempMapItem).length &&
     Object.keys(selections).length < Object.keys(itinerary).length
   ) {
-    console.log("showing only hovered location");
     let zoom = 16;
     if (tempMapItem.location) {
       position = {
@@ -131,12 +135,6 @@ function NewMap({ tempMapItem, selections, itinerary }: any) {
       Object.keys(selections).length > 0 &&
       Object.keys(selections).length < Object.keys(itinerary).length
     ) {
-      console.log("showing last selected location");
-      console.log("selections", Object.values(selections));
-      console.log(
-        Object.keys(selections).length,
-        Object.keys(itinerary).length
-      );
       // User has selected a location and is hovering over a new location
       // Display the hovered location as the center marker, and the last selected location as the other marker
       let selection = Object.values(selections)[
@@ -185,14 +183,11 @@ function NewMap({ tempMapItem, selections, itinerary }: any) {
       </div>
     );
   } else if (
-    Object.keys(selections).length === Object.keys(itinerary).length &&
-    Object.keys(selections).length > 0
+    Object.keys(itinerary).length > 0 &&
+    currentResultIndex === Object.keys(itinerary).length
   ) {
-    console.log("showing all selected locations");
     // user has selected all locations and we will show markers for each stop
     let zoom = 15;
-    console.log("selections", Object.values(selections));
-
     return (
       <div className="mapContainer">
         <GoogleMapReact

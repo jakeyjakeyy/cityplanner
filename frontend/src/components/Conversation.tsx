@@ -44,11 +44,12 @@ const Conversation = ({
   itinerary,
   setItinerary,
   tempMapItem,
+  currentResultIndex,
+  setCurrentResultIndex,
 }: any) => {
   const [input, setInput] = useState("");
   const [thread, setThread] = useState("new");
   const [location, setLocation] = useState("");
-  const [currentResultIndex, setCurrentResultIndex] = React.useState(-1);
   const [searchResults, setSearchResults] = useState<SearchResult | null>(null);
   const [locationBias, setLocationBias] = useState({});
   const [message, setMessage] = useState("");

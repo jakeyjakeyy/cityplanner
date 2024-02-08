@@ -9,6 +9,7 @@ function App() {
   const [tempMapItem, setTempMapItem] = useState({});
   const [selections, setSelections] = useState({});
   const [itinerary, setItinerary] = useState([]);
+  const [currentResultIndex, setCurrentResultIndex] = useState(-1);
 
   return (
     <div className="App">
@@ -20,17 +21,15 @@ function App() {
         itinerary={itinerary}
         setItinerary={setItinerary}
         tempMapItem={tempMapItem}
+        currentResultIndex={currentResultIndex}
+        setCurrentResultIndex={setCurrentResultIndex}
       />
       <NewMap
         tempMapItem={tempMapItem}
         selections={selections}
         itinerary={itinerary}
+        currentResultIndex={currentResultIndex}
       />
-      {/* <Map
-        tempMapItem={tempMapItem}
-        selections={selections}
-        itinerary={itinerary}
-      /> */}
     </div>
   );
 }
