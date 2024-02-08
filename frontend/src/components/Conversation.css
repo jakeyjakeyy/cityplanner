@@ -11,6 +11,14 @@
   overflow: hidden;
 }
 
+@media (max-width: 768px) {
+  .conversationContainer {
+    min-width: 100vw;
+    min-height: 60vh;
+    border-radius: 0;
+  }
+}
+
 .conversationContainerNoMap {
   display: flex;
   flex-direction: column;

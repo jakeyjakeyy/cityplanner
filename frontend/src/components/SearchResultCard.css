@@ -20,6 +20,15 @@
   }
 }
 
+@media (max-width: 768px) {
+  .searchResultCardContainer {
+    margin: 0 0 0 0;
+  }
+  .searchResultCard {
+    width: 90vw;
+  }
+}
+
 .cardName {
   font-size: 2rem;
   font-weight: 600;

@@ -320,17 +320,17 @@ const Conversation = ({
           </div>
         </div>
       )}
-
-      <div className="message">
-        <ReactMarkdown>{message}</ReactMarkdown>
-        {directionsURL ? (
+      {message !== "" ? (
+        <div className="message">
+          <ReactMarkdown>{message}</ReactMarkdown>
           <div id="directionsLink">
             <a href={directionsURL}>Directions</a>
           </div>
-        ) : (
-          ""
-        )}
-      </div>
+        </div>
+      ) : (
+        ""
+      )}
+
       {userActivelyChangingItinerary ? (
         <ConfirmItinerary
           itinerary={itinerary}
@@ -343,7 +343,11 @@ const Conversation = ({
       ) : (
         ""
       )}
-      <p className="itineraryItem">{itinerary[currentResultIndex]}</p>
+      {currentResultIndex >= 0 && currentResultIndex < itinerary.length ? (
+        <p className="itineraryItem">{itinerary[currentResultIndex]}</p>
+      ) : (
+        ""
+      )}
       {currentResultIndex > 0 && currentResultIndex < itinerary.length ? (
         <div
           className="undo"
@@ -352,22 +356,26 @@ const Conversation = ({
           <GrUndo color="black" size={20} />
         </div>
       ) : (
-        <div></div>
+        ""
       )}
       {currentResultIndex >= 0 && currentResultIndex < itinerary.length ? (
         <div className="next" onClick={skipItem}>
           <FaArrowCircleRight color="black" size={20} />
         </div>
       ) : (
-        <div></div>
+        ""
       )}
-      <SearchResultCardContainer
-        searchResults={searchResults}
-        handleSelection={handleSelection}
-        handleSelectionEvent={handleSelectionEvent}
-        handleMouseEnter={handleMouseEnter}
-        searchResultsLoading={searchResultsLoading}
-      />
+      {currentResultIndex < itinerary.length || searchResultsLoading ? (
+        <SearchResultCardContainer
+          searchResults={searchResults}
+          handleSelection={handleSelection}
+          handleSelectionEvent={handleSelectionEvent}
+          handleMouseEnter={handleMouseEnter}
+          searchResultsLoading={searchResultsLoading}
+        />
+      ) : (
+        ""
+      )}
     </div>
   );
 };
