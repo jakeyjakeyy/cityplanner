@@ -1,6 +1,5 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import "./App.css";
-import Map from "./components/Map";
 import NewMap from "./components/MapNew";
 import Login from "./components/Nav/Nav";
 import Conversation from "./components/Conversation";

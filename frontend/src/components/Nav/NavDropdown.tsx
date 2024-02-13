@@ -38,6 +38,10 @@ const NavDropdown = ({
     setShowDropdown(false);
   };
 
+  const handleHistory = () => {
+    // redirect to history page
+  };
+
   useEffect(() => {
     // check token on load to see user's authentication status
     checkToken();
@@ -63,8 +67,13 @@ const NavDropdown = ({
   return (
     <div className="navDropdownContainer" ref={dropdownRef}>
       {localStorage.getItem("token") ? (
-        <div className="navDropdownItem" onClick={handleLogout}>
-          Logout
+        <div className="navDropdownItemContainer">
+          <div className="navDropdownItem" onClick={handleHistory}>
+            History
+          </div>
+          <div className="navDropdownItem" onClick={handleLogout}>
+            Logout
+          </div>
         </div>
       ) : (
         <div className="navDropdownItemContainer">

@@ -37,8 +37,6 @@ class Register(APIView):
 
 
 class Search(APIView):
-    def get(self, request):
-        return Response({"message": "Search"}, status=200)
 
     def post(self, request):
         query = request.data["query"]
@@ -266,3 +264,13 @@ class Conversation(APIView):
         itinerary_db.save()
 
         return Response({"message": messages}, status=200)
+
+
+class Profile(APIView):
+    authentication_classes = [JWTAuthentication]
+
+    def post(self, request):
+        if request.data["action"] == "history":
+            user = request.user
+            itineraries = models.Itinerary.objects.filter(user=user)
+            return Response({"itineraries": itineraries}, status=200)
