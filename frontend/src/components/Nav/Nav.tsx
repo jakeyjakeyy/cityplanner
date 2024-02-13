@@ -5,7 +5,13 @@ import { FaUser } from "react-icons/fa";
 import NavDropdown from "./NavDropdown";
 import LoginForm from "./LoginForm";
 
-const Login = () => {
+const Nav = ({
+  showHistory,
+  setShowHistory,
+}: {
+  showHistory: boolean;
+  setShowHistory: any;
+}) => {
   const [showDropdown, setShowDropdown] = useState(false);
   const [showLoginForm, setShowLoginForm] = useState(false);
   const [register, setRegister] = useState(false);
@@ -27,6 +33,8 @@ const Login = () => {
           setShowDropdown={setShowDropdown}
           setRegister={setRegister}
           userIconRef={userIconRef}
+          showHistory={showHistory}
+          setShowHistory={setShowHistory}
         />
       ) : null}
       {showLoginForm ? (
@@ -41,4 +49,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default Nav;

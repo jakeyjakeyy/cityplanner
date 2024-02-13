@@ -13,4 +13,5 @@ urlpatterns = [
     path("register", Register.as_view(), name="register"),
     path("search", Search.as_view(), name="search"),
     path("conversation", Conversation.as_view(), name="conversation"),
+    path("profile", Profile.as_view(), name="profile"),
 ]

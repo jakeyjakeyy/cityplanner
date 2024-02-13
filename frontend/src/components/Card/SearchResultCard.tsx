@@ -1,6 +1,6 @@
 import React from "react";
 import "./SearchResultCard.css";
-import floatToTime from "../utils/floatToTime";
+import floatToTime from "../../utils/floatToTime";
 import { FaStar } from "react-icons/fa";
 const SearchResultCard = ({
   item,

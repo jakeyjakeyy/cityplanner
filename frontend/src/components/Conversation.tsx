@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import ReactMarkdown from "react-markdown";
 import ConversationAPI from "../utils/conversationApi";
 import searchItinerary from "../utils/searchItinerary";
-import SearchResultCardContainer from "./SearchResultsContainer";
+import SearchResultCardContainer from "./Card/SearchResultsContainer";
 import ConfirmItinerary from "./ConfirmItinerary";
 import "./Conversation.css";
 import { SlReload } from "react-icons/sl";

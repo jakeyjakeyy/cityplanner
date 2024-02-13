@@ -8,6 +8,8 @@ const NavDropdown = ({
   setShowDropdown,
   setRegister,
   userIconRef,
+  showHistory,
+  setShowHistory,
 }: any) => {
   const dropdownRef = useRef<HTMLDivElement>(null);
 
@@ -39,7 +41,8 @@ const NavDropdown = ({
   };
 
   const handleHistory = () => {
-    // redirect to history page
+    setShowHistory(!showHistory);
+    setShowDropdown(false);
   };
 
   useEffect(() => {
@@ -69,7 +72,7 @@ const NavDropdown = ({
       {localStorage.getItem("token") ? (
         <div className="navDropdownItemContainer">
           <div className="navDropdownItem" onClick={handleHistory}>
-            History
+            {showHistory ? "Home" : "History"}
           </div>
           <div className="navDropdownItem" onClick={handleLogout}>
             Logout

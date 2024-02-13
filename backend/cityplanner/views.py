@@ -273,4 +273,16 @@ class Profile(APIView):
         if request.data["action"] == "history":
             user = request.user
             itineraries = models.Itinerary.objects.filter(user=user)
-            return Response({"itineraries": itineraries}, status=200)
+            data = []
+            for itinerary in itineraries:
+                if itinerary.selections:
+                    data.append(
+                        {
+                            "location": itinerary.location,
+                            "itinerary": itinerary.itinerary,
+                            "selections": itinerary.selections,
+                            "message": itinerary.message,
+                            "date": itinerary.created_at,
+                        }
+                    )
+            return Response({"itineraries": data}, status=200)
