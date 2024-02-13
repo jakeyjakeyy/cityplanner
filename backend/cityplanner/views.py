@@ -196,7 +196,8 @@ class Conversation(APIView):
                 )
                 # Update any changes to the itinerary, and user selections to the DB
                 itinerary_db = models.Itinerary.objects.get(thread_id=thread.id)
-                itinerary_db.itinerary = request.data["newOrder"]
+                if request.data["newOrder"]:
+                    itinerary_db.itinerary = request.data["newOrder"]
                 itinerary_db.selections = request.data["selections"]
                 itinerary_db.save()
 
@@ -260,7 +261,8 @@ class Conversation(APIView):
 
         # Update message to the database
         itinerary_db = models.Itinerary.objects.get(thread_id=thread.id)
-        itinerary_db.message = messages.data[0].content
+        logger.info(messages.data[0].content[0].text.value)
+        itinerary_db.message = messages.data[0].content[0].text.value
         itinerary_db.save()
 
         return Response({"message": messages}, status=200)

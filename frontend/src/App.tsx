@@ -11,12 +11,13 @@ function App() {
   const [itinerary, setItinerary] = useState([]);
   const [currentResultIndex, setCurrentResultIndex] = useState(-1);
   const [showHistory, setShowHistory] = useState(false);
+  const [message, setMessage] = useState("");
 
   return (
     <div className="App">
       <Nav showHistory={showHistory} setShowHistory={setShowHistory} />
       {!showHistory ? (
-        <div>
+        <div className="ConversationParent">
           <Conversation
             setTempMapItem={setTempMapItem}
             selections={selections}
@@ -26,6 +27,8 @@ function App() {
             tempMapItem={tempMapItem}
             currentResultIndex={currentResultIndex}
             setCurrentResultIndex={setCurrentResultIndex}
+            message={message}
+            setMessage={setMessage}
           />
           <NewMap
             tempMapItem={tempMapItem}
@@ -35,7 +38,13 @@ function App() {
           />
         </div>
       ) : (
-        <ItineraryHistory />
+        <ItineraryHistory
+          setSelections={setSelections}
+          setCurrentResultIndex={setCurrentResultIndex}
+          setShowHistory={setShowHistory}
+          setItinerary={setItinerary}
+          setMessage={setMessage}
+        />
       )}
     </div>
   );
