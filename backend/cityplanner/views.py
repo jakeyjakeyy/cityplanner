@@ -196,6 +196,12 @@ class Conversation(APIView):
                         }
                     ],
                 )
+                # Update any changes to the itinerary, and user selections to the DB
+                itinerary_db = models.Itinerary.objects.get(thread_id=thread.id)
+                itinerary_db.itinerary = request.data["newOrder"]
+                itinerary_db.selections = request.data["selections"]
+                itinerary_db.save()
+
             else:
                 openai.beta.threads.messages.create(
                     thread.id,
@@ -226,6 +232,14 @@ class Conversation(APIView):
             for location_type in function_arguments["locationTypes"].split(","):
                 itinerary.append(location_type)
                 i += 1
+            # Initialize to database
+            itinerary_db = models.Itinerary.objects.create(
+                user=user,
+                thread_id=thread.id,
+                location=function_arguments["location"],
+                itinerary=itinerary,
+            )
+            itinerary_db.save()
             return Response(
                 {
                     "location": function_arguments["location"],
@@ -246,12 +260,9 @@ class Conversation(APIView):
             thread_id=thread.id,
         )
 
-        # Save to DB
-        thread = models.Thread.objects.create(
-            user=user,
-            message=messages,
-            thread_id=thread.id,
-        )
-        thread.save()
+        # Update message to the database
+        itinerary_db = models.Itinerary.objects.get(thread_id=thread.id)
+        itinerary_db.message = messages.data[0].content
+        itinerary_db.save()
 
         return Response({"message": messages}, status=200)

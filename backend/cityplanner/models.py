@@ -7,15 +7,11 @@ class Profile(models.Model):
     age = models.IntegerField(null=True, blank=True)
 
 
-class Thread(models.Model):
-    user = models.ForeignKey(User, null=True, blank=True, on_delete=models.SET_NULL)
-    message = models.TextField()
-    thread_id = models.TextField()
-    created_at = models.DateTimeField(auto_now_add=True)
-
-
 class Itinerary(models.Model):
     user = models.ForeignKey(User, null=True, blank=True, on_delete=models.SET_NULL)
+    thread_id = models.TextField()
     location = models.TextField()
     itinerary = models.JSONField()
+    selections = models.JSONField(null=True, blank=True)
+    message = models.TextField(null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
