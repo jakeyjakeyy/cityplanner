@@ -10,33 +10,6 @@ import { IoSendSharp } from "react-icons/io5";
 import { GrUndo } from "react-icons/gr";
 import { FaArrowCircleRight } from "react-icons/fa";
 
-interface DisplayName {
-  text: string;
-  languageCode: string;
-}
-
-interface Location {
-  latitude: number;
-  longitude: number;
-}
-
-interface Place {
-  types: string[];
-  formattedAddress: string;
-  websiteUri: string;
-  displayName: DisplayName;
-  location: Location;
-}
-
-interface SearchResults {
-  places: Place[];
-}
-
-interface SearchResult {
-  searchResults: SearchResults;
-  events: any[];
-}
-
 const Conversation = ({
   setTempMapItem,
   selections,
@@ -46,13 +19,14 @@ const Conversation = ({
   tempMapItem,
   currentResultIndex,
   setCurrentResultIndex,
+  message,
+  setMessage,
 }: any) => {
   const [input, setInput] = useState("");
   const [thread, setThread] = useState("new");
   const [location, setLocation] = useState("");
-  const [searchResults, setSearchResults] = useState<SearchResult | null>(null);
+  const [searchResults, setSearchResults] = useState<any>(null);
   const [locationBias, setLocationBias] = useState({});
-  const [message, setMessage] = useState("");
   const [directionsURL, setDirectionsURL] = useState("");
   const [searchResultsLoading, setSearchResultsLoading] = useState(false);
   const [queryMessage, setQueryMessage] = useState("");
@@ -167,6 +141,7 @@ const Conversation = ({
 
   // This is used to move through the itinerary and display it's relative search results
   useEffect(() => {
+    console.log("currentResultIndex: " + currentResultIndex);
     if (currentResultIndex < itinerary.length && currentResultIndex >= 0) {
       // User is moving through the itinerary,
       // with active search results on their screen

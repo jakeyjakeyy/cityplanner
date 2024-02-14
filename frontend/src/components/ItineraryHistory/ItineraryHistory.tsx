@@ -1,8 +1,14 @@
 import React, { useState, useEffect } from "react";
 import "./ItineraryHistory.css";
 
-const ItineraryHistory = () => {
-  const [itineraryHistory, setItineraryHistory] = useState([]);
+const ItineraryHistory = ({
+  setSelections,
+  setCurrentResultIndex,
+  setShowHistory,
+  setItinerary,
+  setMessage,
+}: any) => {
+  const [itineraryHistory, setItineraryHistory] = useState<any[]>([]);
 
   // Fetch itinerary history from backend
   useEffect(() => {
@@ -24,6 +30,15 @@ const ItineraryHistory = () => {
       });
   }, []);
 
+  const handleSelect = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+    const itinerary = itineraryHistory[Number(e.currentTarget.id)];
+    setSelections(itinerary.selections);
+    setItinerary(itinerary.itinerary);
+    setMessage(itinerary.message);
+    setShowHistory(false);
+    setCurrentResultIndex(itinerary.itinerary.length);
+  };
+
   return (
     <div className="itineraryHistory">
       <h2>Itinerary History</h2>
@@ -40,7 +55,12 @@ const ItineraryHistory = () => {
             strItinerary += item + " -> ";
           });
           return (
-            <div key={index} className="itineraryHistoryItem">
+            <div
+              key={index}
+              id={index.toString()}
+              className="itineraryHistoryItem"
+              onClick={handleSelect}
+            >
               <div className="historyLocation">{itinerary.location}</div>
               <div className="historyItinerary">{strItinerary}</div>
               <div className="historyDate">{localDate}</div>
