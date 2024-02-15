@@ -287,4 +287,5 @@ class Profile(APIView):
                             "date": itinerary.created_at,
                         }
                     )
+            data.sort(key=lambda x: x["date"], reverse=True)
             return Response({"itineraries": data}, status=200)
