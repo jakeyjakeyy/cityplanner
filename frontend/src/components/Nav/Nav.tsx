@@ -1,7 +1,7 @@
 import React, { useState, useRef } from "react";
 import "./Nav.css";
-import GetTokens from "../../utils/gettokens";
 import { FaUser } from "react-icons/fa";
+import { MdHome } from "react-icons/md";
 import NavDropdown from "./NavDropdown";
 import LoginForm from "./LoginForm";
 
@@ -22,7 +22,7 @@ const Nav = ({
   };
 
   return (
-    <div className="loginContainer">
+    <div className="navContainer">
       <div className="userIcon" onClick={toggleNav} ref={userIconRef}>
         <FaUser size={20} />
       </div>

@@ -42,6 +42,7 @@ const LoginForm = ({
     const tokens = await GetTokens(username, password);
     localStorage.setItem("token", tokens.access);
     localStorage.setItem("refresh", tokens.refresh);
+    localStorage.setItem("username", username);
     onClose();
     setRegister(false);
     toggleNav();

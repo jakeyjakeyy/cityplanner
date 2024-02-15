@@ -41,7 +41,10 @@ const ItineraryHistory = ({
 
   return (
     <div className="itineraryHistory">
-      <h2>Itinerary History</h2>
+      <div className="itineraryHistoryHeader">
+        <h2>Itinerary History</h2>
+        <h4>User: {localStorage.getItem("username")}</h4>
+      </div>
       <div className="itineraryHistoryContainer">
         {itineraryHistory.map((itinerary: any, index: number) => {
           const date = new Date(itinerary.date);

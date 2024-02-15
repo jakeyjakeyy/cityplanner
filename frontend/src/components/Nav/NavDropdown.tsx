@@ -37,6 +37,8 @@ const NavDropdown = ({
   const handleLogout = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("refresh");
+    localStorage.removeItem("username");
+    setShowHistory(false);
     setShowDropdown(false);
   };
 
