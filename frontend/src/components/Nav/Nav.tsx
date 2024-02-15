@@ -21,30 +21,39 @@ const Nav = ({
     setShowDropdown(!showDropdown);
   };
 
+  const goHome = () => {
+    window.location.href = "/";
+  };
+
   return (
     <div className="navContainer">
-      <div className="userIcon" onClick={toggleNav} ref={userIconRef}>
-        <FaUser size={20} />
+      <div className="homeIcon" onClick={goHome}>
+        <MdHome size={20} />
       </div>
-      {showDropdown ? (
-        <NavDropdown
-          showLoginForm={showLoginForm}
-          setShowLoginForm={setShowLoginForm}
-          setShowDropdown={setShowDropdown}
-          setRegister={setRegister}
-          userIconRef={userIconRef}
-          showHistory={showHistory}
-          setShowHistory={setShowHistory}
-        />
-      ) : null}
-      {showLoginForm ? (
-        <LoginForm
-          setShowLoginForm={setShowLoginForm}
-          toggleNav={toggleNav}
-          register={register}
-          setRegister={setRegister}
-        />
-      ) : null}
+      <div className="dropdownParent">
+        <div className="userIcon" onClick={toggleNav} ref={userIconRef}>
+          <FaUser size={20} />
+        </div>
+        {showDropdown ? (
+          <NavDropdown
+            showLoginForm={showLoginForm}
+            setShowLoginForm={setShowLoginForm}
+            setShowDropdown={setShowDropdown}
+            setRegister={setRegister}
+            userIconRef={userIconRef}
+            showHistory={showHistory}
+            setShowHistory={setShowHistory}
+          />
+        ) : null}
+        {showLoginForm ? (
+          <LoginForm
+            setShowLoginForm={setShowLoginForm}
+            toggleNav={toggleNav}
+            register={register}
+            setRegister={setRegister}
+          />
+        ) : null}
+      </div>
     </div>
   );
 };

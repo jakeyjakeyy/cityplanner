@@ -3,7 +3,7 @@
   position: absolute;
   top: 0;
   align-items: end;
-  flex-direction: column;
+  flex-direction: row;
   width: 100vw;
 }
 
@@ -11,4 +11,18 @@
   margin-left: auto;
   padding: 0.5rem 1rem 0 0;
   cursor: pointer;
+}
+
+.homeIcon {
+  margin-right: auto;
+  top: 0;
+  padding: 0.5rem 0 0 1rem;
+  cursor: pointer;
+  position: absolute;
+}
+
+.dropdownParent {
+  display: flex;
+  flex-direction: column;
+  margin-left: auto;
 }
