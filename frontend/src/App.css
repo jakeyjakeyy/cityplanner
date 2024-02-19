@@ -4,14 +4,14 @@
 }
 
 .App {
-  background-color: #282c34;
+  background-color: var(--background);
   min-height: 100vh;
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: center;
   /* font-size: calc(10px + 2vmin); */
-  color: white;
+  color: var(--text);
   max-height: 100vh;
   overflow: scroll;
 }
@@ -30,6 +30,15 @@
   .App {
     flex-direction: column;
   }
+}
+
+/* -COLORS- */
+:root {
+  --text: #f2f2f2;
+  --background: #0f1216;
+  --primary: #9bb0cd;
+  --secondary: #2b4c7c;
+  --accent: #3e7cd6;
 }
 
 /* -FONT- */

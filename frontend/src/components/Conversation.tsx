@@ -291,7 +291,7 @@ const Conversation = ({
       ) : (
         <div className="inputField">
           <div className="reset" onClick={resetConversation}>
-            <SlReload color="black" size={20} />
+            <SlReload color="white" size={20} />
           </div>
         </div>
       )}
@@ -328,14 +328,14 @@ const Conversation = ({
           className="undo"
           onClick={() => setCurrentResultIndex(currentResultIndex - 1)}
         >
-          <GrUndo color="black" size={20} />
+          <GrUndo color="white" size={20} />
         </div>
       ) : (
         ""
       )}
       {currentResultIndex >= 0 && currentResultIndex < itinerary.length ? (
         <div className="next" onClick={skipItem}>
-          <FaArrowCircleRight color="black" size={20} />
+          <FaArrowCircleRight color="white" size={20} />
         </div>
       ) : (
         ""

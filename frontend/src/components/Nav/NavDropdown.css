@@ -1,7 +1,7 @@
 .navDropdownContainer {
   z-index: 999;
   margin-left: auto;
-  background-color: rgb(59, 59, 59);
+  background-color: var(--secondary);
   border-radius: 14px;
   margin: 0.5rem 1rem;
 }
