@@ -17,3 +17,4 @@ class Itinerary(models.Model):
     selections = models.JSONField(null=True, blank=True)
     message = models.TextField(null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
+    hidden = models.BooleanField(default=False)  # for soft delete

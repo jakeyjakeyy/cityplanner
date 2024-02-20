@@ -272,8 +272,8 @@ class Profile(APIView):
     authentication_classes = [JWTAuthentication]
 
     def post(self, request):
+        user = request.user
         if request.data["action"] == "history":
-            user = request.user
             itineraries = models.Itinerary.objects.filter(user=user)
             data = []
             for itinerary in itineraries:
@@ -285,7 +285,19 @@ class Profile(APIView):
                             "selections": itinerary.selections,
                             "message": itinerary.message,
                             "date": itinerary.created_at,
+                            "id": itinerary.id,
                         }
                     )
             data.sort(key=lambda x: x["date"], reverse=True)
             return Response({"itineraries": data}, status=200)
+
+        elif request.data["action"] == "delete":
+            itinerary = models.Itinerary.objects.get(id=request.data["id"])
+            if itinerary.user != user:
+                return Response(
+                    {"message": "Invalid Permissions"},
+                    status=403,
+                )
+            itinerary.hidden = True
+            itinerary.save()
+            return Response({"message": "Itinerary deleted"}, status=200)

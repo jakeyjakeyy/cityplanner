@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "./ItineraryHistory.css";
+import { FaTrash } from "react-icons/fa";
 
 const ItineraryHistory = ({
   setSelections,
@@ -39,6 +40,30 @@ const ItineraryHistory = ({
     setCurrentResultIndex(itinerary.itinerary.length);
   };
 
+  const historyDelete = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+    e.stopPropagation();
+    const index = Number(e.currentTarget.parentElement?.id);
+    const id = itineraryHistory[index].id;
+    fetch("http://localhost:8000/api/profile", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `JWT ${localStorage.getItem("token")}`,
+      },
+      body: JSON.stringify({ action: "delete", id }),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data);
+        let newItineraryHistory = [...itineraryHistory];
+        newItineraryHistory.splice(index, 1);
+        setItineraryHistory(newItineraryHistory);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
   return (
     <div className="itineraryHistory">
       <div className="itineraryHistoryHeader">
@@ -47,6 +72,7 @@ const ItineraryHistory = ({
       </div>
       <div className="itineraryHistoryContainer">
         {itineraryHistory.map((itinerary: any, index: number) => {
+          // Convert date to local time
           const date = new Date(itinerary.date);
           const localDate = date.toLocaleString();
           let strItinerary = "";
@@ -64,6 +90,9 @@ const ItineraryHistory = ({
               className="itineraryHistoryItem"
               onClick={handleSelect}
             >
+              <div className="historyDelete" onClick={historyDelete}>
+                <FaTrash color="red" />
+              </div>
               <div className="historyLocation">{itinerary.location}</div>
               <div className="historyItinerary">{strItinerary}</div>
               <div className="historyDate">{localDate}</div>

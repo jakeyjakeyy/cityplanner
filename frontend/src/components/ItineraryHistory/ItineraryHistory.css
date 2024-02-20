@@ -5,6 +5,7 @@
 }
 
 .itineraryHistoryItem {
+  position: relative;
   border: 1px solid var(--primary);
   border-radius: 5px;
   padding: 10px;
@@ -14,4 +15,26 @@
 
 .itineraryHistoryItem:hover {
   border-color: var(--accent);
+}
+
+.historyDelete {
+  position: absolute;
+  right: 5px;
+  cursor: pointer;
+}
+
+.historyDelete:hover {
+  animation: deleteShake 0.5s;
+}
+
+@keyframes deleteShake {
+  25% {
+    transform: rotate(5deg);
+  }
+  50% {
+    transform: rotate(-5deg);
+  }
+  75% {
+    transform: rotate(5deg);
+  }
 }
