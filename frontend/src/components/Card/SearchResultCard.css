@@ -13,10 +13,9 @@
   width: 25vw;
   transition: all 0.2s ease-in-out;
   padding: 0 0.5rem 0.5rem 0.5rem;
-  background-color: #3e4140;
+  background-color: var(--secondary);
   &:hover {
-    background-color: #606161;
-    color: #fff;
+    background-color: var(--accent);
   }
 }
 
@@ -54,11 +53,11 @@
 .cardWebsite {
   font-size: 1.4rem;
   font-weight: 400;
-  color: #7cdfce;
+  color: var(--primary);
   text-decoration: none;
   transition: all 0.2s ease-in-out;
   &:hover {
-    color: #fff;
+    color: var(--secondary);
   }
 }
 

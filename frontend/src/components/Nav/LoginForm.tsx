@@ -3,6 +3,7 @@ import "./LoginForm.css";
 import { useState, useEffect, useRef } from "react";
 import GetTokens from "../../utils/gettokens";
 import Register from "../../utils/register";
+import { IoIosCloseCircleOutline } from "react-icons/io";
 
 const LoginForm = ({
   setShowLoginForm,
@@ -20,9 +21,7 @@ const LoginForm = ({
     setRegister(false);
   };
 
-  const handleSubmit = async (event: any) => {
-    event.preventDefault();
-
+  const handleSubmit = async () => {
     if (register && password !== password2) {
       alert("Passwords do not match");
       return;
@@ -59,13 +58,15 @@ const LoginForm = ({
     };
     document.addEventListener("mousedown", handleClickOutside);
 
-    // document.addEventListener("keydown", (event) => {
-    //   if (event.key === "Escape") {
-    //     onClose();
-    //   } else if (event.key === "Enter") {
-    //     handleSubmit(event);
-    //   }
-    // });
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Escape") {
+        onClose();
+      } else if (event.key === "Enter") {
+        event.preventDefault();
+        console.log(username, password);
+        handleSubmit();
+      }
+    });
 
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
@@ -77,7 +78,7 @@ const LoginForm = ({
       <div className="loginFormContainer" ref={loginRef}>
         <div className="loginForm">
           <div className="closeButton" onClick={onClose}>
-            X
+            <IoIosCloseCircleOutline size={20} />
           </div>
           <div className="inputContainer">
             <form id="lcForm">
@@ -108,7 +109,11 @@ const LoginForm = ({
                   />
                 </div>
               ) : null}
-              <input type="submit" value="Submit" onClick={handleSubmit} />
+              <div className="submitContainer">
+                <div id="submitButton" onClick={handleSubmit}>
+                  Submit
+                </div>
+              </div>
             </form>
           </div>
         </div>

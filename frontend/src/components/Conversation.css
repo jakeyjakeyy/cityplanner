@@ -104,11 +104,12 @@
   font-size: 1.2rem;
   padding: 0.5rem 1rem;
   border-radius: 0.5rem 0 0 0.5rem;
-  background-color: var(--primary);
+  background-color: var(--secondary);
   resize: none;
   overflow: auto;
   box-shadow: 0 0 0.5rem rgba(0, 0, 0, 0.1);
   transition: all 0.2s ease-in-out;
+  color: var(--text);
   &:focus {
     border: 1px solid #7cdfce;
   }

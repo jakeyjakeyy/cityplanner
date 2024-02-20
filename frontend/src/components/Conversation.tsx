@@ -291,7 +291,7 @@ const Conversation = ({
       ) : (
         <div className="inputField">
           <div className="reset" onClick={resetConversation}>
-            <SlReload color="white" size={20} />
+            <SlReload color="black" size={20} />
           </div>
         </div>
       )}
