@@ -7,6 +7,9 @@ class Profile(models.Model):
 
 
 class Itinerary(models.Model):
+    class Meta:
+        verbose_name_plural = "Itineraries"  # Plural name for admin panel because "Itinerarys" drove me mad
+
     user = models.ForeignKey(User, null=True, blank=True, on_delete=models.SET_NULL)
     thread_id = models.TextField()
     location = models.TextField()

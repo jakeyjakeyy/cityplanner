@@ -55,7 +55,7 @@ const ItineraryHistory = ({
               strItinerary += item;
               return;
             }
-            strItinerary += item + " -> ";
+            strItinerary += item + ", ";
           });
           return (
             <div
