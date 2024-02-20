@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import DeleteOverlay from "./DeleteOverlay";
 import "./ItineraryHistory.css";
 import { FaTrash } from "react-icons/fa";
 
@@ -10,6 +11,9 @@ const ItineraryHistory = ({
   setMessage,
 }: any) => {
   const [itineraryHistory, setItineraryHistory] = useState<any[]>([]);
+  const [showDeleteOverlay, setShowDeleteOverlay] = useState(false);
+  const [targetID, setTargetID] = useState(0);
+  const [deleted, setDeleted] = useState([] as number[]);
 
   // Fetch itinerary history from backend
   useEffect(() => {
@@ -43,29 +47,29 @@ const ItineraryHistory = ({
   const historyDelete = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     e.stopPropagation();
     const index = Number(e.currentTarget.parentElement?.id);
-    const id = itineraryHistory[index].id;
-    fetch("http://localhost:8000/api/profile", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `JWT ${localStorage.getItem("token")}`,
-      },
-      body: JSON.stringify({ action: "delete", id }),
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        console.log(data);
-        let newItineraryHistory = [...itineraryHistory];
-        newItineraryHistory.splice(index, 1);
-        setItineraryHistory(newItineraryHistory);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    const item = itineraryHistory[index];
+    setTargetID(Number(item.id));
+    setShowDeleteOverlay(true);
   };
+
+  useEffect(() => {
+    if (deleted.length > 0) {
+      const newItineraryHistory = itineraryHistory.filter(
+        (item: any) => !deleted.includes(item.id)
+      );
+      setItineraryHistory(newItineraryHistory);
+    }
+  }, [deleted]);
 
   return (
     <div className="itineraryHistory">
+      {showDeleteOverlay && (
+        <DeleteOverlay
+          setShowDeleteOverlay={setShowDeleteOverlay}
+          targetID={targetID}
+          setDeleted={setDeleted}
+        />
+      )}
       <div className="itineraryHistoryHeader">
         <h2>Itinerary History</h2>
         <h4>User: {localStorage.getItem("username")}</h4>

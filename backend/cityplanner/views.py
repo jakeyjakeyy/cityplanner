@@ -277,7 +277,7 @@ class Profile(APIView):
             itineraries = models.Itinerary.objects.filter(user=user)
             data = []
             for itinerary in itineraries:
-                if itinerary.selections:
+                if itinerary.selections and not itinerary.hidden:
                     data.append(
                         {
                             "location": itinerary.location,
