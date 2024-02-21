@@ -213,6 +213,10 @@ function NewMap({
           options={{ styles: darkModeStyle }}
         >
           {Object.values(selections).map((selection: any, index: number) => {
+            console.log("selection", selection);
+            if (selection.skip) {
+              return;
+            }
             return (
               <Marker
                 lat={
