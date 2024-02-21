@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./App.css";
 import NewMap from "./components/MapNew";
 import Nav from "./components/Nav/Nav";
@@ -12,6 +12,22 @@ function App() {
   const [currentResultIndex, setCurrentResultIndex] = useState(-1);
   const [showHistory, setShowHistory] = useState(false);
   const [message, setMessage] = useState("");
+
+  useEffect(() => {
+    window.history.pushState({ showHistory }, "", "/");
+    const handlePopState = (event: PopStateEvent) => {
+      if (window.location.pathname === "/history") {
+        setShowHistory(true);
+      } else {
+        setShowHistory(false);
+      }
+    };
+    window.addEventListener("popstate", handlePopState);
+
+    return () => {
+      window.removeEventListener("popstate", handlePopState);
+    };
+  }, []);
 
   return (
     <div className="App">

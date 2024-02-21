@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import "./DeleteOverlay.css";
 
 const DeleteOverlay = ({ setShowDeleteOverlay, targetID, setDeleted }: any) => {
@@ -22,6 +22,15 @@ const DeleteOverlay = ({ setShowDeleteOverlay, targetID, setDeleted }: any) => {
         console.log(err);
       });
   };
+
+  useEffect(() => {
+    window.addEventListener("click", (e) => {
+      if (e.target == document.querySelector(".deleteOverlay")) {
+        setShowDeleteOverlay(false);
+      }
+    });
+  }, []);
+
   return (
     <div className="deleteOverlay">
       <div className="deleteOverlayContent">
@@ -29,11 +38,14 @@ const DeleteOverlay = ({ setShowDeleteOverlay, targetID, setDeleted }: any) => {
           Are you sure you want to delete this itinerary?
         </div>
         <div className="deleteOverlayButtons">
-          <div className="deleteOverlayButton" onClick={handleDelete}>
+          <div
+            className="deleteOverlayButton confirmDeleteButton"
+            onClick={handleDelete}
+          >
             Yes
           </div>
           <div
-            className="deleteOverlayButton"
+            className="deleteOverlayButton rejectDeleteButton"
             onClick={() => setShowDeleteOverlay(false)}
           >
             No

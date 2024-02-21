@@ -61,6 +61,10 @@ const ItineraryHistory = ({
     }
   }, [deleted]);
 
+  useEffect(() => {
+    window.history.pushState(null, "", "/history");
+  }, []);
+
   return (
     <div className="itineraryHistory">
       {showDeleteOverlay && (
