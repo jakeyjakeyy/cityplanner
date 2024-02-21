@@ -234,6 +234,12 @@ const Conversation = ({
     handlePick();
   };
 
+  useEffect(() => {
+    if (window.location.pathname == "/history") {
+      window.history.pushState(null, "", "/");
+    }
+  }, []);
+
   // debug
   useEffect(() => {
     console.log(newOrder);

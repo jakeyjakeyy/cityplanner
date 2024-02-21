@@ -62,7 +62,7 @@ const ItineraryHistory = ({
   }, [deleted]);
 
   useEffect(() => {
-    if (window.location.pathname !== "/history") {
+    if (window.location.pathname == "/") {
       window.history.pushState(null, "", "/history");
     }
   }, []);

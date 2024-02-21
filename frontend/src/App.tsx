@@ -18,6 +18,10 @@ function App() {
     const handlePopState = (event: PopStateEvent) => {
       if (window.location.pathname === "/history") {
         setShowHistory(true);
+        setCurrentResultIndex(-1);
+        setSelections({});
+        setItinerary([]);
+        setMessage("");
       } else {
         setShowHistory(false);
       }
