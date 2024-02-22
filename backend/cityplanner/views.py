@@ -111,13 +111,20 @@ class Search(APIView):
             resjson = res.json()
             if "_embedded" in resjson:
                 for event in resjson["_embedded"]["events"]:
-                    event["hourDiff"] = hourDiff.hourDiff(
-                        event["dates"]["start"]["dateTime"], "ticketmaster"
-                    )
-                    event["apiType"] = "ticketmaster"
+                    logger.info(event)
+                    try:
+                        event["hourDiff"] = hourDiff.hourDiff(
+                            event["dates"]["start"]["dateTime"], "ticketmaster"
+                        )
+                        event["apiType"] = "ticketmaster"
+                    except KeyError:
+                        continue
                 for event in resjson["_embedded"]["events"]:
-                    if event["hourDiff"] > 0:
-                        data.append(event)
+                    try:
+                        if event["hourDiff"] > 0:
+                            data.append(event)
+                    except KeyError:
+                        continue
 
             # logger.debug(data)
             # sort most recent events first and return retults

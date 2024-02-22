@@ -3,6 +3,7 @@ import GoogleMapReact from "google-map-react";
 import "./Map.css";
 import { FaMapMarkerAlt } from "react-icons/fa";
 import { FaUtensils } from "react-icons/fa6";
+import { dir } from "console";
 const apiKey = process.env.REACT_APP_GOOGLE_MAPS_API_KEY;
 
 const darkModeStyle = [
@@ -199,7 +200,7 @@ function NewMap({
         break;
       }
     }
-    console.log("selection", selection);
+    console.log("selections", selections);
     position = {
       lat: selection.location?.latitude
         ? selection.location.latitude
@@ -213,6 +214,7 @@ function NewMap({
         : selection._embedded.venues[0].location.longitude,
     };
 
+    let dirIndex = 0;
     return (
       <div className="mapContainer">
         <GoogleMapReact
@@ -222,10 +224,10 @@ function NewMap({
           options={{ styles: darkModeStyle }}
         >
           {Object.values(selections).map((selection: any, index: number) => {
-            console.log("selection", selection);
             if (selection.skip) {
               return;
             }
+            dirIndex++;
             return (
               <Marker
                 lat={
@@ -245,7 +247,7 @@ function NewMap({
                 color="white"
                 size={30}
                 text="Placeholder"
-                index={index + 1}
+                index={dirIndex}
               />
             );
           })}
