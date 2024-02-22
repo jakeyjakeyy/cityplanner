@@ -135,23 +135,25 @@ function NewMap({
       Object.keys(selections).length > 0 &&
       Object.keys(selections).length < Object.keys(itinerary).length
     ) {
-      // User has selected a location and is hovering over a new location
+      // User has selected (or skipped) a location and is hovering over a new location
       // Display the hovered location as the center marker, and the last selected location as the other marker
       let selection = Object.values(selections)[
         Object.keys(selections).length - 1
       ] as any;
-      positionOrigin = {
-        lat: selection.location?.latitude
-          ? selection.location.latitude
-          : selection.venue?.location.lat
-          ? selection.venue.location.lat
-          : selection._embedded.venues[0].location.latitude,
-        lng: selection.location?.longitude
-          ? selection.location.longitude
-          : selection.venue?.location.lon
-          ? selection.venue.location.lon
-          : selection._embedded.venues[0].location.longitude,
-      };
+      if (!selection.skip) {
+        positionOrigin = {
+          lat: selection.location?.latitude
+            ? selection.location.latitude
+            : selection.venue?.location.lat
+            ? selection.venue.location.lat
+            : selection._embedded.venues[0].location.latitude,
+          lng: selection.location?.longitude
+            ? selection.location.longitude
+            : selection.venue?.location.lon
+            ? selection.venue.location.lon
+            : selection._embedded.venues[0].location.longitude,
+        };
+      }
     }
     return (
       <div className="mapContainer">
@@ -189,7 +191,14 @@ function NewMap({
     // user has selected all locations and we will show markers for each stop
     let zoom = 15;
 
-    let selection = Object.values(selections)[0] as any;
+    let selection = null;
+    for (let i = 0; i < Object.keys(selections).length; i++) {
+      console.log("selections[itinerary[i]]", selections[itinerary[i]]);
+      if (!selections[itinerary[i]].skip) {
+        selection = selections[itinerary[i]];
+        break;
+      }
+    }
     console.log("selection", selection);
     position = {
       lat: selection.location?.latitude

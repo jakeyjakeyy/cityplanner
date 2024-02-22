@@ -190,6 +190,9 @@ const Conversation = ({
       let url = "https://www.google.com/maps/dir/";
       Object.keys(selections).forEach((key) => {
         let selection = selections[key];
+        if (selection.skip) {
+          return;
+        }
         if (selection.formattedAddress) {
           url += selection.formattedAddress + "/";
           return;
