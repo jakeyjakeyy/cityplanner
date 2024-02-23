@@ -91,7 +91,7 @@ const ConfirmItinerary = ({
 
   return (
     <div className="confirm-itinerary">
-      <GiConfirmed onClick={handleSubmit} />
+      <GiConfirmed onClick={handleSubmit} style={{ cursor: "pointer" }} />
       <div className="drag-delete">
         <DragDropContext onDragEnd={onDragEnd}>
           <Droppable droppableId="droppable">
