@@ -11,8 +11,7 @@ async function GetTokens(username: String, password: String) {
       if (
         data.detail === "No active account found with the given credentials"
       ) {
-        alert("Invalid username or password.");
-        return;
+        return "Invalid username or password.";
       }
       return data;
     })

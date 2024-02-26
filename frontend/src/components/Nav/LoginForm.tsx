@@ -22,6 +22,10 @@ const LoginForm = ({
   };
 
   const handleSubmit = async () => {
+    if (!username || !password) {
+      alert("Please enter a username and password");
+      return;
+    }
     if (register && password !== password2) {
       alert("Passwords do not match");
       return;
@@ -36,9 +40,17 @@ const LoginForm = ({
       }
     }
 
-    console.log("username: " + username);
-
     const tokens = await GetTokens(username, password);
+    if (tokens === "Invalid username or password.") {
+      alert("Invalid username or password.");
+      setUsername("");
+      setPassword("");
+      const inputElement = loginRef.current?.querySelector(
+        "#formUsername input"
+      ) as HTMLInputElement;
+      inputElement?.focus();
+      return;
+    }
     localStorage.setItem("token", tokens.access);
     localStorage.setItem("refresh", tokens.refresh);
     localStorage.setItem("username", username);
@@ -61,10 +73,6 @@ const LoginForm = ({
     document.addEventListener("keydown", (event) => {
       if (event.key === "Escape") {
         onClose();
-      } else if (event.key === "Enter") {
-        event.preventDefault();
-        console.log(username, password);
-        handleSubmit();
       }
     });
 
@@ -72,6 +80,25 @@ const LoginForm = ({
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
+
+  useEffect(() => {
+    // Form doesn't submit on enter keypress without this in a useEffect specifically
+    // for username and password. Otherwise the strings were resetting (not sure why)
+    const keydownHandler = (event: any) => {
+      if (event.key === "Escape") {
+        onClose();
+      } else if (event.key === "Enter") {
+        event.preventDefault();
+        handleSubmit();
+      }
+    };
+
+    document.addEventListener("keydown", keydownHandler);
+
+    return () => {
+      document.removeEventListener("keydown", keydownHandler);
+    };
+  }, [username, password]);
 
   return (
     <div className="loginFormOverlay">
@@ -81,7 +108,7 @@ const LoginForm = ({
             <IoIosCloseCircleOutline size={20} />
           </div>
           <div className="inputContainer">
-            <form id="lcForm">
+            <form id="lcForm" onSubmit={handleSubmit}>
               <div id="formUsername">
                 Username:
                 <input
@@ -110,6 +137,7 @@ const LoginForm = ({
                 </div>
               ) : null}
               <div className="submitContainer">
+                <input type="submit" style={{ display: "none" }} />
                 <div id="submitButton" onClick={handleSubmit}>
                   Submit
                 </div>
