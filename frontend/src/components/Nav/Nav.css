@@ -8,8 +8,19 @@
   z-index: 100;
 }
 
-.userIcon {
+.rightNav {
+  display: flex;
+  flex-direction: row;
   margin-left: auto;
+}
+
+.leftNav {
+  display: flex;
+  flex-direction: row;
+  margin-right: auto;
+}
+
+.userIcon {
   padding: 0.5rem 1rem 0 0;
   cursor: pointer;
 }
@@ -19,7 +30,6 @@
   top: 0;
   padding: 0.5rem 0 0 1rem;
   cursor: pointer;
-  position: absolute;
 }
 
 .dropdownParent {

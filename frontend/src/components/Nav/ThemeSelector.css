@@ -1,0 +1,12 @@
+.ThemeSelector {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 1rem;
+}
+
+#lightSelectorIcon,
+#darkSelectorIcon {
+  color: var(--text);
+  cursor: pointer;
+}

@@ -4,6 +4,7 @@ import { FaUser } from "react-icons/fa";
 import { MdHome } from "react-icons/md";
 import NavDropdown from "./NavDropdown";
 import LoginForm from "./LoginForm";
+import ThemeSelector from "./ThemeSelector";
 
 const Nav = ({
   showHistory,
@@ -27,32 +28,37 @@ const Nav = ({
 
   return (
     <div className="navContainer">
-      <div className="homeIcon" onClick={goHome}>
-        <MdHome size={20} />
-      </div>
-      <div className="dropdownParent">
-        <div className="userIcon" onClick={toggleNav} ref={userIconRef}>
-          <FaUser size={20} />
+      <div className="leftNav">
+        <div className="homeIcon" onClick={goHome}>
+          <MdHome size={20} />
         </div>
-        {showDropdown ? (
-          <NavDropdown
-            showLoginForm={showLoginForm}
-            setShowLoginForm={setShowLoginForm}
-            setShowDropdown={setShowDropdown}
-            setRegister={setRegister}
-            userIconRef={userIconRef}
-            showHistory={showHistory}
-            setShowHistory={setShowHistory}
-          />
-        ) : null}
-        {showLoginForm ? (
-          <LoginForm
-            setShowLoginForm={setShowLoginForm}
-            toggleNav={toggleNav}
-            register={register}
-            setRegister={setRegister}
-          />
-        ) : null}
+      </div>
+      <div className="rightNav">
+        <ThemeSelector />
+        <div className="dropdownParent">
+          <div className="userIcon" onClick={toggleNav} ref={userIconRef}>
+            <FaUser size={20} />
+          </div>
+          {showDropdown ? (
+            <NavDropdown
+              showLoginForm={showLoginForm}
+              setShowLoginForm={setShowLoginForm}
+              setShowDropdown={setShowDropdown}
+              setRegister={setRegister}
+              userIconRef={userIconRef}
+              showHistory={showHistory}
+              setShowHistory={setShowHistory}
+            />
+          ) : null}
+          {showLoginForm ? (
+            <LoginForm
+              setShowLoginForm={setShowLoginForm}
+              toggleNav={toggleNav}
+              register={register}
+              setRegister={setRegister}
+            />
+          ) : null}
+        </div>
       </div>
     </div>
   );
