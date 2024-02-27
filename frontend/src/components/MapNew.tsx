@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import GoogleMapReact from "google-map-react";
 import "./Map.css";
 import { FaMapMarkerAlt } from "react-icons/fa";
@@ -100,6 +100,19 @@ function NewMap({
   itinerary,
   currentResultIndex,
 }: any) {
+  const [style, setStyle] = useState("light");
+  useEffect(() => {
+    const handleStorageChange = () => {
+      const theme = localStorage.getItem("theme");
+      setStyle(theme === "dark" ? "dark" : "light");
+    };
+
+    window.addEventListener("storage", handleStorageChange);
+
+    return () => {
+      window.removeEventListener("storage", handleStorageChange);
+    };
+  }, []);
   let positionOrigin: any = null;
   // Default to Portland, OR
   let position = {
@@ -163,7 +176,7 @@ function NewMap({
             bootstrapURLKeys={{ key: apiKey || "" }}
             center={position}
             defaultZoom={15}
-            options={{ styles: darkModeStyle }}
+            options={{ styles: style === "dark" ? darkModeStyle : null }}
           >
             <Marker
               lat={position.lat}
