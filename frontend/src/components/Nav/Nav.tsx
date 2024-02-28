@@ -1,7 +1,7 @@
 import React, { useState, useRef } from "react";
 import "./Nav.css";
-import { FaUser } from "react-icons/fa";
-import { MdHome } from "react-icons/md";
+import { FaUser } from "react-icons/fa6";
+import { FaHome } from "react-icons/fa";
 import NavDropdown from "./NavDropdown";
 import LoginForm from "./LoginForm";
 import ThemeSelector from "./ThemeSelector";
@@ -30,15 +30,13 @@ const Nav = ({
     <div className="navContainer">
       <div className="leftNav">
         <div className="homeIcon" onClick={goHome}>
-          <MdHome size={20} />
+          <FaHome size={20} />
         </div>
       </div>
       <div className="rightNav">
         <ThemeSelector />
-        <div className="dropdownParent">
-          <div className="userIcon" onClick={toggleNav} ref={userIconRef}>
-            <FaUser size={20} />
-          </div>
+        <div className="userIcon" onClick={toggleNav} ref={userIconRef}>
+          <FaUser size={20} />
           {showDropdown ? (
             <NavDropdown
               showLoginForm={showLoginForm}
