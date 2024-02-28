@@ -2,7 +2,9 @@ import React, { useState, useEffect } from "react";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import Select from "react-select";
 import { GiConfirmed } from "react-icons/gi";
+import { IoIosCloseCircleOutline } from "react-icons/io";
 import "./ConfirmItinerary.css";
+import { IoCloseCircleOutline } from "react-icons/io5";
 
 const ConfirmItinerary = ({
   itinerary,
@@ -91,7 +93,11 @@ const ConfirmItinerary = ({
 
   return (
     <div className="confirm-itinerary">
-      <GiConfirmed onClick={handleSubmit} style={{ cursor: "pointer" }} />
+      <GiConfirmed
+        onClick={handleSubmit}
+        style={{ cursor: "pointer", margin: "1rem 0 0.5rem 0" }}
+        size={20}
+      />
       <div className="drag-delete">
         <DragDropContext onDragEnd={onDragEnd}>
           <Droppable droppableId="droppable">
@@ -124,7 +130,12 @@ const ConfirmItinerary = ({
                               ...provided,
                               color: "black",
                             }),
+                            menuPortal: (base) => ({
+                              ...base,
+                              position: "absolute",
+                            }),
                           }}
+                          menuPortalTarget={document.body}
                         />
                       </div>
                     )}
@@ -138,16 +149,16 @@ const ConfirmItinerary = ({
         <div className="delete-selection">
           {objItinerary.map((activity: any, index: number) => (
             <div className="delete-button" key={activity.id}>
-              <button
+              <IoCloseCircleOutline
                 onClick={() => {
                   let tempItinerary = [...objItinerary];
                   tempItinerary.splice(index, 1);
                   setObjItinerary(tempItinerary);
                   updateOrder(tempItinerary);
                 }}
-              >
-                X
-              </button>
+                style={{ cursor: "pointer", paddingLeft: "0.5rem" }}
+                size={20}
+              />
             </div>
           ))}
         </div>

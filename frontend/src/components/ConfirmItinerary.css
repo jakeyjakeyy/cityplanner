@@ -1,8 +1,17 @@
+.confirm-itinerary {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: fit-content;
+}
+
 .drag-delete {
   display: flex;
   flex-direction: row;
   justify-content: center;
   align-items: center;
+  height: fit-content;
 }
 
 .delete-selection {
@@ -10,4 +19,15 @@
   flex-direction: column;
   justify-content: space-around;
   align-self: stretch;
+}
+
+.delete-button {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  &:hover {
+    animation: submitDashRight 0.2s ease-in-out;
+  }
 }
