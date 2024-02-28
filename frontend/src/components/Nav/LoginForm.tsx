@@ -21,6 +21,10 @@ const LoginForm = ({
     setRegister(false);
   };
 
+  useEffect(() => {
+    console.log(password2);
+  }, [password2]);
+
   const handleSubmit = async () => {
     if (!username || !password) {
       alert("Please enter a username and password");
@@ -87,9 +91,6 @@ const LoginForm = ({
     const keydownHandler = (event: any) => {
       if (event.key === "Escape") {
         onClose();
-      } else if (event.key === "Enter") {
-        event.preventDefault();
-        handleSubmit();
       }
     };
 
@@ -108,12 +109,19 @@ const LoginForm = ({
             <IoIosCloseCircleOutline size={20} />
           </div>
           <div className="inputContainer">
-            <form id="lcForm" onSubmit={handleSubmit}>
+            <form
+              id="lcForm"
+              onSubmit={(event) => {
+                event.preventDefault();
+                handleSubmit();
+              }}
+            >
               <div id="formUsername">
                 Username:
                 <input
                   type="text"
                   value={username}
+                  id="inputField"
                   autoFocus
                   onChange={(event) => setUsername(event.target.value)}
                 />
@@ -122,6 +130,7 @@ const LoginForm = ({
                 Password:
                 <input
                   type="password"
+                  id="inputField"
                   value={password}
                   onChange={(event) => setPassword(event.target.value)}
                 />
@@ -131,6 +140,7 @@ const LoginForm = ({
                   Confirm Password:
                   <input
                     type="password"
+                    id="inputField"
                     value={password2}
                     onChange={(event) => setPassword2(event.target.value)}
                   />

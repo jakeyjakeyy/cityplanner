@@ -3,6 +3,8 @@ import "./NavDropdown.css";
 import { FaHistory } from "react-icons/fa";
 import { FaHome } from "react-icons/fa";
 import { FaSignOutAlt } from "react-icons/fa";
+import { FaSignInAlt } from "react-icons/fa";
+import { FaWpforms } from "react-icons/fa";
 import RefreshToken from "../../utils/refreshtoken";
 
 const NavDropdown = ({
@@ -92,9 +94,15 @@ const NavDropdown = ({
       ) : (
         <div className="navDropdownItemContainer">
           <div className="navDropdownItem" onClick={handleShowLoginForm}>
+            <div className="navDropdownIcon">
+              <FaSignInAlt size={14} />
+            </div>
             Login
           </div>
           <div className="navDropdownItem" onClick={handleShowRegisterForm}>
+            <div className="navDropdownIcon">
+              <FaWpforms size={14} />
+            </div>
             Register
           </div>
         </div>

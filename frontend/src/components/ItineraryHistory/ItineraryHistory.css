@@ -3,7 +3,8 @@
   flex-direction: column;
   align-items: center;
   width: 100vw;
-  min-height: 100vh;
+  min-height: 95vh;
+  overflow: scroll;
 }
 
 .itineraryHistoryItem {
@@ -39,5 +40,16 @@
   }
   75% {
     transform: rotate(5deg);
+  }
+}
+
+@media (max-width: 768px) {
+  .itineraryHistory {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .itineraryHistoryItem {
+    width: 90vw;
   }
 }
