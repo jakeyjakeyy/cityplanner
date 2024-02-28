@@ -5,9 +5,15 @@ import { LuMoonStar } from "react-icons/lu";
 
 const ThemeSelector = () => {
   // Init
-  localStorage.setItem("theme", "light");
-  const [colorTheme, setColorTheme] = useState("light");
   const root = document.getElementById("root") as HTMLElement;
+  if (localStorage.getItem("theme") === null) {
+    localStorage.setItem("theme", "light");
+  }
+  const [colorTheme, setColorTheme] = useState(
+    localStorage.getItem("theme") || "light"
+  );
+
+  root.classList.add(colorTheme);
 
   const toggleTheme = () => {
     if (colorTheme === "light") {

@@ -139,3 +139,11 @@ ol {
   text-align: left;
   line-height: 1.5rem;
 }
+
+.titleContainer {
+  margin-bottom: 1rem;
+}
+
+#titleText {
+  margin-bottom: 1rem;
+}

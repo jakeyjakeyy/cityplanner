@@ -4,6 +4,7 @@ import ConversationAPI from "../utils/conversationApi";
 import searchItinerary from "../utils/searchItinerary";
 import SearchResultCardContainer from "./Card/SearchResultsContainer";
 import ConfirmItinerary from "./ConfirmItinerary";
+import QueryScroller from "./QueryScroller";
 import "./Conversation.css";
 import { SlReload } from "react-icons/sl";
 import { IoSendSharp } from "react-icons/io5";
@@ -259,7 +260,7 @@ const Conversation = ({
       {searchResults == null && message === "" ? (
         <div className="titleContainer">
           <h1 id="titleText">City Trip Planner</h1>
-          <p>"Fun night with friends in Portland"</p>
+          <QueryScroller />
         </div>
       ) : (
         ""
