@@ -231,25 +231,19 @@ class Conversation(APIView):
             function_arguments = json.loads(
                 run.required_action.submit_tool_outputs.tool_calls[0].function.arguments
             )
-            logger.info(function_arguments)
-
-            itinerary = []
-            i = 0
-            for location_type in function_arguments["locationTypes"].split(","):
-                itinerary.append(location_type)
-                i += 1
             # Initialize to database
             itinerary_db = models.Itinerary.objects.create(
                 user=user,
                 thread_id=thread.id,
                 location=function_arguments["location"],
-                itinerary=itinerary,
+                itinerary=function_arguments["locationTypes"],
             )
             itinerary_db.save()
             return Response(
                 {
                     "location": function_arguments["location"],
-                    "itinerary": itinerary,
+                    "itinerary": function_arguments["locationTypes"],
+                    "alternates": function_arguments["alternateLocations"],
                     "thread": thread.id,
                 },
                 status=200,

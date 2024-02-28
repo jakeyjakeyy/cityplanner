@@ -13,7 +13,9 @@ const ConfirmItinerary = ({
   currentResultIndex,
   setCurrentResultIndex,
   setNewOrder,
+  alternateLocations,
 }: any) => {
+  console.log(alternateLocations);
   const [objItinerary, setObjItinerary] = useState<any>([]);
   const defaultOptions = ["Arcade", "Zoo", "Museum"].map((option, index) => ({
     value: index,
@@ -26,10 +28,18 @@ const ConfirmItinerary = ({
       itinerary.map((location: string, index: number) => ({
         id: `location-${index}`,
         name: location,
-        similarItems: [{ value: location, label: location }, ...defaultOptions],
+        similarItems: [
+          { value: location, label: location },
+          ...(alternateLocations[location]
+            ? alternateLocations[location].map((loc: string) => ({
+                value: loc,
+                label: loc,
+              }))
+            : []),
+        ],
       }))
     );
-  }, []);
+  }, [itinerary, alternateLocations]);
 
   const onDragEnd = (result: any) => {
     // Check if the item was reordered

@@ -39,6 +39,7 @@ const Conversation = ({
   const [userActivelyChangingItinerary, setUserActivelyChangingItinerary] =
     useState(false);
   const [newOrder, setNewOrder] = useState<any>([]);
+  const [alternateLocations, setAlternateLocations] = useState<any>({});
 
   const resetConversation = () => {
     setInput("");
@@ -83,6 +84,7 @@ const Conversation = ({
         setItinerary(response.itinerary);
         setLocation(response.location);
         setThread(response.thread);
+        setAlternateLocations(response.alternates);
 
         // Between these steps before we update currentResultIndex(which will start the search process), we will let the user review the itinerary and make changes
         setUserActivelyChangingItinerary(true);
@@ -324,6 +326,7 @@ const Conversation = ({
           currentResultIndex={currentResultIndex}
           setCurrentResultIndex={setCurrentResultIndex}
           setNewOrder={setNewOrder}
+          alternateLocations={alternateLocations}
         />
       ) : (
         ""
