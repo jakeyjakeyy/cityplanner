@@ -100,7 +100,7 @@ function NewMap({
   itinerary,
   currentResultIndex,
 }: any) {
-  const [style, setStyle] = useState("light");
+  const [style, setStyle] = useState(localStorage.getItem("theme") || "light");
   useEffect(() => {
     const handleStorageChange = () => {
       const theme = localStorage.getItem("theme");

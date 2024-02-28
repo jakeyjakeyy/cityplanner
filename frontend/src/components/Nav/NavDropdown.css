@@ -1,15 +1,21 @@
 .navDropdownContainer {
-  position: absolute;
+  position: fixed;
   z-index: 999;
   background-color: var(--secondary);
   border-radius: 14px;
-  transform: translate(-70px, 30px);
+  top: 0;
+  right: 5px;
+  transform: translate(0px, 5vh);
+  color: var(--text);
+  min-width: 5vw;
+  text-align: left;
 }
 
 .navDropdownItem {
   display: flex;
   flex-direction: row;
-  justify-content: center;
+  justify-content: start;
+  align-items: center;
   padding: 0.5rem 1rem;
   cursor: pointer;
   transition: all 0.2s ease-in-out;
@@ -17,4 +23,10 @@
   &:hover {
     color: #7cdfce;
   }
+}
+
+.navDropdownIcon {
+  display: flex;
+  align-items: center;
+  margin-right: 0.5rem;
 }

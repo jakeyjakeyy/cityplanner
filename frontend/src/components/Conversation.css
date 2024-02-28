@@ -8,13 +8,17 @@
   border-radius: 0px 60px 60px 0;
   background-color: var(--background);
   contain: content;
-  overflow: hidden;
+  overflow-y: hidden;
 }
 
 @media (max-width: 768px) {
   .conversationContainer {
     min-width: 100vw;
     min-height: 60vh;
+    border-radius: 0;
+  }
+  .conversationContainerNoMap {
+    min-width: 100vw;
     border-radius: 0;
   }
 }
@@ -25,6 +29,7 @@
   flex-direction: column;
   height: 100%;
   overflow-x: hidden;
+  margin-bottom: 5vh;
 }
 
 .inputField {
@@ -132,6 +137,7 @@
   overflow-y: scroll;
   font-size: 1.2rem;
   line-height: 1rem;
+  text-align: start;
 }
 
 .placeName {

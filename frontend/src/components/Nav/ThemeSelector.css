@@ -8,6 +8,6 @@
 
 #lightSelectorIcon,
 #darkSelectorIcon {
-  color: var(--text);
+  color: var(--text2);
   cursor: pointer;
 }

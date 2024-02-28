@@ -341,13 +341,13 @@ const Conversation = ({
           className="undo"
           onClick={() => setCurrentResultIndex(currentResultIndex - 1)}
         >
-          <GrUndo color="white" size={20} />
+          <GrUndo color="white" size={20} style={{ cursor: "pointer" }} />
         </div>
       ) : (
         ""
       )}
       {currentResultIndex >= 0 && currentResultIndex < itinerary.length ? (
-        <div className="next" onClick={skipItem}>
+        <div className="next" onClick={skipItem} style={{ cursor: "pointer" }}>
           <FaArrowCircleRight color="white" size={20} />
         </div>
       ) : (

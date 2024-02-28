@@ -1,5 +1,8 @@
 import React, { useEffect, useRef } from "react";
 import "./NavDropdown.css";
+import { FaHistory } from "react-icons/fa";
+import { FaHome } from "react-icons/fa";
+import { FaSignOutAlt } from "react-icons/fa";
 import RefreshToken from "../../utils/refreshtoken";
 
 const NavDropdown = ({
@@ -74,9 +77,15 @@ const NavDropdown = ({
       {localStorage.getItem("token") ? (
         <div className="navDropdownItemContainer">
           <div className="navDropdownItem" onClick={handleHistory}>
+            <div className="navDropdownIcon">
+              {showHistory ? <FaHome size={14} /> : <FaHistory size={14} />}
+            </div>
             {showHistory ? "Home" : "History"}
           </div>
           <div className="navDropdownItem" onClick={handleLogout}>
+            <div className="navDropdownIcon">
+              <FaSignOutAlt size={14} />
+            </div>
             Logout
           </div>
         </div>
