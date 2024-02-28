@@ -189,7 +189,7 @@ function NewMap({
               <Marker
                 lat={positionOrigin.lat}
                 lng={positionOrigin.lng}
-                color="white"
+                color="red"
                 size={30}
                 text="Placeholder"
               />
@@ -234,7 +234,7 @@ function NewMap({
           bootstrapURLKeys={{ key: apiKey || "" }}
           defaultCenter={position}
           defaultZoom={15}
-          options={{ styles: darkModeStyle }}
+          options={{ styles: style === "dark" ? darkModeStyle : null }}
         >
           {Object.values(selections).map((selection: any, index: number) => {
             if (selection.skip) {
@@ -257,7 +257,7 @@ function NewMap({
                     ? selection.venue.location.lon
                     : selection._embedded.venues[0].location.longitude
                 }
-                color="white"
+                color="red"
                 size={30}
                 text="Placeholder"
                 index={dirIndex}

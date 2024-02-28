@@ -1,9 +1,9 @@
 .navDropdownContainer {
+  position: absolute;
   z-index: 999;
-  margin-left: auto;
   background-color: var(--secondary);
   border-radius: 14px;
-  margin: 0.5rem 1rem;
+  transform: translate(-70px, 30px);
 }
 
 .navDropdownItem {
