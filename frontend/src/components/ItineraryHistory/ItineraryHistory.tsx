@@ -3,6 +3,8 @@ import DeleteOverlay from "./DeleteOverlay";
 import "./ItineraryHistory.css";
 import { FaTrash } from "react-icons/fa";
 
+const RESULTS_PER_PAGE = 5;
+
 const ItineraryHistory = ({
   setSelections,
   setCurrentResultIndex,
@@ -14,6 +16,8 @@ const ItineraryHistory = ({
   const [showDeleteOverlay, setShowDeleteOverlay] = useState(false);
   const [targetID, setTargetID] = useState(0);
   const [deleted, setDeleted] = useState([] as number[]);
+  const [page, setPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(0);
 
   // Fetch itinerary history from backend
   useEffect(() => {
@@ -29,6 +33,7 @@ const ItineraryHistory = ({
       .then((data) => {
         console.log(data.itineraries);
         setItineraryHistory(data.itineraries);
+        setTotalPages(Math.ceil(data.itineraries.length / RESULTS_PER_PAGE));
       })
       .catch((err) => {
         console.log(err);
@@ -81,8 +86,44 @@ const ItineraryHistory = ({
         <h4>User: {localStorage.getItem("username")}</h4>
       </div>
       <div className="itineraryHistoryContainer">
+        <div className="pagination">
+          <button
+            className={
+              page > 1 ? "paginationButton" : "paginationButtonDisabled"
+            }
+            onClick={() => {
+              if (page > 1) {
+                setPage(page - 1);
+              }
+            }}
+          >
+            Previous
+          </button>
+          <div className="pageInfo">
+            Page {page} of {totalPages}
+          </div>
+          <button
+            className={
+              page < totalPages
+                ? "paginationButton"
+                : "paginationButtonDisabled"
+            }
+            onClick={() => {
+              if (page < totalPages) {
+                setPage(page + 1);
+              }
+            }}
+          >
+            Next
+          </button>
+        </div>
         {itineraryHistory.map((itinerary: any, index: number) => {
           // Convert date to local time
+          if (
+            index > RESULTS_PER_PAGE * page - 1 ||
+            index < RESULTS_PER_PAGE * page - RESULTS_PER_PAGE
+          )
+            return;
           const date = new Date(itinerary.date);
           const localDate = date.toLocaleString();
           let strItinerary = "";

@@ -21,10 +21,6 @@ const LoginForm = ({
     setRegister(false);
   };
 
-  useEffect(() => {
-    console.log(password2);
-  }, [password2]);
-
   const handleSubmit = async () => {
     if (!username || !password) {
       alert("Please enter a username and password");
