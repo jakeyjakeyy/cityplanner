@@ -100,7 +100,12 @@ const Conversation = ({
 
   // User selects preferred place from search results
   const handleSelection = (event: any) => {
-    const place = searchResults?.searchResults?.places[event.target.id];
+    let place = null;
+    if (typeof event === "number") {
+      place = searchResults?.searchResults.places[event];
+    } else {
+      place = searchResults?.searchResults?.places[event.target.id];
+    }
 
     if (place) {
       let newSelections = selections;
@@ -365,15 +370,36 @@ const Conversation = ({
         <div
           className="undo"
           onClick={() => setCurrentResultIndex(currentResultIndex - 1)}
+          tabIndex={0}
+          onKeyDown={(e) => {
+            e.key === "Enter" && setCurrentResultIndex(currentResultIndex - 1);
+          }}
         >
-          <GrUndo color="white" size={20} style={{ cursor: "pointer" }} />
+          <GrUndo
+            color="white"
+            size={20}
+            style={{ cursor: "pointer" }}
+            aria-label="Undo Selection"
+          />
         </div>
       ) : (
         ""
       )}
       {currentResultIndex >= 0 && currentResultIndex < itinerary.length ? (
-        <div className="next" onClick={skipItem} style={{ cursor: "pointer" }}>
-          <FaArrowCircleRight color="white" size={20} />
+        <div
+          className="next"
+          onClick={skipItem}
+          style={{ cursor: "pointer" }}
+          tabIndex={0}
+          onKeyDown={(e) => {
+            e.key === "Enter" && skipItem();
+          }}
+        >
+          <FaArrowCircleRight
+            color="white"
+            size={20}
+            aria-label="Skip Selection"
+          />
         </div>
       ) : (
         ""

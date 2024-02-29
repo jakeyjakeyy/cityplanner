@@ -58,6 +58,10 @@ const SearchResultCardContainer = ({
           onClick={handleSelection}
           id={searchResults?.searchResults?.places?.indexOf(place)?.toString()}
           onMouseEnter={() => handleMouseEnter(index, "place")}
+          tabIndex={0}
+          onKeyDown={(e) => {
+            e.key === "Enter" && handleSelection(index);
+          }}
         >
           <SearchResultCard item={place} type="place" index={index} />
         </div>
