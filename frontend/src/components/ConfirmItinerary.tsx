@@ -107,6 +107,11 @@ const ConfirmItinerary = ({
         onClick={handleSubmit}
         style={{ cursor: "pointer", margin: "1rem 0 0.5rem 0" }}
         size={20}
+        aria-label="Confirm Itinerary"
+        tabIndex={0}
+        onKeyDown={(e) => {
+          e.key === "Enter" && handleSubmit();
+        }}
       />
       <div className="drag-delete">
         <DragDropContext onDragEnd={onDragEnd}>
@@ -168,6 +173,17 @@ const ConfirmItinerary = ({
                 }}
                 style={{ cursor: "pointer", paddingLeft: "0.5rem" }}
                 size={20}
+                aria-label="Delete Activity"
+                tabIndex={0}
+                onKeyDown={(e) => {
+                  e.key === "Enter" &&
+                    (() => {
+                      let tempItinerary = [...objItinerary];
+                      tempItinerary.splice(index, 1);
+                      setObjItinerary(tempItinerary);
+                      updateOrder(tempItinerary);
+                    })();
+                }}
               />
             </div>
           ))}

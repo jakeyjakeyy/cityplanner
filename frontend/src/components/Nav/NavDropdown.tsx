@@ -78,30 +78,62 @@ const NavDropdown = ({
     <div className="navDropdownContainer" ref={dropdownRef}>
       {localStorage.getItem("token") ? (
         <div className="navDropdownItemContainer">
-          <div className="navDropdownItem" onClick={handleHistory}>
+          <div
+            className="navDropdownItem"
+            onClick={handleHistory}
+            tabIndex={0}
+            onKeyDown={(e) => {
+              e.key === "Enter" && handleHistory();
+            }}
+          >
             <div className="navDropdownIcon">
-              {showHistory ? <FaHome size={14} /> : <FaHistory size={14} />}
+              {showHistory ? (
+                <FaHome size={14} aria-label="Home Icon" />
+              ) : (
+                <FaHistory size={14} aria-label="History Icon" />
+              )}
             </div>
             {showHistory ? "Home" : "History"}
           </div>
-          <div className="navDropdownItem" onClick={handleLogout}>
+          <div
+            className="navDropdownItem"
+            onClick={handleLogout}
+            tabIndex={0}
+            onKeyDown={(e) => {
+              e.key === "Enter" && handleLogout();
+            }}
+          >
             <div className="navDropdownIcon">
-              <FaSignOutAlt size={14} />
+              <FaSignOutAlt size={14} aria-label="Logout" />
             </div>
             Logout
           </div>
         </div>
       ) : (
         <div className="navDropdownItemContainer">
-          <div className="navDropdownItem" onClick={handleShowLoginForm}>
+          <div
+            className="navDropdownItem"
+            onClick={handleShowLoginForm}
+            tabIndex={0}
+            onKeyDown={(e) => {
+              e.key === "Enter" && handleShowLoginForm();
+            }}
+          >
             <div className="navDropdownIcon">
-              <FaSignInAlt size={14} />
+              <FaSignInAlt size={14} aria-label="Sign In" />
             </div>
             Login
           </div>
-          <div className="navDropdownItem" onClick={handleShowRegisterForm}>
+          <div
+            className="navDropdownItem"
+            onClick={handleShowRegisterForm}
+            tabIndex={0}
+            onKeyDown={(e) => {
+              e.key === "Enter" && handleShowRegisterForm();
+            }}
+          >
             <div className="navDropdownIcon">
-              <FaWpforms size={14} />
+              <FaWpforms size={14} aria-label="Register" />
             </div>
             Register
           </div>

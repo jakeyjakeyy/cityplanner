@@ -29,14 +29,30 @@ const Nav = ({
   return (
     <div className="navContainer">
       <div className="leftNav">
-        <div className="homeIcon" onClick={goHome}>
-          <FaHome size={20} />
+        <div
+          className="homeIcon"
+          onClick={goHome}
+          aria-label="Home"
+          tabIndex={0}
+          onKeyDown={(e) => {
+            e.key === "Enter" && goHome();
+          }}
+        >
+          <FaHome size={20} aria-label="Home" />
         </div>
       </div>
       <div className="rightNav">
         <ThemeSelector />
-        <div className="userIcon" onClick={toggleNav} ref={userIconRef}>
-          <FaUser size={20} />
+        <div
+          className="userIcon"
+          onClick={toggleNav}
+          ref={userIconRef}
+          tabIndex={0}
+          onKeyDown={(e) => {
+            e.key === "Enter" && toggleNav();
+          }}
+        >
+          <FaUser size={20} aria-label="UserMenu" />
           {showDropdown ? (
             <NavDropdown
               showLoginForm={showLoginForm}

@@ -100,8 +100,6 @@ const Conversation = ({
 
   // User selects preferred place from search results
   const handleSelection = (event: any) => {
-    event.preventDefault();
-    event.stopPropagation();
     const place = searchResults?.searchResults?.places[event.target.id];
 
     if (place) {
@@ -281,6 +279,7 @@ const Conversation = ({
               <input
                 id="input"
                 type="text"
+                aria-label="Query Input"
                 value={input}
                 onChange={(event) => setInput(event.target.value)}
                 onKeyDown={(event) => {
@@ -291,18 +290,44 @@ const Conversation = ({
               />
             </div>
             <div className="inputIconContainer">
-              <div className="submit" onClick={handleSubmit}>
-                <IoSendSharp color="black" size={20} />
+              <div
+                className="submit"
+                onClick={handleSubmit}
+                tabIndex={0}
+                onKeyDown={(e) => {
+                  e.key === "Enter" && handleSubmit(e);
+                }}
+              >
+                <IoSendSharp color="black" size={20} aria-label="Submit" />
               </div>
-              <div className="reset" onClick={resetConversation}>
-                <SlReload color="black" size={20} />
+              <div
+                className="reset"
+                onClick={resetConversation}
+                tabIndex={0}
+                onKeyDown={(e) => {
+                  e.key === "Enter" && resetConversation();
+                }}
+              >
+                <SlReload
+                  color="black"
+                  size={20}
+                  aria-label="Reset Conversation"
+                />
               </div>
             </div>
           </div>
         </div>
       ) : (
         <div className="inputField">
-          <div className="reset" onClick={resetConversation}>
+          <div
+            className="reset"
+            onClick={resetConversation}
+            aria-label="Reset Conversation"
+            tabIndex={0}
+            onKeyDown={(e) => {
+              e.key === "Enter" && resetConversation();
+            }}
+          >
             <SlReload size={20} />
           </div>
         </div>

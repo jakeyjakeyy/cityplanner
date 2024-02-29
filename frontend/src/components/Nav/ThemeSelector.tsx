@@ -32,11 +32,22 @@ const ThemeSelector = () => {
   };
 
   return (
-    <div className="ThemeSelector" onClick={toggleTheme}>
+    <div
+      className="ThemeSelector"
+      onClick={toggleTheme}
+      tabIndex={0}
+      onKeyDown={(e) => {
+        e.key === "Enter" && toggleTheme();
+      }}
+    >
       {colorTheme === "dark" ? (
-        <FiSun id={"lightSelectorIcon"} size={20} />
+        <FiSun id={"lightSelectorIcon"} size={20} aria-label="Theme Selector" />
       ) : (
-        <LuMoonStar id={"darkSelectorIcon"} size={20} />
+        <LuMoonStar
+          id={"darkSelectorIcon"}
+          size={20}
+          aria-label="Theme Selector"
+        />
       )}
     </div>
   );

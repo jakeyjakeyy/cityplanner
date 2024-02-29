@@ -40,8 +40,13 @@ const ItineraryHistory = ({
       });
   }, []);
 
-  const handleSelect = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
-    const itinerary = itineraryHistory[Number(e.currentTarget.id)];
+  const handleSelect = (e: any) => {
+    let itinerary = null;
+    if (typeof e === "number") {
+      itinerary = itineraryHistory[e];
+    } else {
+      itinerary = itineraryHistory[Number(e.currentTarget.id)];
+    }
     setSelections(itinerary.selections);
     setItinerary(itinerary.itinerary);
     setMessage(itinerary.message);
@@ -49,9 +54,14 @@ const ItineraryHistory = ({
     setCurrentResultIndex(itinerary.itinerary.length);
   };
 
-  const historyDelete = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+  const historyDelete = (e: any) => {
     e.stopPropagation();
-    const index = Number(e.currentTarget.parentElement?.id);
+    let index = null;
+    if (typeof e === "number") {
+      index = e;
+    } else {
+      index = Number(e.currentTarget.parentElement?.id);
+    }
     const item = itineraryHistory[index];
     setTargetID(Number(item.id));
     setShowDeleteOverlay(true);
@@ -140,9 +150,21 @@ const ItineraryHistory = ({
               id={index.toString()}
               className="itineraryHistoryItem"
               onClick={handleSelect}
+              tabIndex={0}
+              onKeyDown={(e) => {
+                e.key === "Enter" && handleSelect(index);
+              }}
             >
-              <div className="historyDelete" onClick={historyDelete}>
-                <FaTrash color="red" />
+              <div
+                className="historyDelete"
+                onClick={historyDelete}
+                aria-label="Delete History Item"
+                tabIndex={0}
+                onKeyDown={(e) => {
+                  e.key === "Enter" && historyDelete(index);
+                }}
+              >
+                <FaTrash color="red" aria-label="Delete History Item" />
               </div>
               <div className="historyLocation">{itinerary.location}</div>
               <div className="historyItinerary">{strItinerary}</div>
