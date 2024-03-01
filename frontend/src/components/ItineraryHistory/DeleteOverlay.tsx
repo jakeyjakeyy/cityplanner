@@ -4,7 +4,7 @@ import "./DeleteOverlay.css";
 const DeleteOverlay = ({ setShowDeleteOverlay, targetID, setDeleted }: any) => {
   const id = targetID;
   const handleDelete = () => {
-    fetch("http://localhost:8000/api/profile", {
+    fetch(`${process.env.REACT_APP_BACKEND_SERVER}/api/profile`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
