@@ -3,6 +3,7 @@ import ReactMarkdown from "react-markdown";
 import ConversationAPI from "../utils/conversationApi";
 import searchItinerary from "../utils/searchItinerary";
 import SearchResultCardContainer from "./Card/SearchResultsContainer";
+import SearchResultCard from "./Card/SearchResultCard";
 import ConfirmItinerary from "./ConfirmItinerary";
 import QueryScroller from "./QueryScroller";
 import "./Conversation.css";
@@ -40,7 +41,6 @@ const Conversation = ({
     useState(false);
   const [newOrder, setNewOrder] = useState<any>([]);
   const [alternateLocations, setAlternateLocations] = useState<any>({});
-  const [isLoading, setIsLoading] = useState(false);
 
   const resetConversation = () => {
     setInput("");
@@ -73,7 +73,11 @@ const Conversation = ({
     if (input === "") {
       return;
     }
-    setIsLoading(true);
+    if (localStorage.getItem("token") === null) {
+      alert("Please log in");
+    }
+    console.log("setting search results loading to true");
+    setSearchResultsLoading(true);
     ConversationAPI(input, thread).then((response) => {
       if (response.location && response.itinerary) {
         // If we get a location and itinerary back from the assistant API,
@@ -97,8 +101,9 @@ const Conversation = ({
         setThread(response.message[0][9][1]);
         setInput("");
       }
+      console.log("setting search results loading to false");
+      setSearchResultsLoading(false);
     });
-    setIsLoading(false);
   };
 
   // User selects preferred place from search results
@@ -253,9 +258,9 @@ const Conversation = ({
   }, []);
 
   // debug
-  // useEffect(() => {
-  //   console.log(queryMessage);
-  // }, [queryMessage]);
+  useEffect(() => {
+    console.log("loading: " + searchResultsLoading);
+  }, [searchResultsLoading]);
 
   return (
     <div

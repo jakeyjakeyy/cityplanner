@@ -1,5 +1,5 @@
 async function GetTokens(username: String, password: String) {
-  return fetch("http://localhost:8000/api/token", {
+  return fetch(`${process.env.REACT_APP_BACKEND_SERVER}/api/token`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

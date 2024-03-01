@@ -21,9 +21,7 @@ const SearchResultCardContainer = ({
   if (searchResultsLoading) {
     return (
       <div className="searchResults">
-        <div className="searchResultCardContainer">
-          <SearchResultCard item={null} type="loading" index={0} />
-        </div>
+        <div className="searchResultCardContainer"></div>
       </div>
     );
   }

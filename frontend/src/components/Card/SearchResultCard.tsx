@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import "./SearchResultCard.css";
 import floatToTime from "../../utils/floatToTime";
 import { FaStar } from "react-icons/fa";
@@ -11,6 +11,8 @@ const SearchResultCard = ({
   type: string;
   index: number;
 }) => {
+  const [timedout, setTimedout] = useState(false);
+
   if (type === "place") {
     return (
       <div className="searchResultCard" id={index.toString()}>
@@ -32,9 +34,18 @@ const SearchResultCard = ({
       </div>
     );
   } else if (type === "loading") {
+    // start timer so we can let user know after 10 seconds if slow response from server
+    setTimeout(() => {
+      setTimedout(true);
+    }, 10000);
     return (
-      <div className="searchResultCard">
+      <div className="searchResultCard searchResultCardLoading">
         <div className="cardName">Loading...</div>
+        {timedout && (
+          <div className="timeoutAlert">
+            Slow Response from server, hang tight...
+          </div>
+        )}
       </div>
     );
   }

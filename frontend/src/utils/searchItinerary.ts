@@ -3,7 +3,7 @@ async function searchItinerary(
   location: String,
   locationBias?: {}
 ): Promise<any> {
-  return fetch("http://localhost:8000/api/search", {
+  return fetch(`${process.env.REACT_APP_BACKEND_SERVER}/api/search`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

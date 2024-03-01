@@ -25,6 +25,8 @@
   }
   .searchResultCard {
     width: 90vw;
+    padding: 0;
+    margin: 0;
   }
 }
 
@@ -74,4 +76,34 @@
   font-size: 1.2rem;
   font-weight: 400;
   color: #40e23a;
+}
+
+@keyframes shine {
+  to {
+    background-position-x: -200%;
+  }
+}
+
+.searchResultCardLoading {
+  display: flex;
+  overflow-y: hidden;
+  background: linear-gradient(
+    110deg,
+    var(--accent) 8%,
+    var(--primary) 18%,
+    var(--accent) 33%
+  );
+  background-size: 200% 100%;
+  animation: shine 1.5s linear infinite;
+  transition: all 0.2s ease-in-out;
+
+  .cardName {
+    overflow: hidden;
+  }
+}
+
+.timeoutAlert {
+  font-weight: 400;
+  color: var(--background);
+  text-align: center;
 }

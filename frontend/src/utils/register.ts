@@ -1,5 +1,5 @@
 function Register(username: string, password: string) {
-  return fetch("http://localhost:8000/api/register", {
+  return fetch(`${process.env.REACT_APP_BACKEND_SERVER}/api/register`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

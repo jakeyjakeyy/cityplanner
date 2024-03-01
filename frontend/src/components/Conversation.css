@@ -21,6 +21,10 @@
     min-width: 100vw;
     border-radius: 0;
   }
+  .searchResults {
+    padding: 0;
+    padding-top: 1rem;
+  }
 }
 
 .conversationContainerNoMap {
@@ -34,10 +38,14 @@
 
 .inputField {
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
   width: 100%;
+}
+
+.inputIsLoading {
+  padding: 1rem;
 }
 
 .inputTextContainer {

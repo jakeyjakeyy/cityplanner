@@ -21,7 +21,7 @@ const ItineraryHistory = ({
 
   // Fetch itinerary history from backend
   useEffect(() => {
-    fetch("http://localhost:8000/api/profile", {
+    fetch(`${process.env.REACT_APP_BACKEND_SERVER}/api/profile`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

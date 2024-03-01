@@ -52,6 +52,10 @@
   width: 100%;
   height: 100%;
   margin: 0 1rem 1rem 1rem;
+
+  input {
+    font-size: 16px;
+  }
 }
 
 #formUsername,
@@ -91,4 +95,22 @@
 
 #inputField:focus {
   border: 1px solid var(--accent);
+}
+
+@media (max-width: 768px) {
+  .loginFormContainer {
+    width: 90%;
+  }
+  #formUsername,
+  #formPassword,
+  #formConfirmPassword {
+    width: 90%;
+  }
+  #submitButton {
+    width: 80%;
+  }
+  #inputField {
+    width: 90%;
+    align-self: flex-start;
+  }
 }

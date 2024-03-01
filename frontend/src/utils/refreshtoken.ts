@@ -1,6 +1,6 @@
 function RefreshToken() {
   const refresh = localStorage.getItem("refresh");
-  return fetch("http://localhost:8000/api/token/refresh", {
+  return fetch(`${process.env.REACT_APP_BACKEND_SERVER}/api/token/refresh`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

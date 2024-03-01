@@ -6,7 +6,7 @@ async function ConversationAPI(
   selections: Record<string, any> = {},
   newOrder: Array<string> = []
 ): Promise<any> {
-  return fetch("http://localhost:8000/api/conversation", {
+  return fetch(`${process.env.REACT_APP_BACKEND_SERVER}/api/conversation`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
