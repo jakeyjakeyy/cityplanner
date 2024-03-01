@@ -161,6 +161,7 @@ class Conversation(APIView):
     def post(self, request):
         user = request.user
         if request.data["thread"] == "new":
+            logger.info("Creating new thread...")
             thread = openai.beta.threads.create(
                 messages=[
                     {
@@ -169,6 +170,7 @@ class Conversation(APIView):
                     }
                 ]
             )
+            logger.info(thread)
             run = openai.beta.threads.runs.create(
                 thread_id=thread.id,
                 assistant_id=assistant.id,
@@ -220,6 +222,7 @@ class Conversation(APIView):
                 )
 
         while run.status == "in_progress" or run.status == "queued":
+            logger.info(run.status)
             time.sleep(1)
             run = openai.beta.threads.runs.retrieve(
                 thread_id=thread.id,
@@ -261,10 +264,13 @@ class Conversation(APIView):
         )
 
         # Update message to the database
-        itinerary_db = models.Itinerary.objects.get(thread_id=thread.id)
-        logger.info(messages.data[0].content[0].text.value)
-        itinerary_db.message = messages.data[0].content[0].text.value
-        itinerary_db.save()
+        try:
+            itinerary_db = models.Itinerary.objects.get(thread_id=thread.id)
+            logger.info(messages.data[0].content[0].text.value)
+            itinerary_db.message = messages.data[0].content[0].text.value
+            itinerary_db.save()
+        except models.Itinerary.DoesNotExist:
+            pass
 
         return Response({"message": messages}, status=200)
 

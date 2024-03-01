@@ -250,9 +250,9 @@ const Conversation = ({
   }, []);
 
   // debug
-  useEffect(() => {
-    console.log(newOrder);
-  }, [newOrder]);
+  // useEffect(() => {
+  //   console.log(queryMessage);
+  // }, [queryMessage]);
 
   return (
     <div
@@ -270,7 +270,7 @@ const Conversation = ({
       ) : (
         ""
       )}
-      {queryMessage && !itinerary ? (
+      {queryMessage && Object.keys(itinerary).length === 0 ? (
         <div className="queryMessage">
           <ReactMarkdown>{queryMessage}</ReactMarkdown>
         </div>

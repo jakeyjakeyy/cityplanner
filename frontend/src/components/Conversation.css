@@ -156,3 +156,10 @@ ol {
 #titleText {
   margin-bottom: 1rem;
 }
+
+.queryMessage {
+  border: 1px solid var(--accent);
+  border-radius: 0.5rem;
+  margin-bottom: 1rem;
+  padding: 0 1rem;
+}
