@@ -40,6 +40,7 @@ const Conversation = ({
     useState(false);
   const [newOrder, setNewOrder] = useState<any>([]);
   const [alternateLocations, setAlternateLocations] = useState<any>({});
+  const [isLoading, setIsLoading] = useState(false);
 
   const resetConversation = () => {
     setInput("");
@@ -72,6 +73,7 @@ const Conversation = ({
     if (input === "") {
       return;
     }
+    setIsLoading(true);
     ConversationAPI(input, thread).then((response) => {
       if (response.location && response.itinerary) {
         // If we get a location and itinerary back from the assistant API,
@@ -96,6 +98,7 @@ const Conversation = ({
         setInput("");
       }
     });
+    setIsLoading(false);
   };
 
   // User selects preferred place from search results

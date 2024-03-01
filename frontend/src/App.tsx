@@ -4,6 +4,7 @@ import NewMap from "./components/MapNew";
 import Nav from "./components/Nav/Nav";
 import Conversation from "./components/Conversation";
 import ItineraryHistory from "./components/ItineraryHistory/ItineraryHistory";
+import GetTokens from "./utils/gettokens";
 
 function App() {
   const [tempMapItem, setTempMapItem] = useState({});
@@ -14,6 +15,17 @@ function App() {
   const [message, setMessage] = useState("");
 
   useEffect(() => {
+    // guest user
+    if (window.location.pathname === "/guest") {
+      GetTokens("guest", "password").then((tokens) => {
+        console.log(tokens);
+        localStorage.setItem("token", tokens.access);
+        localStorage.setItem("refresh", tokens.refresh);
+        localStorage.setItem("username", "guest");
+      });
+    }
+
+    // Handle state
     window.history.pushState({ showHistory }, "", "/");
     const handlePopState = (event: PopStateEvent) => {
       if (window.location.pathname === "/history") {
