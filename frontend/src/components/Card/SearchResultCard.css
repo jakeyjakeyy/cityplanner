@@ -98,7 +98,7 @@
   transition: all 0.2s ease-in-out;
 
   .cardName {
-    overflow: hidden;
+    height: fit-content;
   }
 }
 

@@ -30,7 +30,7 @@ const Conversation = ({
   const [searchResults, setSearchResults] = useState<any>(null);
   const [locationBias, setLocationBias] = useState({});
   const [directionsURL, setDirectionsURL] = useState("");
-  const [searchResultsLoading, setSearchResultsLoading] = useState(true);
+  const [searchResultsLoading, setSearchResultsLoading] = useState(false);
   const [queryMessage, setQueryMessage] = useState("");
   const [storedSearchResults, setStoredSearchResults] = useState<{
     [key: number]: any;
@@ -398,16 +398,15 @@ const Conversation = ({
           />
         </div>
       )}
-      {currentResultIndex < itinerary.length ||
-        (searchResultsLoading && (
-          <SearchResultCardContainer
-            searchResults={searchResults}
-            handleSelection={handleSelection}
-            handleSelectionEvent={handleSelectionEvent}
-            handleMouseEnter={handleMouseEnter}
-            searchResultsLoading={searchResultsLoading}
-          />
-        ))}
+      {(currentResultIndex < itinerary.length || searchResultsLoading) && (
+        <SearchResultCardContainer
+          searchResults={searchResults}
+          handleSelection={handleSelection}
+          handleSelectionEvent={handleSelectionEvent}
+          handleMouseEnter={handleMouseEnter}
+          searchResultsLoading={searchResultsLoading}
+        />
+      )}
     </div>
   );
 };

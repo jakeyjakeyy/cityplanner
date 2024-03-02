@@ -9,6 +9,7 @@ const SearchResultCardContainer = ({
   handleMouseEnter,
   searchResultsLoading,
 }: any) => {
+  console.log("searchResultsLoading", searchResultsLoading);
   const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -21,7 +22,9 @@ const SearchResultCardContainer = ({
   if (searchResultsLoading) {
     return (
       <div className="searchResults">
-        <div className="searchResultCardContainer"></div>
+        <div className="searchResultCardContainer">
+          <SearchResultCard item={{}} type="loading" index={0} />
+        </div>
       </div>
     );
   }
