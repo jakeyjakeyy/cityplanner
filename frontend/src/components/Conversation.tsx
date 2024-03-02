@@ -30,7 +30,7 @@ const Conversation = ({
   const [searchResults, setSearchResults] = useState<any>(null);
   const [locationBias, setLocationBias] = useState({});
   const [directionsURL, setDirectionsURL] = useState("");
-  const [searchResultsLoading, setSearchResultsLoading] = useState(false);
+  const [searchResultsLoading, setSearchResultsLoading] = useState(true);
   const [queryMessage, setQueryMessage] = useState("");
   const [storedSearchResults, setStoredSearchResults] = useState<{
     [key: number]: any;
@@ -270,20 +270,16 @@ const Conversation = ({
           : "conversationContainerNoMap"
       }
     >
-      {searchResults == null && message === "" ? (
+      {searchResults == null && message === "" && (
         <div className="titleContainer">
           <h1 id="titleText">City Trip Planner</h1>
           <QueryScroller />
         </div>
-      ) : (
-        ""
       )}
-      {queryMessage && Object.keys(itinerary).length === 0 ? (
+      {queryMessage && Object.keys(itinerary).length === 0 && (
         <div className="queryMessage">
           <ReactMarkdown>{queryMessage}</ReactMarkdown>
         </div>
-      ) : (
-        ""
       )}
       {itinerary.length === 0 ? (
         <div className="inputField">
@@ -345,18 +341,16 @@ const Conversation = ({
           </div>
         </div>
       )}
-      {message !== "" ? (
+      {message !== "" && (
         <div className="message">
           <ReactMarkdown>{message}</ReactMarkdown>
           <div id="directionsLink">
             <a href={directionsURL}>Directions</a>
           </div>
         </div>
-      ) : (
-        ""
       )}
 
-      {userActivelyChangingItinerary ? (
+      {userActivelyChangingItinerary && (
         <ConfirmItinerary
           itinerary={itinerary}
           setItinerary={setItinerary}
@@ -366,15 +360,11 @@ const Conversation = ({
           setNewOrder={setNewOrder}
           alternateLocations={alternateLocations}
         />
-      ) : (
-        ""
       )}
-      {currentResultIndex >= 0 && currentResultIndex < itinerary.length ? (
+      {currentResultIndex >= 0 && currentResultIndex < itinerary.length && (
         <p className="itineraryItem">{itinerary[currentResultIndex]}</p>
-      ) : (
-        ""
       )}
-      {currentResultIndex > 0 && currentResultIndex < itinerary.length ? (
+      {currentResultIndex > 0 && currentResultIndex < itinerary.length && (
         <div
           className="undo"
           onClick={() => setCurrentResultIndex(currentResultIndex - 1)}
@@ -390,10 +380,8 @@ const Conversation = ({
             aria-label="Undo Selection"
           />
         </div>
-      ) : (
-        ""
       )}
-      {currentResultIndex >= 0 && currentResultIndex < itinerary.length ? (
+      {currentResultIndex >= 0 && currentResultIndex < itinerary.length && (
         <div
           className="next"
           onClick={skipItem}
@@ -409,20 +397,17 @@ const Conversation = ({
             aria-label="Skip Selection"
           />
         </div>
-      ) : (
-        ""
       )}
-      {currentResultIndex < itinerary.length || searchResultsLoading ? (
-        <SearchResultCardContainer
-          searchResults={searchResults}
-          handleSelection={handleSelection}
-          handleSelectionEvent={handleSelectionEvent}
-          handleMouseEnter={handleMouseEnter}
-          searchResultsLoading={searchResultsLoading}
-        />
-      ) : (
-        ""
-      )}
+      {currentResultIndex < itinerary.length ||
+        (searchResultsLoading && (
+          <SearchResultCardContainer
+            searchResults={searchResults}
+            handleSelection={handleSelection}
+            handleSelectionEvent={handleSelectionEvent}
+            handleMouseEnter={handleMouseEnter}
+            searchResultsLoading={searchResultsLoading}
+          />
+        ))}
     </div>
   );
 };

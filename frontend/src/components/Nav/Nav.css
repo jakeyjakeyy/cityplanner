@@ -1,13 +1,21 @@
 .navContainer {
   display: flex;
-  top: 0;
   align-items: center;
   flex-direction: row;
   width: 100vw;
-  min-height: 5vh;
+  height: 3rem;
   z-index: 100;
   background-color: var(--primary);
   color: var(--text2);
+}
+
+@media (max-width: 768px) {
+  .navContainer {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    height: 3rem;
+  }
 }
 
 .rightNav {

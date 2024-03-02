@@ -5,10 +5,19 @@
   border-radius: 14px;
   top: 0;
   right: 5px;
-  transform: translate(0px, 5vh);
+  transform: translate(0px, 3rem);
   color: var(--text);
   min-width: 5vw;
   text-align: left;
+}
+
+@media (max-width: 768px) {
+  .navDropdownContainer {
+    bottom: 0;
+    top: auto;
+    right: 0;
+    transform: translate(0px, -3rem);
+  }
 }
 
 .navDropdownItem {
