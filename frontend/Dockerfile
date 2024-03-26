@@ -10,6 +10,12 @@ COPY . /app/frontend/
 
 RUN npm run build
 
+FROM node:16-alpine AS production
+WORKDIR /app/frontend/
+COPY --from=build /app/frontend/build /app/frontend/build
+RUN npm install -g serve
+CMD ["serve", "-s", "build", "-l", "3000"]
+
 
 # dev
 # FROM node:16-alpine
