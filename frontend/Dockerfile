@@ -1,15 +1,29 @@
-FROM node:16-alpine
+FROM node:16-alpine AS build
 
 WORKDIR /app/frontend/
 
 COPY package*.json /app/frontend/
 
-RUN npm config set unsafe-perm true
-
-RUN npm install
+RUN npm ci --only=production
 
 COPY . /app/frontend/
 
-RUN chown -R node:node /app/frontend/node_modules
+RUN npm run build
 
-CMD ["npm", "start"]
+
+# dev
+# FROM node:16-alpine
+
+# WORKDIR /app/frontend/
+
+# COPY package*.json /app/frontend/
+
+# RUN npm config set unsafe-perm true
+
+# RUN npm install
+
+# COPY . /app/frontend/
+
+# RUN chown -R node:node /app/frontend/node_modules
+
+# CMD ["npm", "start"]
