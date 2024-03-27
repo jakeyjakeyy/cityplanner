@@ -72,9 +72,13 @@ class Search(APIView):
         if "live" in query.lower():
             params["maxResultCount"] = "5"
 
+        logger.info("getting data with params", params)
         res = requests.post(url, json=params, headers=headers)
+        while True:
+            if res.ok:
+                break
         data = res.json()
-        # logger.info(data)
+        logger.info(data)
 
         # Get photos for each place
         for place in data["places"]:
