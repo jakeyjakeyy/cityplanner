@@ -74,10 +74,6 @@ class Search(APIView):
 
         logger.info("getting data with params: " + str(params))
         res = requests.post(url, json=params, headers=headers)
-        while True:
-            logger.info(res)
-            if res.ok:
-                break
         data = res.json()
         logger.info(data)
 
