@@ -72,9 +72,10 @@ class Search(APIView):
         if "live" in query.lower():
             params["maxResultCount"] = "5"
 
-        logger.info("getting data with params", params)
+        logger.info("getting data with params: " + str(params))
         res = requests.post(url, json=params, headers=headers)
         while True:
+            logger.info(res)
             if res.ok:
                 break
         data = res.json()
