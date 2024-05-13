@@ -74,7 +74,7 @@ const Conversation = ({
       return;
     }
     if (localStorage.getItem("token") === null) {
-      alert("Please log in");
+      alert("Please log in\nYou can use 'guest' as username and password");
     }
     console.log("setting search results loading to true");
     setSearchResultsLoading(true);
