@@ -97,7 +97,7 @@ const Conversation = ({
       } else if (response.message) {
         // Else we set the message from the assistant API to be displayed
         // The assistant is likely asking for more information
-        setQueryMessage(response.message[0][2][1][0][0][1][1][1]);
+        setQueryMessage(response.message[0][4][1][0][0][1][1][1]);
         setThread(response.message[0][9][1]);
         setInput("");
       }
@@ -181,7 +181,8 @@ const Conversation = ({
       ConversationAPI("", thread, selections, newOrder).then((response) => {
         if (response.message) {
           setSearchResultsLoading(false);
-          setMessage(response.message[0][2][1][0][0][1][1][1]);
+          setMessage(response.message[0][4][1][0][0][1][1][1]);
+          console.log("SETTING MESSAGE", response.message[0][4][1][0][0][1][1]);
         }
       });
       setSearchResults(null);
